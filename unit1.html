@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit I — Perceptrons & Backpropagation | Deep Learning Techniques</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="page-wrapper">
+
+  <nav class="unit-nav">
+    <a href="index.html" class="nav-home">Home</a>
+    <span class="nav-title">Unit I: Perceptrons &amp; Backpropagation</span>
+    <a href="unit2.html" class="nav-next">Unit II →</a>
+  </nav>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn" onclick="showTab(0)">Q1</button>
+    <button class="tab-btn important" onclick="showTab(1)">Q2</button>
+    <button class="tab-btn" onclick="showTab(2)">Q3</button>
+    <button class="tab-btn" onclick="showTab(3)">Q4</button>
+    <button class="tab-btn" onclick="showTab(4)">Q5</button>
+    <button class="tab-btn important" onclick="showTab(5)">Q6</button>
+    <button class="tab-btn important" onclick="showTab(6)">Q7</button>
+    <button class="tab-btn important" onclick="showTab(7)">Q8</button>
+    <button class="tab-btn" onclick="showTab(8)">Q9</button>
+    <button class="tab-btn important" onclick="showTab(9)">Q10</button>
+  </div>
+
+  <!-- Q1 -->
+  <div class="tab-content" id="tab-0">
+    <div class="question-block">
+      <span class="q-tag skeleton">Skeleton</span>
+      <h2 class="q-title">1. Define Deep Learning. Explain its uses and applications.</h2>
+      <div class="answer-body">
+        <p><strong>Definition:</strong> Deep Learning is a subfield of machine learning based on artificial neural networks with multiple layers (hence "deep") that automatically learn hierarchical representations of data — simple features in early layers, complex/abstract features in later layers — without hand-engineered feature extraction.</p>
+        <h3>Key points to expand in the exam</h3>
+        <ul>
+          <li>Inspired loosely by biological neurons; built from layers of artificial neurons (weights, biases, activations).</li>
+          <li>Learns representations directly from raw data (pixels, audio waveforms, text) via backpropagation + gradient descent.</li>
+          <li>Contrast with classical ML: classical ML needs manual feature engineering; DL learns features automatically through hierarchy of layers.</li>
+        </ul>
+        <h3>Applications (give 1–2 lines each)</h3>
+        <ul>
+          <li><strong>Computer Vision:</strong> image classification, object detection, face recognition (CNNs).</li>
+          <li><strong>NLP:</strong> machine translation, sentiment analysis, chatbots, LLMs (RNNs/Transformers).</li>
+          <li><strong>Speech:</strong> speech recognition, voice assistants.</li>
+          <li><strong>Recommendation systems:</strong> Netflix, YouTube, e-commerce personalization.</li>
+          <li><strong>Healthcare:</strong> medical image diagnosis, drug discovery.</li>
+          <li><strong>Autonomous vehicles:</strong> perception, path planning.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q2 IMPORTANT -->
+  <div class="tab-content" id="tab-1">
+    <div class="question-block">
+      <span class="q-tag important">Important — full answer</span>
+      <h2 class="q-title">2. What is a perceptron, and how does the perceptron learning algorithm work? Explain with an example.</h2>
+      <div class="answer-body">
+        <p>The <strong>perceptron</strong> was proposed by Frank Rosenblatt (1958) as a more general computational model than the McCulloch–Pitts neuron. Unlike the MP neuron, a perceptron assigns <strong>numerical weights</strong> to each input, and these weights can be <strong>learned</strong> from data rather than hand-coded. Inputs are also no longer restricted to boolean values — real-valued inputs are allowed.</p>
+
+        <div class="svg-wrap">
+        <svg viewBox="0 0 460 200" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="60" cy="40" r="14" fill="var(--surface2)" stroke="var(--border)"/>
+          <text x="60" y="45" text-anchor="middle" fill="var(--text)" font-size="12">x1</text>
+          <circle cx="60" cy="100" r="14" fill="var(--surface2)" stroke="var(--border)"/>
+          <text x="60" y="105" text-anchor="middle" fill="var(--text)" font-size="12">x2</text>
+          <circle cx="60" cy="160" r="14" fill="var(--surface2)" stroke="var(--border)"/>
+          <text x="60" y="165" text-anchor="middle" fill="var(--text)" font-size="12">xn</text>
+          <circle cx="260" cy="100" r="22" fill="var(--surface2)" stroke="var(--accent)"/>
+          <text x="260" y="105" text-anchor="middle" fill="var(--text)" font-size="13">Σ</text>
+          <line x1="74" y1="40" x2="238" y2="90" stroke="var(--text-muted)"/>
+          <line x1="74" y1="100" x2="238" y2="100" stroke="var(--text-muted)"/>
+          <line x1="74" y1="160" x2="238" y2="110" stroke="var(--text-muted)"/>
+          <text x="150" y="65" fill="var(--accent-hover)" font-size="11">w1</text>
+          <text x="150" y="95" fill="var(--accent-hover)" font-size="11">w2</text>
+          <text x="150" y="140" fill="var(--accent-hover)" font-size="11">wn</text>
+          <line x1="282" y1="100" x2="380" y2="100" stroke="var(--text-muted)"/>
+          <text x="400" y="105" fill="var(--text)" font-size="12">y</text>
+          <text x="260" y="140" text-anchor="middle" fill="var(--text-muted)" font-size="11">y=1 if Σwᵢxᵢ≥θ, else 0</text>
+        </svg>
+        </div>
+
+        <h3>Perceptron rule</h3>
+        <div class="formula">
+          y = 1 if Σ(i=0 to n) wᵢ·xᵢ ≥ 0, else y = 0<br>
+          where x₀ = 1 and w₀ = −θ (the bias)
+        </div>
+        <p>A perceptron separates the input space into two halves using a hyperplane <strong>wᵀx = 0</strong>. It can only implement <strong>linearly separable</strong> functions.</p>
+
+        <h3>Perceptron Learning Algorithm</h3>
+        <pre><code>P ← inputs with label 1
+N ← inputs with label 0
+Initialize w randomly
+while not converged:
+    pick random x ∈ P ∪ N
+    if x ∈ P and w·x &lt; 0:
+        w = w + x
+    if x ∈ N and w·x ≥ 0:
+        w = w − x</code></pre>
+        <p>Intuition: if a positive point is misclassified (angle between w and x is &gt; 90°), we nudge w toward x (w = w + x) to reduce that angle. If a negative point is misclassified (angle &lt; 90°), we push w away from x (w = w − x). This is provably convergent in finite steps if the data is <strong>linearly separable</strong> (proof via cos β growing while bounded by 1).</p>
+
+        <h3>Worked example — learning OR</h3>
+        <table>
+          <tr><th>x1</th><th>x2</th><th>OR</th><th>Constraint</th></tr>
+          <tr><td>0</td><td>0</td><td>0</td><td>w0 &lt; 0</td></tr>
+          <tr><td>0</td><td>1</td><td>1</td><td>w0+w2 ≥ 0</td></tr>
+          <tr><td>1</td><td>0</td><td>1</td><td>w0+w1 ≥ 0</td></tr>
+          <tr><td>1</td><td>1</td><td>1</td><td>w0+w1+w2 ≥ 0</td></tr>
+        </table>
+        <p>One valid solution: w0 = −1, w1 = 1.1, w2 = 1.1 — this defines the separating line −1 + 1.1x1 + 1.1x2 = 0, which correctly classifies all 4 points of OR.</p>
+        <div class="source-note">Source: CS7015 Lecture 2 (Khapra, IIT Madras) — Modules 2.3–2.6.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="tab-content" id="tab-2">
+    <div class="question-block">
+      <span class="q-tag skeleton">Skeleton</span>
+      <h2 class="q-title">3. Discuss single layer perceptrons in detail.</h2>
+      <div class="answer-body">
+        <ul>
+          <li>A <strong>single layer perceptron (SLP)</strong> has only an input layer directly connected to a single output neuron — no hidden layers.</li>
+          <li>Computes y = 1 if wᵀx ≥ 0 else 0. Geometrically draws one hyperplane through input space.</li>
+          <li>Can represent only <strong>linearly separable</strong> boolean functions (e.g. AND, OR, NOT) — cannot represent XOR.</li>
+          <li>Weights learned via the perceptron learning algorithm (see Q2); guaranteed to converge only if data is linearly separable (Perceptron Convergence Theorem).</li>
+          <li>Limitation exposed by Minsky &amp; Papert (1969) — led to the "AI winter" until MLPs revived interest.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="tab-content" id="tab-3">
+    <div class="question-block">
+      <span class="q-tag skeleton">Skeleton</span>
+      <h2 class="q-title">4. What are multilayer perceptrons (MLPs), and how do they differ from single-layer perceptrons?</h2>
+      <div class="answer-body">
+        <ul>
+          <li><strong>MLP:</strong> a network with an input layer, one or more <strong>hidden layers</strong>, and an output layer — "multilayered network of perceptrons."</li>
+          <li>Each hidden neuron fires for specific input regions; combining several such neurons in a hidden layer lets the network carve up input space into more than one hyperplane region.</li>
+          <li><strong>Key theorem (Khapra Lec 2):</strong> any boolean function of n inputs can be represented exactly by an MLP with one hidden layer containing 2ⁿ perceptrons + one output perceptron. So MLPs can represent even non-linearly-separable functions like XOR (SLPs cannot).</li>
+          <li>Differences table:</li>
+        </ul>
+        <table>
+          <tr><th>Single-layer Perceptron</th><th>MLP</th></tr>
+          <tr><td>No hidden layer</td><td>≥1 hidden layer</td></tr>
+          <tr><td>Only linearly separable functions</td><td>Any boolean/continuous function (given enough hidden units)</td></tr>
+          <tr><td>Simple perceptron rule update</td><td>Trained via backpropagation + gradient descent</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="tab-content" id="tab-4">
+    <div class="question-block">
+      <span class="q-tag skeleton">Skeleton</span>
+      <h2 class="q-title">5. Explain the role of sigmoid neurons in feed forward neural networks.</h2>
+      <div class="answer-body">
+        <ul>
+          <li>Perceptron's hard threshold is "harsh" — a tiny change in input (e.g. rating 0.49 → 0.51) flips the output completely.</li>
+          <li><strong>Sigmoid neuron</strong> replaces this with a smooth function: y = σ(wx+b) = 1/(1+e^−(wx+b)). Output is a continuous value between 0 and 1, not a hard 0/1.</li>
+          <li>This smoothness is exactly what makes the loss function <strong>differentiable</strong> — enabling gradient descent to work, since small changes in weights produce small, smooth changes in output/loss (no discontinuous jumps).</li>
+          <li>Without smooth activations, we couldn't compute meaningful gradients for learning — this directly motivates the shift from perceptrons to sigmoid-based feedforward networks trained by gradient descent + backpropagation.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q6 IMPORTANT -->
+  <div class="tab-content" id="tab-5">
+    <div class="question-block">
+      <span class="q-tag important">Important — full answer</span>
+      <h2 class="q-title">6. What is back propagation, and how is it used to train feed forward neural networks?</h2>
+      <div class="answer-body">
+        <p><strong>Backpropagation</strong> is the algorithm used to efficiently compute the gradient of the loss function with respect to every weight and bias in a feedforward network, so gradient descent can update them.</p>
+
+        <h3>The core idea — responsibility / chain rule</h3>
+        <p>We get a loss at the output and ask "who is responsible?" Instead of talking to each weight directly, we talk to it <em>through</em> the layers between it and the loss — this is exactly what the <strong>chain rule</strong> lets us do:</p>
+        <div class="formula">
+          ∂L/∂W₁ = (∂L/∂ŷ)·(∂ŷ/∂a₃)·(∂a₃/∂h₂)·(∂h₂/∂a₂)·(∂a₂/∂h₁)·(∂h₁/∂a₁)·(∂a₁/∂W₁)
+        </div>
+
+        <h3>Network setup</h3>
+        <p>For layer i: pre-activation aᵢ = bᵢ + Wᵢhᵢ₋₁, activation hᵢ = g(aᵢ). Output layer uses <strong>softmax</strong> (ŷⱼ = e^aLj / Σe^aLi) with <strong>cross-entropy loss</strong> L(θ) = −log ŷ_ℓ (ℓ = true class).</p>
+
+        <h3>Three gradient computations (in order)</h3>
+        <ol>
+          <li><strong>Gradient w.r.t. output pre-activation:</strong> ∇<sub>aL</sub>L(θ) = −(e<sup>(ℓ)</sup> − ŷ) — a clean closed form for softmax + cross-entropy.</li>
+          <li><strong>Gradient w.r.t. hidden layers</strong> (working backward): ∇<sub>hᵢ</sub>L(θ) = (Wᵢ₊₁)ᵀ(∇<sub>aᵢ₊₁</sub>L(θ)), then ∇<sub>aᵢ</sub>L(θ) = ∇<sub>hᵢ</sub>L(θ) ⊙ g′(aᵢ) (elementwise, using the chain rule and the derivative of the activation).</li>
+          <li><strong>Gradient w.r.t. parameters:</strong> ∇<sub>Wₖ</sub>L(θ) = ∇<sub>aₖ</sub>L(θ)·hₖ₋₁ᵀ and ∇<sub>bₖ</sub>L(θ) = ∇<sub>aₖ</sub>L(θ)</li>
+        </ol>
+
+        <h3>Algorithm (pseudocode)</h3>
+        <pre><code>for t in range(max_iterations):
+    h, a, ŷ = forward_propagation(θ_t)
+    ∇θ_t = backward_propagation(h, a, y, ŷ)
+    θ_{t+1} = θ_t − η · ∇θ_t
+
+backward_propagation:
+    ∇a_L = −(e(y) − ŷ)
+    for k = L down to 1:
+        ∇W_k = ∇a_k · h_(k-1)ᵀ
+        ∇b_k = ∇a_k
+        ∇h_(k-1) = W_kᵀ · ∇a_k
+        ∇a_(k-1) = ∇h_(k-1) ⊙ g'(a_(k-1))</code></pre>
+
+        <p><strong>Why this matters for training:</strong> it converts an intractable "nasty" gradient (thousands of individual partial derivatives) into a single efficient backward pass that reuses computations layer by layer — this is what makes training deep networks computationally feasible.</p>
+        <div class="source-note">Source: CS7015 Lecture 4 (Khapra) — Modules 4.4–4.8.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q7 IMPORTANT -->
+  <div class="tab-content" id="tab-6">
+    <div class="question-block">
+      <span class="q-tag important">Important — full answer (numerical)</span>
+      <h2 class="q-title">7. Apply back propagation algorithm for a Multi-layer perceptron, assuming actual output y = 0.5 and learning rate α = 1.</h2>
+      <div class="answer-body">
+        <p><strong>This is a numerical problem</strong> — the exact network diagram (weights, layer sizes) is given in your slides/board, so plug your specific numbers into this method. Here's the general worked procedure with the standard sigmoid MLP setup, which you follow exactly regardless of the specific weight values given:</p>
+
+        <h3>Step-by-step method</h3>
+        <ol>
+          <li><strong>Forward pass:</strong> compute every pre-activation and activation: aⱼ = Σwᵢⱼxᵢ + bⱼ, hⱼ = σ(aⱼ) = 1/(1+e^−aⱼ), layer by layer up to ŷ (the predicted output).</li>
+          <li><strong>Compute error at output:</strong> E = ½(y − ŷ)² (squared error, common for these numerical problems) or cross-entropy if specified. Compute δ_output = (ŷ − y)·ŷ·(1−ŷ) — this uses the sigmoid derivative σ′(z) = σ(z)(1−σ(z)) = ŷ(1−ŷ).</li>
+          <li><strong>Backpropagate the error</strong> to each hidden neuron: δ_hidden = (Σ δ_output · w_connecting) · h·(1−h) — i.e., each hidden neuron's delta is the weighted sum of the deltas of neurons it feeds into, times its own local sigmoid derivative.</li>
+          <li><strong>Compute weight gradients:</strong> ∂L/∂w = δ_(downstream neuron) · h_(upstream neuron, i.e. the input feeding that weight).</li>
+          <li><strong>Update every weight:</strong> w_new = w_old − α·(∂L/∂w). With α = 1, this simplifies to w_new = w_old − ∂L/∂w exactly (no scaling).</li>
+        </ol>
+
+        <h3>Key formula bank for this problem type</h3>
+        <div class="formula">
+          σ(z) = 1/(1+e⁻ᶻ) &nbsp;&nbsp; σ′(z) = σ(z)(1−σ(z))<br>
+          δ_output = (ŷ − y)·σ′(a_output)<br>
+          δ_hidden,j = [Σ_k δ_output,k · w_jk] · σ′(a_hidden,j)<br>
+          ∂L/∂w_ij = δ_j · h_i &nbsp;&nbsp; w_ij(new) = w_ij(old) − α·∂L/∂w_ij
+        </div>
+        <p><strong>Exam tip:</strong> Since y = 0.5 is given, once you compute ŷ from the forward pass, your first delta is simply (ŷ − 0.5)·ŷ(1−ŷ). Show every intermediate value (each aⱼ, hⱼ) in a table — examiners award marks for showing the forward pass values, not just the final updated weights.</p>
+        <div class="source-note">Method cross-checked against CS7015 Lecture 4 backprop derivation (Khapra). Plug in your specific board/slide weight values.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q8 IMPORTANT -->
+  <div class="tab-content" id="tab-7">
+    <div class="question-block">
+      <span class="q-tag important">Important — full answer (numerical)</span>
+      <h2 class="q-title">8. Multilayer feed-forward network, learning rate 0.5. Train the network for tuples (1,1,0) and (0,1,1) using backpropagation. Sigmoid activation.</h2>
+      <div class="answer-body">
+        <p>This is the classic textbook backprop numerical (same structure as the well-known Han/Kamber example). Follow this exact sequence for <strong>each</strong> training tuple, one at a time (this is <strong>stochastic</strong> updating — update after each tuple, not after both):</p>
+
+        <h3>Step 1 — Forward pass</h3>
+        <p>For each layer: netⱼ = Σᵢ wᵢⱼ·xᵢ + bⱼ, then Oⱼ = 1/(1+e^−netⱼ). Compute this for every hidden neuron, then for the output neuron(s), using the initial weights/biases given in your table.</p>
+
+        <h3>Step 2 — Compute error at output</h3>
+        <div class="formula">Err_output = O_output(1 − O_output)(target − O_output)</div>
+        <p>(target is the last number in the tuple — 0 for (1,1,0), 1 for (0,1,1))</p>
+
+        <h3>Step 3 — Backpropagate error to hidden layer</h3>
+        <div class="formula">Err_hidden,j = O_j(1 − O_j) · Σ_k (Err_k · w_jk)</div>
+        <p>sum over all downstream neurons k that hidden neuron j feeds into, weighted by the connecting weight.</p>
+
+        <h3>Step 4 — Update weights and biases</h3>
+        <div class="formula">
+          Δw_ij = (l) · Err_j · O_i &nbsp;&nbsp; w_ij(new) = w_ij(old) + Δw_ij<br>
+          Δθ_j = (l) · Err_j &nbsp;&nbsp; θ_j(new) = θ_j(old) + Δθ_j
+        </div>
+        <p>where l = 0.5 is the given learning rate, O_i is the output of the upstream neuron feeding weight w_ij.</p>
+
+        <h3>Repeat for the second tuple</h3>
+        <p>Use the <strong>updated</strong> weights from tuple 1 as the starting point for the forward pass on tuple (0,1,1), and repeat steps 1–4.</p>
+
+        <p><strong>Presentation tip for full marks:</strong> build one table of net/O values per layer (forward pass), one table of Err values (backward pass), and one table of Δw/w_new values, for each tuple. This is exactly how the standard textbook solution is graded.</p>
+        <div class="source-note">Standard method — cross-checked against the sigmoid-derivative and chain-rule derivation in CS7015 Lecture 4 (Khapra). Numbers depend on your specific weight table from lecture/board.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="tab-content" id="tab-8">
+    <div class="question-block">
+      <span class="q-tag skeleton">Skeleton</span>
+      <h2 class="q-title">9. Write the differences between Feed Forward and Feed Backward Neural networks.</h2>
+      <div class="answer-body">
+        <table>
+          <tr><th>Feedforward Network</th><th>Feed-backward / Recurrent Network</th></tr>
+          <tr><td>Information flows only forward: input → hidden → output</td><td>Connections can loop back — output/hidden state feeds into earlier/same layer at next time step</td></tr>
+          <tr><td>No memory of previous inputs</td><td>Maintains a hidden state that carries information across time steps (memory)</td></tr>
+          <tr><td>Fixed-size input (e.g. images)</td><td>Handles variable-length sequential input (e.g. text, speech)</td></tr>
+          <tr><td>Trained via standard backpropagation</td><td>Trained via Backpropagation Through Time (BPTT)</td></tr>
+          <tr><td>Examples: MLP, CNN</td><td>Examples: RNN, LSTM, GRU</td></tr>
+        </table>
+        <p><em>Note: "backpropagation" itself (the gradient computation for training) applies to feedforward nets too — this question is contrasting feedforward <strong>architecture</strong> with recurrent/feedback <strong>architecture</strong>, not the training algorithm.</em></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q10 IMPORTANT -->
+  <div class="tab-content" id="tab-9">
+    <div class="question-block">
+      <span class="q-tag important">Important — full answer (code)</span>
+      <h2 class="q-title">10. Write a python code for backward propagation in a neural network using concepts like error calculation, and learning rate.</h2>
+      <div class="answer-body">
+        <p>Simple, from-scratch backprop for a single-hidden-layer network with sigmoid activations — matches the derivation in Q6/Q8 exactly (error → delta → weight update).</p>
+        <pre><code>import numpy as np
+
+def sigmoid(z):
+    return 1 / (1 + np.exp(-z))
+
+def sigmoid_derivative(a):
+    # a is already sigmoid(z)
+    return a * (1 - a)
+
+# --- network setup ---
+np.random.seed(0)
+input_size, hidden_size, output_size = 2, 2, 1
+lr = 0.5   # learning rate
+
+W1 = np.random.randn(input_size, hidden_size)
+b1 = np.zeros((1, hidden_size))
+W2 = np.random.randn(hidden_size, output_size)
+b2 = np.zeros((1, output_size))
+
+X = np.array([[1, 1]])   # example input
+y = np.array([[0]])      # target output
+
+# --- forward pass ---
+a1 = X.dot(W1) + b1
+h1 = sigmoid(a1)
+a2 = h1.dot(W2) + b2
+y_hat = sigmoid(a2)
+
+# --- error calculation ---
+error = y - y_hat
+loss = np.mean(0.5 * error ** 2)
+
+# --- backward pass ---
+delta_output = -error * sigmoid_derivative(y_hat)          # dL/da2
+grad_W2 = h1.T.dot(delta_output)
+grad_b2 = np.sum(delta_output, axis=0, keepdims=True)
+
+delta_hidden = delta_output.dot(W2.T) * sigmoid_derivative(h1)  # dL/da1
+grad_W1 = X.T.dot(delta_hidden)
+grad_b1 = np.sum(delta_hidden, axis=0, keepdims=True)
+
+# --- gradient descent update ---
+W2 -= lr * grad_W2
+b2 -= lr * grad_b2
+W1 -= lr * grad_W1
+b1 -= lr * grad_b1
+
+print("Loss:", loss)
+print("Updated W1:\n", W1)
+print("Updated W2:\n", W2)</code></pre>
+        <p><strong>Mapping to theory (say this in the exam if asked to explain):</strong> <code>delta_output</code> = ∇<sub>aL</sub>L(θ) from Q6, <code>delta_hidden</code> = ∇<sub>a</sub>L(θ) for the hidden layer computed via (Wᵀ · downstream delta) ⊙ g′(a), and the weight gradients follow ∇W = δ · hᵀ exactly as derived.</p>
+        <div class="source-note">Structure matches the backprop pseudocode in CS7015 Lecture 4 (Khapra), Module 4.8.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function showTab(i) {
+  document.querySelectorAll('.tab-content').forEach((el, idx) => {
+    el.classList.toggle('active', idx === i);
+  });
+  document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
+    btn.classList.toggle('active', idx === i);
+  });
+}
+showTab(0);
+</script>
+</body>
+</html>

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit II — Optimization, PCA & SVD | Deep Learning Techniques</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="page-wrapper">
+
+  <nav class="unit-nav">
+    <a href="unit1.html" class="nav-prev">← Unit I</a>
+    <span class="nav-title">Unit II: Optimization, PCA &amp; SVD</span>
+    <a href="unit3.html" class="nav-next">Unit III →</a>
+  </nav>
+
+  <div class="tabs" role="tablist">
+    <button class="tab-btn" onclick="showTab(0)">Q11</button>
+    <button class="tab-btn important" onclick="showTab(1)">Q12</button>
+    <button class="tab-btn" onclick="showTab(2)">Q13</button>
+    <button class="tab-btn important" onclick="showTab(3)">Q14</button>
+    <button class="tab-btn important" onclick="showTab(4)">Q15</button>
+    <button class="tab-btn important" onclick="showTab(5)">Q16</button>
+    <button class="tab-btn" onclick="showTab(6)">Q17</button>
+    <button class="tab-btn important" onclick="showTab(7)">Q18</button>
+    <button class="tab-btn" onclick="showTab(8)">Q19</button>
+    <button class="tab-btn" onclick="showTab(9)">Q20</button>
+  </div>
+
+  <!-- Q11 -->
+  <div class="tab-content" id="tab-0">
+    <div class="question-block">
+      <span class="q-tag skeleton">Skeleton</span>
+      <h2 class="q-title">11. Explain in detail about the concept of gradient based learning.</h2>
+      <div class="answer-body">
+        <ul>
+          <li>Goal: find θ = [w, b] minimizing loss L(θ). Guesswork doesn't scale beyond a couple parameters — need a principled way to move through the error surface.</li>
+          <li><strong>Taylor series argument:</strong> L(θ+ηu) ≈ L(θ) + η·uᵀ∇L(θ) for small η. The move is favorable only if uᵀ∇L(θ) &lt; 0.</li>
+          <li>uᵀ∇L(θ) = k·cos(β) where β is angle between u and ∇L(θ); this is most negative when β = 180°, i.e. <strong>u points exactly opposite to the gradient</strong>.</li>
+          <li><strong>Update rule:</strong> w_(t+1) = w_t − η∇w_t, b_(t+1) = b_t − η∇b_t — move opposite to the gradient, scaled by learning rate η.</li>
+          <li>Where the curve is steep, gradient is large → big updates. Where curve is gentle (flat), gradient is small → slow progress (motivates momentum-based methods, Q12).</li>
+        </ul>
+        <div class="source-note">Source: CS7015 Lecture 5 (Khapra), Modules 5.1–5.2.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q12 IMPORTANT -->
+  <div class="tab-content" id="tab-1">
+    <div class="question-block">
+      <span class="q-tag important">Important — full answer</span>
+      <h2 class="q-title">12. How does Momentum Based Gradient Descent work and how is it different from other optimization algorithms?</h2>
+      <div class="answer-body">
+        <p><strong>Observation:</strong> vanilla GD is slow in regions with gentle slope because the gradient itself is small there. <strong>Intuition:</strong> if we're repeatedly asked to move in the same direction, we should gain confidence and take bigger steps — like a ball gaining momentum rolling downhill.</p>
+
+        <h3>Update rule</h3>
+        <div class="formula">
+          update_t = γ · update_(t−1) + η∇w_t<br>
+          w_(t+1) = w_t − update_t
+        </div>
+        <p>Expanding: update_t = γ^(t−1)·η∇w₁ + γ^(t−2)·η∇w₂ + ... + η∇w_t — each past gradient contributes, decayed geometrically by γ.</p>
+
+        <h3>Behavior</h3>
+        <ul>
+          <li>In gentle-slope regions, momentum carries the update along even though the current gradient is small → much faster convergence than vanilla GD.</li>
+          <li><strong>Downside:</strong> when the error surface has a valley with steep walls on either side, momentum <strong>overshoots</strong> and oscillates ("u-turns") in and out of the minima valley before settling — but even with these oscillations it still converges faster overall than vanilla GD (e.g. after 100 iterations, momentum reaches error ~0.00001 vs vanilla GD still stuck at 0.36).</li>
+        </ul>
+
+        <h3>Comparison with other optimizers</h3>
+        <table>
+          <tr><th>Algorithm</th><th>Key idea</th><th>Limitation it fixes</th></tr>
+          <tr><td>Vanilla GD</td><td>Move opposite gradient</td><td>—</td></tr>
+          <tr><td>Momentum GD</td><td>Accumulate exponentially-decayed history of gradients</td><td>Slow progress on gentle slopes</td></tr>
+          <tr><td>NAG (Nesterov)</td><td>"Look ahead" — compute gradient at the partially-updated point w_t − γ·update_(t−1)</td><td>Momentum's large oscillations/overshoot</td></tr>
+          <tr><td>AdaGrad</td><td>Per-parameter learning rate, decayed by cumulative squared gradients</td><td>Sparse features not getting enough updates</td></tr>
+          <tr><td>RMSProp</td><td>Exponentially decayed accumulation instead of AdaGrad's ever-growing sum</td><td>AdaGrad's learning rate decaying to zero too fast</td></tr>
+          <tr><td>Adam</td><td>RMSProp's adaptive rate + momentum's cumulative gradient history, with bias correction</td><td>Combines benefits of both</td></tr>
+        </table>
+        <p>So momentum differs from NAG in <em>when</em> it computes the gradient (current point vs. look-ahead point), and differs from AdaGrad/RMSProp/Adam in that it doesn't adapt the learning rate per-parameter — it only accumulates direction/velocity.</p>
+        <div class="source-note">Source: CS7015 Lecture 5 (Khapra), Modules 5.4–5.9.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q13 -->
+  <div class="tab-content" id="tab-2">
+    <div class="question-block">
+      <span class="q-tag skeleton">Skeleton</span>
+      <h2 class="q-title">13. Write a python code for Batch Gradient Descent and Mini Batch Gradient Descent.</h2>
+      <div class="answer-body">
+        <pre><code>import numpy as np
+
+def sigmoid(z): return 1/(1+np.exp(-z))
+
+def compute_grad(X, y, w, b):
+    y_hat = sigmoid(X.dot(w) + b)
+    error = y_hat - y
+    grad_w = X.T.dot(error) / len(X)
+    grad_b = np.mean(error)
+    return grad_w, grad_b
+
+# ---- Batch (Vanilla) Gradient Descent: uses ALL data each step ----
+def batch_gd(X, y, w, b, lr=0.1, epochs=100):
+    for _ in range(epochs):
+        grad_w, grad_b = compute_grad(X, y, w, b)
+        w -= lr * grad_w
+        b -= lr * grad_b
+    return w, b
+
+# ---- Mini-Batch Gradient Descent: uses batches of size B ----
+def minibatch_gd(X, y, w, b, lr=0.1, epochs=100, batch_size=32):
+    n = len(X)
+    for _ in range(epochs):
+        idx = np.random.permutation(n)
+        X, y = X[idx], y[idx]
+        for start in range(0, n, batch_size):
+            end = start + batch_size
+            Xb, yb = X[start:end], y[start:end]
+            grad_w, grad_b = compute_grad(Xb, yb, w, b)
+            w -= lr * grad_w
+            b -= lr * grad_b
+    return w, b</code></pre>
+        <p><strong>Key distinction:</strong> Batch GD makes <strong>1 update per epoch</strong> (uses whole dataset — exact gradient, guaranteed loss decrease, but slow per update on large N). Mini-batch GD makes <strong>N/B updates per epoch</strong> (approximate but much faster and less oscillatory than pure SGD, typical B = 16/32/64).</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q14 IMPORTANT -->
+  <div class="tab-content" id="tab-3">
+    <div class="question-block">
+      <span class="q-tag important">Important — full answer</span>
+      <h2 class="q-title">14. How does basis transformation using principal component analysis (PCA) help in reducing the dimensionality of data in deep learning?</h2>
+      <div class="answer-body">
+        <p><strong>Wishlist:</strong> represent data using fewer dimensions such that (a) the data has <strong>high variance</strong> along the retained dimensions (informative), and (b) the new dimensions are <strong>uncorrelated / linearly independent</strong> (non-redundant).</p>
+
+        <h3>Setup</h3>
+        <p>Given zero-mean, unit-variance data X (rows = data points), transform to a new orthonormal basis P: X̂ = XP. We want the covariance of the transformed data, (1/m)X̂ᵀX̂ = PᵀΣP, to be a <strong>diagonal matrix D</strong> — this means zero covariance between new dimensions (off-diagonal = 0) and non-zero variance retained on the diagonal.</p>
+
+        <h3>The answer: P = eigenvectors of the covariance matrix</h3>
+        <div class="formula">Σ = (1/m)XᵀX &nbsp;&nbsp;(covariance matrix)</div>
+        <p>The orthogonal matrix P that diagonalizes Σ (PᵀΣP = D) is exactly the matrix whose columns are the <strong>eigenvectors of XᵀX</strong> — this follows from Eigenvalue Decomposition. This works because eigenvectors of a symmetric matrix are automatically orthogonal and (for distinct eigenvalues) linearly independent — precisely the "convenient basis" we want.</p>
+
+        <h3>Dimensionality reduction step</h3>
+        <p>Once we have all n eigenvectors ranked by eigenvalue, we keep only the <strong>top-k</strong> eigenvectors (largest eigenvalues = highest variance directions) and discard the rest. This is proven optimal two ways:</p>
+        <ul>
+          <li><strong>Reconstruction-error view:</strong> minimizing Σ(xᵢ − x̂ᵢ)ᵀ(xᵢ − x̂ᵢ) over the discarded (n−k) dimensions is solved exactly by discarding the eigenvectors with the <strong>smallest</strong> eigenvalues.</li>
+          <li><strong>Variance view:</strong> the variance captured along the i-th principal eigenvector direction equals λᵢ/m (its scaled eigenvalue) — so keeping the top-k eigenvectors by eigenvalue directly maximizes retained variance.</li>
+        </ul>
+
+        <h3>Practical example (eigenfaces)</h3>
+        <p>For m face images, each 100×100 (10,000-dim), X ∈ ℝ^(m×10000). Instead of storing all 10,000 dimensions per image, we keep only the top ~100 eigenvectors of XᵀX ("eigenfaces") as a one-time basis, then store just k scalar coefficients αᵢ per image — dramatically reducing storage with minimal quality loss.</p>
+        <div class="source-note">Source: CS7015 Lecture 6 (Khapra), Modules 6.4–6.7.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q15 IMPORTANT -->
+  <div class="tab-content" id="tab-4">
+    <div class="question-block">
+      <span class="q-tag important">Important — full answer</span>
+      <h2 class="q-title">15. Explain the Adam optimisation algorithm in detail.</h2>
+      <div class="answer-body">
+        <p><strong>Adam (Adaptive Moment Estimation)</strong> = "do everything RMSProp does to fix AdaGrad's decay problem, plus use a cumulative history of gradients (like momentum)." It combines the adaptive per-parameter learning rate of RMSProp with the velocity/momentum idea.</p>
+
+        <h3>Update rule</h3>
+        <div class="formula">
+          m_t = β₁·m_(t−1) + (1−β₁)·∇w_t &nbsp;&nbsp;(first moment — mean of gradients, like momentum)<br>
+          v_t = β₂·v_(t−1) + (1−β₂)·(∇w_t)² &nbsp;&nbsp;(second moment — uncentered variance, like RMSProp)<br>
+          m̂_t = m_t / (1 − β₁ᵗ) &nbsp;&nbsp; v̂_t = v_t / (1 − β₂ᵗ) &nbsp;&nbsp;(bias correction)<br>
+          w_(t+1) = w_t − (η / (√v̂_t + ε)) · m̂_t
+        </div>
+        <p>In practice β₁ = 0.9, β₂ = 0.999, ε = 1e−8.</p>
+
+        <h3>Why bias correction is needed</h3>
+        <p>Since m₀ = 0, early estimates of m_t are biased toward zero (m_t is a weighted sum of gradients starting from zero). Formally, E[m_t] = E[g]·(1−βᵗ), so dividing by (1−βᵗ) makes E[m̂_t] = E[g] — an unbiased estimate, especially important in the first few timesteps.</p>
+
+        <h3>Why Adam works well</h3>
+        <ul>
+          <li>The momentum term (m_t) smooths the direction, reducing oscillation, similar to momentum-based GD.</li>
+          <li>The adaptive term (v_t) scales the effective learning rate down for parameters with consistently large gradients and up for those with small/sparse gradients — same benefit as RMSProp/AdaGrad.</li>
+          <li>Considered the "default choice" for most deep learning problems — robust to initial learning rate choices in practice, though some later work shows convergence issues in specific cases.</li>
+        </ul>
+        <div class="source-note">Source: CS7015 Lecture 5 (Khapra), Modules 5.9, plus bias-correction derivation.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q16 IMPORTANT -->
+  <div class="tab-content" id="tab-5">
+    <div class="question-block">
+      <span class="q-tag important">Important — full answer</span>
+      <h2 class="q-title">16. How do the various optimization algorithms (GD, momentum-based GD, NAG, AdaGrad, RMSProp, Adam) impact the convergence rate?</h2>
+      <div class="answer-body">
+        <table>
+          <tr><th>Algorithm</th><th>Convergence behavior</th></tr>
+          <tr><td>Vanilla GD</td><td>Slowest — stalls badly on gentle slopes since updates are proportional to the (small) local gradient; navigates ravines/valleys very slowly.</td></tr>
+          <tr><td>Momentum GD</td><td>Much faster on gentle slopes (velocity accumulates), but oscillates/overshoots in narrow valleys — takes u-turns before settling. Still net faster than vanilla GD overall (e.g. reaches ~1e-5 error while vanilla GD is stuck at 0.36 after 100 iters).</td></tr>
+          <tr><td>NAG</td><td>Faster and more stable than plain momentum — the "look-ahead" gradient lets it correct course sooner, so oscillations are smaller and shorter.</td></tr>
+          <tr><td>AdaGrad</td><td>Great early on for sparse features (gives them larger effective learning rates), but the ever-growing denominator (Σ gradients²) causes the learning rate to <strong>decay to near-zero</strong> over time — can get stuck before reaching the minimum (e.g. stops moving in the "b" direction near convergence).</td></tr>
+          <tr><td>RMSProp</td><td>Fixes AdaGrad's stalling by using an exponentially-decayed running average of squared gradients instead of an ever-growing sum — sustains progress near convergence where AdaGrad got stuck.</td></tr>
+          <tr><td>Adam</td><td>Generally fastest / most robust in practice — combines RMSProp's adaptive per-parameter rates with momentum's cumulative gradient history; taking a cumulative history clearly speeds convergence versus RMSProp alone in the lecture's comparisons.</td></tr>
+        </table>
+        <p><strong>Overall trend:</strong> adaptive learning-rate methods (AdaGrad → RMSProp → Adam) generally converge faster than fixed-rate methods (GD, momentum, NAG) on problems with sparse or ill-conditioned gradients, because they give each parameter its own effective step size instead of one global η.</p>
+        <div class="source-note">Source: CS7015 Lecture 5 (Khapra), full lecture — Modules 5.2–5.9.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q17 -->
+  <div class="tab-content" id="tab-6">
+    <div class="question-block">
+      <span class="q-tag skeleton">Skeleton</span>
+      <h2 class="q-title">17. Write about RMSprop optimization algorithm in detail.</h2>
+      <div class="answer-body">
+        <p><strong>Motivation:</strong> AdaGrad decays the learning rate too aggressively — its denominator v_t = v_(t−1) + (∇w_t)² only ever grows, so frequently-updated parameters eventually stop learning almost entirely.</p>
+        <div class="formula">
+          v_t = β·v_(t−1) + (1−β)·(∇w_t)²<br>
+          w_(t+1) = w_t − (η/√(v_t+ε))·∇w_t
+        </div>
+        <ul>
+          <li>Instead of summing all past squared gradients, RMSProp keeps an <strong>exponentially decayed</strong> running average — old gradients "fade out" so the denominator doesn't grow without bound.</li>
+          <li>Result: RMSProp is "less aggressive on the decay" than AdaGrad and can keep making progress even near convergence, where AdaGrad stalls.</li>
+          <li>β is typically 0.9–0.99.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q18 IMPORTANT -->
+  <div class="tab-content" id="tab-7">
+    <div class="question-block">
+      <span class="q-tag important">Important — full answer</span>
+      <h2 class="q-title">18. Explain the concept of singular value decomposition (SVD) and how it is used in deep learning, with example.</h2>
+      <div class="answer-body">
+        <p><strong>Problem SVD solves:</strong> eigenvectors are only defined for square matrices. But most real data matrices A ∈ ℝ^(m×n) are rectangular — SVD generalizes the eigen-decomposition idea to any matrix.</p>
+
+        <h3>Setup</h3>
+        <p>We look for pairs (vᵢ, uᵢ) with vᵢ ∈ ℝⁿ, uᵢ ∈ ℝᵐ such that Avᵢ = σᵢuᵢ. If {v₁,...,vₖ} form an orthonormal basis for the row space and {u₁,...,uₖ} for the column space, then matrix multiplication Ax again reduces to a simple scalar operation in this new basis (just like eigenvectors did for square matrices).</p>
+
+        <h3>The decomposition</h3>
+        <div class="formula">A = UΣVᵀ</div>
+        <p>where <strong>U</strong> (left singular vectors) = eigenvectors of AAᵀ, <strong>V</strong> (right singular vectors) = eigenvectors of AᵀA, and <strong>Σ</strong> is diagonal with singular values σᵢ = √λᵢ (square roots of the eigenvalues of AᵀA). This is derived by noting AᵀA = VΣ²Vᵀ and AAᵀ = UΣ²Uᵀ — both are Eigenvalue Decompositions.</p>
+
+        <h3>Low-rank approximation (key application)</h3>
+        <div class="formula">A = Σ(i=1 to k) σᵢ·uᵢ·vᵢᵀ</div>
+        <p><strong>Theorem:</strong> the sum of the top-k terms (ranked by singular value) gives the <strong>best possible rank-k approximation</strong> of A in Frobenius-norm sense — i.e. min ‖A − B‖²_F over all rank-k matrices B is achieved exactly by this truncated SVD.</p>
+
+        <h3>Link to PCA / autoencoders</h3>
+        <p>SVD and PCA are closely related: if X is normalized (zero mean), the eigenvectors of XᵀX used in PCA are exactly the right singular vectors V of X. This is also the basis for showing that the encoder of a <strong>linear autoencoder equals PCA</strong> (see Q21 in Unit III).</p>
+
+        <h3>Use in deep learning</h3>
+        <ul>
+          <li>Dimensionality reduction (same mechanism as PCA — low rank approximation compresses data while minimizing reconstruction error).</li>
+          <li>Compressing weight matrices in large models (low-rank factorization, e.g. LoRA-style adaptation).</li>
+          <li>Recommender systems — approximating a large sparse user-item matrix with a low-rank SVD to find latent factors.</li>
+        </ul>
+        <div class="source-note">Source: CS7015 Lecture 6 (Khapra), Module 6.8.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q19 -->
+  <div class="tab-content" id="tab-8">
+    <div class="question-block">
+      <span class="q-tag skeleton">Skeleton</span>
+      <h2 class="q-title">19. What is the difference between Stochastic Gradient Descent, Batch Gradient Descent and Mini Batch Gradient Descent?</h2>
+      <div class="answer-body">
+        <table>
+          <tr><th></th><th>Batch GD</th><th>SGD</th><th>Mini-batch GD</th></tr>
+          <tr><td>Data used per update</td><td>Entire dataset (N points)</td><td>1 point</td><td>B points (e.g. 16/32/64)</td></tr>
+          <tr><td>Updates per epoch</td><td>1</td><td>N</td><td>N/B</td></tr>
+          <tr><td>Gradient accuracy</td><td>Exact (true gradient)</td><td>Noisy/approximate — "tossing a coin once to estimate P(heads)"</td><td>Better estimate than SGD — "tossing the coin B times"</td></tr>
+          <tr><td>Convergence guarantee</td><td>Each step guaranteed to decrease loss</td><td>No guarantee each step decreases loss (oscillates — greedy, points compete)</td><td>Oscillates less than SGD; higher B → more accurate estimate</td></tr>
+          <tr><td>Speed per update</td><td>Slow for large N</td><td>Fast per update, but many updates needed</td><td>Good middle ground — most commonly used in practice</td></tr>
+        </table>
+        <div class="source-note">Source: CS7015 Lecture 5 (Khapra), Module 5.6.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q20 -->
+  <div class="tab-content" id="tab-9">
+    <div class="question-block">
+      <span class="q-tag skeleton">Skeleton</span>
+      <h2 class="q-title">20. Discuss how PCA and SVD contribute to feature extraction and computational efficiency in deep learning. Compare their advantages with suitable examples.</h2>
+      <div class="answer-body">
+        <ul>
+          <li><strong>Feature extraction:</strong> both find a new basis that concentrates the "information" (variance) of the data into a small number of dimensions, discarding redundant/noisy ones — the retained dimensions act as extracted features (e.g. eigenfaces from PCA on face images).</li>
+          <li><strong>PCA</strong> works specifically on the covariance structure of (typically square, symmetric) XᵀX — requires computing/eigendecomposing an n×n matrix.</li>
+          <li><strong>SVD</strong> works directly on the original (possibly non-square, non-symmetric) data matrix A — more general, numerically more stable, and doesn't require explicitly forming XᵀX (which can be numerically unstable — squaring can amplify floating-point error).</li>
+          <li><strong>Computational efficiency:</strong> both let you replace a high-dimensional dataset with a low-rank approximation (top-k components) — this shrinks storage (store k basis vectors + k coefficients per sample, instead of n raw features) and speeds downstream training since fewer input dimensions means fewer parameters in the first layer of a network.</li>
+          <li><strong>Relationship:</strong> for zero-mean data, PCA's principal components are literally the right singular vectors of SVD applied to the data matrix — SVD is often used as the actual algorithm to compute PCA in practice.</li>
+          <li><strong>Example:</strong> compressing m face images of 10,000 pixels each down to k≈100 dimensions via PCA/SVD before feeding into a classifier — retains nearly all discriminative variance while cutting compute drastically.</li>
+        </ul>
+        <div class="source-note">Synthesized from CS7015 Lecture 6 (Khapra), Modules 6.4–6.8.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function showTab(i) {
+  document.querySelectorAll('.tab-content').forEach((el, idx) => {
+    el.classList.toggle('active', idx === i);
+  });
+  document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
+    btn.classList.toggle('active', idx === i);
+  });
+}
+showTab(0);
+</script>
+</body>
+</html>
