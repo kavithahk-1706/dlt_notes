@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Unit II — Optimization, PCA & SVD | Deep Learning Techniques</title>
 <link rel="stylesheet" href="styles.css">
+<script>
+MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } };
+</script>
+<script id="MathJax-script" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
 </head>
 <body>
 <div class="page-wrapper">
@@ -52,32 +56,49 @@
       <span class="q-tag important">Important — full answer</span>
       <h2 class="q-title">12. How does Momentum Based Gradient Descent work and how is it different from other optimization algorithms?</h2>
       <div class="answer-body">
-        <p><strong>Observation:</strong> vanilla GD is slow in regions with gentle slope because the gradient itself is small there. <strong>Intuition:</strong> if we're repeatedly asked to move in the same direction, we should gain confidence and take bigger steps — like a ball gaining momentum rolling downhill.</p>
+        <p><strong>Motivation:</strong> vanilla gradient descent is slow in regions of gentle slope, since its update size is directly proportional to the (small) local gradient. Momentum-based gradient descent addresses this by accumulating a running history of past gradients: if the algorithm has been repeatedly instructed to move in a similar direction, it should take progressively larger steps in that direction, analogous to a ball gathering speed as it rolls downhill.</p>
 
         <h3>Update rule</h3>
         <div class="formula">
-          update_t = γ · update_(t−1) + η∇w_t<br>
-          w_(t+1) = w_t − update_t
+          \[ \text{update}_t = \gamma \cdot \text{update}_{t-1} + \eta \nabla w_t \]
+          \[ w_{t+1} = w_t - \text{update}_t \]
         </div>
-        <p>Expanding: update_t = γ^(t−1)·η∇w₁ + γ^(t−2)·η∇w₂ + ... + η∇w_t — each past gradient contributes, decayed geometrically by γ.</p>
+        <p>Expanding the recursion shows that every past gradient contributes to the current update, decayed geometrically by \(\gamma\):</p>
+        <div class="formula">
+          \[ \text{update}_t = \gamma^{t-1}\eta\nabla w_1 + \gamma^{t-2}\eta\nabla w_2 + \dots + \eta\nabla w_t \]
+        </div>
 
-        <h3>Behavior</h3>
+        <h3>Convergence behavior</h3>
+        <div class="svg-wrap">
+        <svg viewBox="0 0 480 220" xmlns="http://www.w3.org/2000/svg">
+          <line x1="40" y1="180" x2="460" y2="180" stroke="var(--border)"/>
+          <line x1="40" y1="20" x2="40" y2="180" stroke="var(--border)"/>
+          <text x="250" y="205" text-anchor="middle" fill="var(--text-muted)" font-size="11">iterations →</text>
+          <text x="20" y="100" text-anchor="middle" fill="var(--text-muted)" font-size="11" transform="rotate(-90 20 100)">loss</text>
+
+          <path d="M 40 30 Q 120 60 200 90 T 320 130 T 460 150" fill="none" stroke="var(--important)" stroke-width="2"/>
+          <text x="465" y="153" fill="var(--important)" font-size="10">vanilla GD</text>
+
+          <path d="M 40 30 Q 70 90 100 60 T 160 100 T 210 70 T 260 130 T 300 105 T 340 160 T 380 145 T 420 172 T 460 178" fill="none" stroke="var(--accent)" stroke-width="2"/>
+          <text x="380" y="192" fill="var(--accent-hover)" font-size="10">momentum GD</text>
+        </svg>
+        </div>
         <ul>
-          <li>In gentle-slope regions, momentum carries the update along even though the current gradient is small → much faster convergence than vanilla GD.</li>
-          <li><strong>Downside:</strong> when the error surface has a valley with steep walls on either side, momentum <strong>overshoots</strong> and oscillates ("u-turns") in and out of the minima valley before settling — but even with these oscillations it still converges faster overall than vanilla GD (e.g. after 100 iterations, momentum reaches error ~0.00001 vs vanilla GD still stuck at 0.36).</li>
+          <li>In regions of gentle slope, the accumulated velocity carries the update forward even when the instantaneous gradient is small, giving substantially faster convergence than vanilla GD.</li>
+          <li><strong>Limitation:</strong> in a valley with steep walls, this same accumulated velocity causes momentum to <strong>overshoot</strong>, producing oscillations ("u-turns") in and out of the minimum before settling. Despite the oscillation, it still converges faster overall — e.g., after 100 iterations momentum can reach a loss on the order of \(10^{-5}\) while vanilla GD remains stuck around 0.36.</li>
         </ul>
 
-        <h3>Comparison with other optimizers</h3>
+        <h3>Comparison with other optimization algorithms</h3>
         <table>
-          <tr><th>Algorithm</th><th>Key idea</th><th>Limitation it fixes</th></tr>
-          <tr><td>Vanilla GD</td><td>Move opposite gradient</td><td>—</td></tr>
-          <tr><td>Momentum GD</td><td>Accumulate exponentially-decayed history of gradients</td><td>Slow progress on gentle slopes</td></tr>
-          <tr><td>NAG (Nesterov)</td><td>"Look ahead" — compute gradient at the partially-updated point w_t − γ·update_(t−1)</td><td>Momentum's large oscillations/overshoot</td></tr>
-          <tr><td>AdaGrad</td><td>Per-parameter learning rate, decayed by cumulative squared gradients</td><td>Sparse features not getting enough updates</td></tr>
-          <tr><td>RMSProp</td><td>Exponentially decayed accumulation instead of AdaGrad's ever-growing sum</td><td>AdaGrad's learning rate decaying to zero too fast</td></tr>
-          <tr><td>Adam</td><td>RMSProp's adaptive rate + momentum's cumulative gradient history, with bias correction</td><td>Combines benefits of both</td></tr>
+          <tr><th>Algorithm</th><th>Key idea</th><th>Limitation it addresses</th></tr>
+          <tr><td>Vanilla GD</td><td>Move opposite the current gradient</td><td>—</td></tr>
+          <tr><td>Momentum GD</td><td>Accumulate an exponentially-decayed history of gradients</td><td>Slow progress on gentle slopes</td></tr>
+          <tr><td>NAG (Nesterov)</td><td>Computes the gradient at a "look-ahead" point \(w_t - \gamma\cdot\text{update}_{t-1}\) rather than the current point</td><td>Momentum's large oscillation/overshoot</td></tr>
+          <tr><td>AdaGrad</td><td>Per-parameter learning rate, scaled down by the cumulative sum of squared gradients</td><td>Sparse features receiving insufficient updates</td></tr>
+          <tr><td>RMSProp</td><td>Uses an exponentially-decayed running average of squared gradients instead of AdaGrad's ever-growing sum</td><td>AdaGrad's learning rate decaying to near-zero too early</td></tr>
+          <tr><td>Adam</td><td>Combines RMSProp's adaptive per-parameter rate with momentum's cumulative gradient history</td><td>Brings together the benefits of both approaches</td></tr>
         </table>
-        <p>So momentum differs from NAG in <em>when</em> it computes the gradient (current point vs. look-ahead point), and differs from AdaGrad/RMSProp/Adam in that it doesn't adapt the learning rate per-parameter — it only accumulates direction/velocity.</p>
+        <p>Momentum differs from NAG specifically in <em>where</em> the gradient is evaluated (the current point versus a look-ahead point), and differs from AdaGrad, RMSProp, and Adam in that it does not adapt the learning rate per parameter — it only accumulates direction and velocity, without scaling the step size for individual weights.</p>
         <div class="source-note">Source: CS7015 Lecture 5 (Khapra), Modules 5.4–5.9.</div>
       </div>
     </div>
@@ -132,24 +153,35 @@ def minibatch_gd(X, y, w, b, lr=0.1, epochs=100, batch_size=32):
       <span class="q-tag important">Important — full answer</span>
       <h2 class="q-title">14. How does basis transformation using principal component analysis (PCA) help in reducing the dimensionality of data in deep learning?</h2>
       <div class="answer-body">
-        <p><strong>Wishlist:</strong> represent data using fewer dimensions such that (a) the data has <strong>high variance</strong> along the retained dimensions (informative), and (b) the new dimensions are <strong>uncorrelated / linearly independent</strong> (non-redundant).</p>
+        <h3>What a basis is, and why it matters here</h3>
+        <p>A <strong>basis</strong> for an \(n\)-dimensional space is a set of \(n\) linearly independent vectors such that every point in that space can be written as a unique linear combination of them. The everyday coordinate axes (\(e_1, e_2, \dots, e_n\)) are one such basis — the "standard basis" — but they are not the only valid one. Any set of \(n\) orthogonal, linearly independent vectors can serve as a basis; changing which basis is used does not change the underlying data, only the coordinates used to describe it.</p>
+        <p>PCA is precisely a <strong>change of basis</strong>: it rotates the coordinate axes to a new orthonormal basis chosen so that, in the new coordinates, most of the data's variance is concentrated along only a few axes. Dimensionality reduction then becomes simple — drop the axes that carry little variance.</p>
+
+        <h3>Objective</h3>
+        <p>We want to represent the data using fewer dimensions such that: (a) the data retains <strong>high variance</strong> along the dimensions we keep — i.e. those dimensions are informative, and (b) the new dimensions are <strong>uncorrelated with each other</strong> — i.e. non-redundant.</p>
 
         <h3>Setup</h3>
-        <p>Given zero-mean, unit-variance data X (rows = data points), transform to a new orthonormal basis P: X̂ = XP. We want the covariance of the transformed data, (1/m)X̂ᵀX̂ = PᵀΣP, to be a <strong>diagonal matrix D</strong> — this means zero covariance between new dimensions (off-diagonal = 0) and non-zero variance retained on the diagonal.</p>
+        <p>Let \(X\) be zero-mean, unit-variance data (rows = data points). We transform to a new orthonormal basis \(P\): \(\hat{X} = XP\). For the new dimensions to be uncorrelated with concentrated variance, the covariance of the transformed data must be a <strong>diagonal matrix</strong> \(D\):</p>
+        <div class="formula">
+          \[ \frac{1}{m}\hat{X}^\top\hat{X} = P^\top \Sigma P = D \]
+        </div>
+        <p>A diagonal covariance means the off-diagonal entries (covariance <em>between</em> different new axes) are zero, while the diagonal entries (variance <em>along</em> each new axis) are retained.</p>
 
-        <h3>The answer: P = eigenvectors of the covariance matrix</h3>
-        <div class="formula">Σ = (1/m)XᵀX &nbsp;&nbsp;(covariance matrix)</div>
-        <p>The orthogonal matrix P that diagonalizes Σ (PᵀΣP = D) is exactly the matrix whose columns are the <strong>eigenvectors of XᵀX</strong> — this follows from Eigenvalue Decomposition. This works because eigenvectors of a symmetric matrix are automatically orthogonal and (for distinct eigenvalues) linearly independent — precisely the "convenient basis" we want.</p>
+        <h3>Result: \(P\) is the set of eigenvectors of the covariance matrix</h3>
+        <div class="formula">
+          \[ \Sigma = \frac{1}{m}X^\top X \quad \text{(covariance matrix)} \]
+        </div>
+        <p>The orthogonal matrix \(P\) that diagonalizes \(\Sigma\) (i.e. satisfies \(P^\top \Sigma P = D\)) is exactly the matrix whose columns are the <strong>eigenvectors of \(X^\top X\)</strong>, by the Eigenvalue Decomposition theorem. This is why eigenvectors are the right basis to use: eigenvectors of a symmetric matrix are guaranteed to be orthogonal, and (for distinct eigenvalues) linearly independent — exactly the properties a valid, decorrelating basis requires.</p>
 
         <h3>Dimensionality reduction step</h3>
-        <p>Once we have all n eigenvectors ranked by eigenvalue, we keep only the <strong>top-k</strong> eigenvectors (largest eigenvalues = highest variance directions) and discard the rest. This is proven optimal two ways:</p>
+        <p>Once all \(n\) eigenvectors are ranked by their eigenvalues, only the <strong>top-\(k\)</strong> eigenvectors (those with the largest eigenvalues) are retained, and the rest are discarded. This choice is provably optimal, from two equivalent angles:</p>
         <ul>
-          <li><strong>Reconstruction-error view:</strong> minimizing Σ(xᵢ − x̂ᵢ)ᵀ(xᵢ − x̂ᵢ) over the discarded (n−k) dimensions is solved exactly by discarding the eigenvectors with the <strong>smallest</strong> eigenvalues.</li>
-          <li><strong>Variance view:</strong> the variance captured along the i-th principal eigenvector direction equals λᵢ/m (its scaled eigenvalue) — so keeping the top-k eigenvectors by eigenvalue directly maximizes retained variance.</li>
+          <li><strong>Reconstruction-error view:</strong> minimizing the reconstruction error \(\sum_i (x_i - \hat{x}_i)^\top(x_i - \hat{x}_i)\) over the \((n-k)\) discarded dimensions is solved exactly by discarding the eigenvectors with the <strong>smallest</strong> eigenvalues.</li>
+          <li><strong>Variance view:</strong> the variance captured along the \(i\)-th principal eigenvector direction equals \(\lambda_i/m\) — so keeping the top-\(k\) eigenvectors by eigenvalue directly maximizes the variance retained.</li>
         </ul>
 
-        <h3>Practical example (eigenfaces)</h3>
-        <p>For m face images, each 100×100 (10,000-dim), X ∈ ℝ^(m×10000). Instead of storing all 10,000 dimensions per image, we keep only the top ~100 eigenvectors of XᵀX ("eigenfaces") as a one-time basis, then store just k scalar coefficients αᵢ per image — dramatically reducing storage with minimal quality loss.</p>
+        <h3>Worked example — eigenfaces</h3>
+        <p>For \(m\) face images, each \(100\times100\) pixels (10,000-dimensional), \(X \in \mathbb{R}^{m\times10000}\). Rather than storing all 10,000 dimensions per image, only the top \(\approx100\) eigenvectors of \(X^\top X\) ("eigenfaces") are computed once, as a shared basis. Each image is then stored as just \(k\) scalar coefficients \(\alpha_i\) against that basis — a large reduction in storage with minimal loss in reconstruction quality.</p>
         <div class="source-note">Source: CS7015 Lecture 6 (Khapra), Modules 6.4–6.7.</div>
       </div>
     </div>
@@ -161,26 +193,65 @@ def minibatch_gd(X, y, w, b, lr=0.1, epochs=100, batch_size=32):
       <span class="q-tag important">Important — full answer</span>
       <h2 class="q-title">15. Explain the Adam optimisation algorithm in detail.</h2>
       <div class="answer-body">
-        <p><strong>Adam (Adaptive Moment Estimation)</strong> = "do everything RMSProp does to fix AdaGrad's decay problem, plus use a cumulative history of gradients (like momentum)." It combines the adaptive per-parameter learning rate of RMSProp with the velocity/momentum idea.</p>
+        <h3>Lineage — the problem Adam solves</h3>
+        <p><strong>AdaGrad's problem:</strong> AdaGrad gives each parameter its own learning rate, scaled down by the cumulative sum of that parameter's squared gradients: \(v_t = v_{t-1} + (\nabla w_t)^2\). Because this sum only ever grows, the effective learning rate \(\eta/\sqrt{v_t+\epsilon}\) shrinks monotonically over training — for parameters that are updated frequently, it can shrink so much that learning effectively stops well before convergence.</p>
+        <p><strong>RMSProp's fix:</strong> RMSProp replaces the ever-growing sum with an <strong>exponentially-decayed running average</strong> of squared gradients, \(v_t = \beta v_{t-1} + (1-\beta)(\nabla w_t)^2\). Old squared gradients gradually "fade out" instead of accumulating forever, so the denominator no longer grows without bound and the model can keep making progress near convergence, where AdaGrad would have stalled.</p>
+        <p><strong>What Adam adds:</strong> RMSProp adapts the learning rate per parameter, but — like vanilla GD — it still reacts only to the current gradient direction and can oscillate. <strong>Adam (Adaptive Moment Estimation)</strong> combines RMSProp's adaptive, per-parameter learning rate with momentum's idea of accumulating a running direction (velocity) from past gradients, and adds bias correction to make both estimates accurate from the very first step.</p>
 
         <h3>Update rule</h3>
         <div class="formula">
-          m_t = β₁·m_(t−1) + (1−β₁)·∇w_t &nbsp;&nbsp;(first moment — mean of gradients, like momentum)<br>
-          v_t = β₂·v_(t−1) + (1−β₂)·(∇w_t)² &nbsp;&nbsp;(second moment — uncentered variance, like RMSProp)<br>
-          m̂_t = m_t / (1 − β₁ᵗ) &nbsp;&nbsp; v̂_t = v_t / (1 − β₂ᵗ) &nbsp;&nbsp;(bias correction)<br>
-          w_(t+1) = w_t − (η / (√v̂_t + ε)) · m̂_t
+          \[ m_t = \beta_1 m_{t-1} + (1-\beta_1)\nabla w_t \quad \text{(first moment — mean of gradients, as in momentum)} \]
+          \[ v_t = \beta_2 v_{t-1} + (1-\beta_2)(\nabla w_t)^2 \quad \text{(second moment — uncentered variance, as in RMSProp)} \]
+          \[ \hat{m}_t = \frac{m_t}{1-\beta_1^t} \qquad \hat{v}_t = \frac{v_t}{1-\beta_2^t} \quad \text{(bias correction)} \]
+          \[ w_{t+1} = w_t - \frac{\eta}{\sqrt{\hat{v}_t}+\epsilon}\,\hat{m}_t \]
         </div>
-        <p>In practice β₁ = 0.9, β₂ = 0.999, ε = 1e−8.</p>
+        <p>Typical values used in practice: \(\beta_1 = 0.9,\ \beta_2 = 0.999,\ \epsilon = 10^{-8}\).</p>
 
         <h3>Why bias correction is needed</h3>
-        <p>Since m₀ = 0, early estimates of m_t are biased toward zero (m_t is a weighted sum of gradients starting from zero). Formally, E[m_t] = E[g]·(1−βᵗ), so dividing by (1−βᵗ) makes E[m̂_t] = E[g] — an unbiased estimate, especially important in the first few timesteps.</p>
+        <p>Since \(m_0 = 0\), early estimates of \(m_t\) are biased toward zero, because \(m_t\) is a weighted sum of gradients that starts from zero. Formally, \(E[m_t] = E[g]\cdot(1-\beta^t)\), so dividing by \((1-\beta^t)\) corrects this to \(E[\hat{m}_t] = E[g]\), giving an unbiased estimate. This correction matters most in the first few timesteps, when \((1-\beta^t)\) is still small and the uncorrected estimate would otherwise be far too small.</p>
+
+        <h3>Algorithm</h3>
+        <pre><code>m, v = 0, 0
+for t in range(1, max_iterations + 1):
+    g = compute_gradient(w)
+    m = beta1 * m + (1 - beta1) * g
+    v = beta2 * v + (1 - beta2) * g**2
+    m_hat = m / (1 - beta1**t)
+    v_hat = v / (1 - beta2**t)
+    w = w - (eta / (sqrt(v_hat) + eps)) * m_hat</code></pre>
+
+        <h3>Convergence comparison across optimizers</h3>
+        <div class="svg-wrap">
+        <svg viewBox="0 0 480 220" xmlns="http://www.w3.org/2000/svg">
+          <line x1="40" y1="180" x2="460" y2="180" stroke="var(--border)"/>
+          <line x1="40" y1="20" x2="40" y2="180" stroke="var(--border)"/>
+          <text x="250" y="205" text-anchor="middle" fill="var(--text-muted)" font-size="11">iterations →</text>
+          <text x="20" y="100" text-anchor="middle" fill="var(--text-muted)" font-size="11" transform="rotate(-90 20 100)">loss</text>
+
+          <path d="M 40 30 Q 150 60 250 100 T 460 145" fill="none" stroke="var(--important)" stroke-width="2"/>
+          <text x="463" y="148" fill="var(--important)" font-size="9">GD</text>
+
+          <path d="M 40 30 Q 130 55 220 90 T 460 125" fill="none" stroke="var(--warning)" stroke-width="2"/>
+          <text x="463" y="128" fill="var(--warning)" font-size="9">AdaGrad</text>
+
+          <path d="M 40 30 Q 110 50 190 80 T 460 95" fill="none" stroke="var(--text-muted)" stroke-width="2"/>
+          <text x="463" y="98" fill="var(--text-muted)" font-size="9">RMSProp</text>
+
+          <path d="M 40 30 Q 90 45 150 65 T 460 60" fill="none" stroke="var(--accent)" stroke-width="2"/>
+          <text x="463" y="63" fill="var(--accent-hover)" font-size="9">Adam</text>
+        </svg>
+        </div>
 
         <h3>Why Adam works well</h3>
         <ul>
-          <li>The momentum term (m_t) smooths the direction, reducing oscillation, similar to momentum-based GD.</li>
-          <li>The adaptive term (v_t) scales the effective learning rate down for parameters with consistently large gradients and up for those with small/sparse gradients — same benefit as RMSProp/AdaGrad.</li>
-          <li>Considered the "default choice" for most deep learning problems — robust to initial learning rate choices in practice, though some later work shows convergence issues in specific cases.</li>
+          <li>The momentum term \(m_t\) smooths the update direction, reducing oscillation, similar to momentum-based GD.</li>
+          <li>The adaptive term \(v_t\) scales the effective learning rate down for parameters with consistently large gradients and up for parameters with small or sparse gradients — the same benefit RMSProp and AdaGrad provide.</li>
+          <li>Combining both, with bias correction applied from the first step, makes Adam robust to the initial learning rate choice in practice, which is why it is widely used as a default optimizer for deep learning problems — though later work has identified convergence issues in certain specific settings.</li>
         </ul>
+        <div class="source-note">Source: CS7015 Lecture 5 (Khapra), Module 5.9, plus the standard bias-correction derivation.</div>
+      </div>
+    </div>
+  </div>
         <div class="source-note">Source: CS7015 Lecture 5 (Khapra), Modules 5.9, plus bias-correction derivation.</div>
       </div>
     </div>
