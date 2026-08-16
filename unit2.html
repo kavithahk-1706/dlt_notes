@@ -70,17 +70,19 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
 
         <h3>Convergence behavior</h3>
         <div class="svg-wrap">
-        <svg viewBox="0 0 480 220" xmlns="http://www.w3.org/2000/svg">
-          <line x1="40" y1="180" x2="460" y2="180" stroke="var(--border)"/>
-          <line x1="40" y1="20" x2="40" y2="180" stroke="var(--border)"/>
-          <text x="250" y="205" text-anchor="middle" fill="var(--text-muted)" font-size="11">iterations →</text>
-          <text x="20" y="100" text-anchor="middle" fill="var(--text-muted)" font-size="11" transform="rotate(-90 20 100)">loss</text>
+        <svg viewBox="0 0 480 240" xmlns="http://www.w3.org/2000/svg">
+          <line x1="50" y1="200" x2="460" y2="200" stroke="var(--border)"/>
+          <line x1="50" y1="40" x2="50" y2="200" stroke="var(--border)"/>
+          <text x="255" y="225" text-anchor="middle" fill="var(--text-muted)" font-size="11">iterations →</text>
+          <text x="20" y="120" text-anchor="middle" fill="var(--text-muted)" font-size="11" transform="rotate(-90 20 120)">loss</text>
 
-          <path d="M 40 30 Q 120 60 200 90 T 320 130 T 460 150" fill="none" stroke="var(--important)" stroke-width="2"/>
-          <text x="465" y="153" fill="var(--important)" font-size="10">vanilla GD</text>
+          <line x1="330" y1="52" x2="346" y2="52" stroke="var(--important)" stroke-width="2"/>
+          <text x="350" y="56" fill="var(--important)" font-size="10">vanilla GD</text>
+          <line x1="330" y1="70" x2="346" y2="70" stroke="var(--accent)" stroke-width="2"/>
+          <text x="350" y="74" fill="var(--accent-hover)" font-size="10">momentum GD</text>
 
-          <path d="M 40 30 Q 70 90 100 60 T 160 100 T 210 70 T 260 130 T 300 105 T 340 160 T 380 145 T 420 172 T 460 178" fill="none" stroke="var(--accent)" stroke-width="2"/>
-          <text x="380" y="192" fill="var(--accent-hover)" font-size="10">momentum GD</text>
+          <polyline points="50,50 150,72 250,100 350,128 460,155" fill="none" stroke="var(--important)" stroke-width="2"/>
+          <polyline points="50,50 90,92 120,65 160,112 200,78 250,132 300,98 350,152 400,122 460,195" fill="none" stroke="var(--accent)" stroke-width="2"/>
         </svg>
         </div>
         <ul>
@@ -173,6 +175,22 @@ def minibatch_gd(X, y, w, b, lr=0.1, epochs=100, batch_size=32):
         </div>
         <p>The orthogonal matrix \(P\) that diagonalizes \(\Sigma\) (i.e. satisfies \(P^\top \Sigma P = D\)) is exactly the matrix whose columns are the <strong>eigenvectors of \(X^\top X\)</strong>, by the Eigenvalue Decomposition theorem. This is why eigenvectors are the right basis to use: eigenvectors of a symmetric matrix are guaranteed to be orthogonal, and (for distinct eigenvalues) linearly independent — exactly the properties a valid, decorrelating basis requires.</p>
 
+        <h3>Practical algorithm — steps to actually compute PCA</h3>
+        <p>The theory above explains <em>why</em> eigenvectors of the covariance matrix are the right basis. In practice, PCA is carried out as a sequence of concrete steps:</p>
+        <ol>
+          <li><strong>Find the mean:</strong> \(\bar{x} = \dfrac{1}{n}\sum_{i=1}^n x_i\)</li>
+          <li><strong>Compute the covariance matrix</strong> entry by entry, using the pairwise covariance formula:
+            <div class="formula">
+              \[ \text{Cov}(x_i, x_j) = \frac{1}{n-1}\sum_{k=1}^{n} (a_{ki} - \bar{x}_i)(a_{kj} - \bar{x}_j) \]
+            </div>
+            For 2-dimensional data \((x_1, x_2)\), this gives:
+            \[ \Sigma = \begin{bmatrix} \text{Cov}(x_1,x_1) & \text{Cov}(x_1,x_2) \\ \text{Cov}(x_2,x_1) & \text{Cov}(x_2,x_2) \end{bmatrix} \]
+          </li>
+          <li><strong>Find the eigenvalues and eigenvectors</strong> of \(\Sigma\)</li>
+          <li><strong>Normalize the eigenvectors</strong> — divide each eigenvector by its length, \(\hat{v} = v/\|v\|\), so every basis vector has unit length</li>
+          <li><strong>Form the principal components</strong> — rank the (now unit-length) eigenvectors by eigenvalue, largest first; the top-\(k\) become the new basis \(P\), and \(\hat{X} = XP\) gives the reduced-dimension data</li>
+        </ol>
+
         <h3>Dimensionality reduction step</h3>
         <p>Once all \(n\) eigenvectors are ranked by their eigenvalues, only the <strong>top-\(k\)</strong> eigenvectors (those with the largest eigenvalues) are retained, and the rest are discarded. This choice is provably optimal, from two equivalent angles:</p>
         <ul>
@@ -222,23 +240,25 @@ for t in range(1, max_iterations + 1):
 
         <h3>Convergence comparison across optimizers</h3>
         <div class="svg-wrap">
-        <svg viewBox="0 0 480 220" xmlns="http://www.w3.org/2000/svg">
-          <line x1="40" y1="180" x2="460" y2="180" stroke="var(--border)"/>
-          <line x1="40" y1="20" x2="40" y2="180" stroke="var(--border)"/>
-          <text x="250" y="205" text-anchor="middle" fill="var(--text-muted)" font-size="11">iterations →</text>
-          <text x="20" y="100" text-anchor="middle" fill="var(--text-muted)" font-size="11" transform="rotate(-90 20 100)">loss</text>
+        <svg viewBox="0 0 480 240" xmlns="http://www.w3.org/2000/svg">
+          <line x1="50" y1="200" x2="460" y2="200" stroke="var(--border)"/>
+          <line x1="50" y1="40" x2="50" y2="200" stroke="var(--border)"/>
+          <text x="255" y="225" text-anchor="middle" fill="var(--text-muted)" font-size="11">iterations →</text>
+          <text x="20" y="120" text-anchor="middle" fill="var(--text-muted)" font-size="11" transform="rotate(-90 20 120)">loss</text>
 
-          <path d="M 40 30 Q 150 60 250 100 T 460 145" fill="none" stroke="var(--important)" stroke-width="2"/>
-          <text x="463" y="148" fill="var(--important)" font-size="9">GD</text>
+          <line x1="365" y1="50" x2="381" y2="50" stroke="var(--important)" stroke-width="2"/>
+          <text x="385" y="54" fill="var(--important)" font-size="9">GD</text>
+          <line x1="365" y1="65" x2="381" y2="65" stroke="var(--warning)" stroke-width="2"/>
+          <text x="385" y="69" fill="var(--warning)" font-size="9">AdaGrad</text>
+          <line x1="365" y1="80" x2="381" y2="80" stroke="var(--text-muted)" stroke-width="2"/>
+          <text x="385" y="84" fill="var(--text-muted)" font-size="9">RMSProp</text>
+          <line x1="365" y1="95" x2="381" y2="95" stroke="var(--accent)" stroke-width="2"/>
+          <text x="385" y="99" fill="var(--accent-hover)" font-size="9">Adam</text>
 
-          <path d="M 40 30 Q 130 55 220 90 T 460 125" fill="none" stroke="var(--warning)" stroke-width="2"/>
-          <text x="463" y="128" fill="var(--warning)" font-size="9">AdaGrad</text>
-
-          <path d="M 40 30 Q 110 50 190 80 T 460 95" fill="none" stroke="var(--text-muted)" stroke-width="2"/>
-          <text x="463" y="98" fill="var(--text-muted)" font-size="9">RMSProp</text>
-
-          <path d="M 40 30 Q 90 45 150 65 T 460 60" fill="none" stroke="var(--accent)" stroke-width="2"/>
-          <text x="463" y="63" fill="var(--accent-hover)" font-size="9">Adam</text>
+          <polyline points="50,50 150,75 250,100 350,125 460,150" fill="none" stroke="var(--important)" stroke-width="2"/>
+          <polyline points="50,50 100,75 160,95 250,115 350,140 460,165" fill="none" stroke="var(--warning)" stroke-width="2"/>
+          <polyline points="50,50 110,70 190,90 280,115 380,150 460,180" fill="none" stroke="var(--text-muted)" stroke-width="2"/>
+          <polyline points="50,50 90,65 140,85 210,110 300,140 380,170 460,195" fill="none" stroke="var(--accent)" stroke-width="2"/>
         </svg>
         </div>
 
@@ -252,10 +272,6 @@ for t in range(1, max_iterations + 1):
       </div>
     </div>
   </div>
-        <div class="source-note">Source: CS7015 Lecture 5 (Khapra), Modules 5.9, plus bias-correction derivation.</div>
-      </div>
-    </div>
-  </div>
 
   <!-- Q16 IMPORTANT -->
   <div class="tab-content" id="tab-5">
@@ -263,16 +279,29 @@ for t in range(1, max_iterations + 1):
       <span class="q-tag important">Important — full answer</span>
       <h2 class="q-title">16. How do the various optimization algorithms (GD, momentum-based GD, NAG, AdaGrad, RMSProp, Adam) impact the convergence rate?</h2>
       <div class="answer-body">
+        <p><strong>Vanilla Gradient Descent:</strong> \(w_{t+1} = w_t - \eta\nabla w_t\). Convergence is slowest among all the methods here, since the update size is directly proportional to the local gradient — on gentle slopes and in narrow ravines, updates become very small and progress stalls badly.</p>
+
+        <p><strong>Momentum-based GD:</strong> \(\text{update}_t = \gamma\cdot\text{update}_{t-1} + \eta\nabla w_t\), \(w_{t+1} = w_t - \text{update}_t\). Accumulated velocity carries the update through gentle-slope regions, giving much faster convergence than vanilla GD. In narrow valleys with steep walls, however, this same velocity causes overshoot and oscillation ("u-turns") before settling — but it still converges faster overall (e.g. reaching a loss around \(10^{-5}\) while vanilla GD remains stuck near 0.36 after 100 iterations).</p>
+
+        <p><strong>NAG (Nesterov Accelerated Gradient):</strong> computes the gradient at a look-ahead point, \(\nabla w(w_t - \gamma\cdot\text{update}_{t-1})\), rather than at the current point. This lets it "see" the upcoming curvature slightly before committing to the full step, so it corrects course sooner than plain momentum — oscillations are smaller and shorter, giving faster and more stable convergence.</p>
+
+        <p><strong>AdaGrad:</strong> \(v_t = v_{t-1} + (\nabla w_t)^2\), \(w_{t+1} = w_t - \dfrac{\eta}{\sqrt{v_t+\epsilon}}\nabla w_t\). Giving each parameter its own learning rate helps sparse features receive larger effective updates early on. But because \(v_t\) only ever grows, the effective learning rate decays toward zero over time — training can stall before reaching the minimum, since some parameter directions effectively stop updating.</p>
+
+        <p><strong>RMSProp:</strong> \(v_t = \beta v_{t-1} + (1-\beta)(\nabla w_t)^2\). Replacing AdaGrad's ever-growing sum with an exponentially-decayed running average prevents the denominator from growing without bound, so the model can sustain progress near convergence where AdaGrad would have stalled.</p>
+
+        <p><strong>Adam:</strong> combines RMSProp's adaptive per-parameter rate (\(v_t\)) with momentum's accumulated direction (\(m_t\)), both bias-corrected. This generally gives the fastest and most robust convergence of the group — the cumulative gradient history speeds convergence noticeably compared to RMSProp alone.</p>
+
+        <h3>Summary</h3>
         <table>
-          <tr><th>Algorithm</th><th>Convergence behavior</th></tr>
-          <tr><td>Vanilla GD</td><td>Slowest — stalls badly on gentle slopes since updates are proportional to the (small) local gradient; navigates ravines/valleys very slowly.</td></tr>
-          <tr><td>Momentum GD</td><td>Much faster on gentle slopes (velocity accumulates), but oscillates/overshoots in narrow valleys — takes u-turns before settling. Still net faster than vanilla GD overall (e.g. reaches ~1e-5 error while vanilla GD is stuck at 0.36 after 100 iters).</td></tr>
-          <tr><td>NAG</td><td>Faster and more stable than plain momentum — the "look-ahead" gradient lets it correct course sooner, so oscillations are smaller and shorter.</td></tr>
-          <tr><td>AdaGrad</td><td>Great early on for sparse features (gives them larger effective learning rates), but the ever-growing denominator (Σ gradients²) causes the learning rate to <strong>decay to near-zero</strong> over time — can get stuck before reaching the minimum (e.g. stops moving in the "b" direction near convergence).</td></tr>
-          <tr><td>RMSProp</td><td>Fixes AdaGrad's stalling by using an exponentially-decayed running average of squared gradients instead of an ever-growing sum — sustains progress near convergence where AdaGrad got stuck.</td></tr>
-          <tr><td>Adam</td><td>Generally fastest / most robust in practice — combines RMSProp's adaptive per-parameter rates with momentum's cumulative gradient history; taking a cumulative history clearly speeds convergence versus RMSProp alone in the lecture's comparisons.</td></tr>
+          <tr><th>Algorithm</th><th>Convergence speed</th><th>Stability</th><th>Key limitation</th></tr>
+          <tr><td>Vanilla GD</td><td>Slowest</td><td>Stable, monotonic decrease</td><td>Stalls on gentle slopes / in ravines</td></tr>
+          <tr><td>Momentum GD</td><td>Fast</td><td>Oscillates in narrow valleys</td><td>Overshoot near the minimum</td></tr>
+          <tr><td>NAG</td><td>Faster than momentum</td><td>More stable than momentum</td><td>Still a fixed, non-adaptive learning rate</td></tr>
+          <tr><td>AdaGrad</td><td>Fast early, then stalls</td><td>Stable but decaying</td><td>Learning rate decays to near-zero</td></tr>
+          <tr><td>RMSProp</td><td>Sustained, fast</td><td>Stable near convergence</td><td>No momentum term of its own</td></tr>
+          <tr><td>Adam</td><td>Fastest overall</td><td>Stable, robust to learning-rate choice</td><td>Can show convergence issues in specific edge cases</td></tr>
         </table>
-        <p><strong>Overall trend:</strong> adaptive learning-rate methods (AdaGrad → RMSProp → Adam) generally converge faster than fixed-rate methods (GD, momentum, NAG) on problems with sparse or ill-conditioned gradients, because they give each parameter its own effective step size instead of one global η.</p>
+        <p><strong>Overall trend:</strong> adaptive learning-rate methods (AdaGrad → RMSProp → Adam) generally converge faster than fixed-rate methods (GD, momentum, NAG) on problems with sparse or ill-conditioned gradients, because they give each parameter its own effective step size instead of a single global \(\eta\).</p>
         <div class="source-note">Source: CS7015 Lecture 5 (Khapra), full lecture — Modules 5.2–5.9.</div>
       </div>
     </div>
@@ -304,27 +333,68 @@ for t in range(1, max_iterations + 1):
       <span class="q-tag important">Important — full answer</span>
       <h2 class="q-title">18. Explain the concept of singular value decomposition (SVD) and how it is used in deep learning, with example.</h2>
       <div class="answer-body">
-        <p><strong>Problem SVD solves:</strong> eigenvectors are only defined for square matrices. But most real data matrices A ∈ ℝ^(m×n) are rectangular — SVD generalizes the eigen-decomposition idea to any matrix.</p>
+        <p><strong>Problem SVD solves:</strong> eigenvectors are only defined for square matrices, but most real data matrices \(A \in \mathbb{R}^{m\times n}\) are rectangular. SVD generalizes the eigen-decomposition idea to any matrix, regardless of shape.</p>
 
         <h3>Setup</h3>
-        <p>We look for pairs (vᵢ, uᵢ) with vᵢ ∈ ℝⁿ, uᵢ ∈ ℝᵐ such that Avᵢ = σᵢuᵢ. If {v₁,...,vₖ} form an orthonormal basis for the row space and {u₁,...,uₖ} for the column space, then matrix multiplication Ax again reduces to a simple scalar operation in this new basis (just like eigenvectors did for square matrices).</p>
+        <p>We look for pairs \((v_i, u_i)\) with \(v_i \in \mathbb{R}^n,\ u_i \in \mathbb{R}^m\) such that \(Av_i = \sigma_i u_i\). If \(\{v_1,\dots,v_k\}\) form an orthonormal basis for the row space and \(\{u_1,\dots,u_k\}\) for the column space, matrix multiplication \(Ax\) reduces to a simple scalar operation in this new basis — just as eigenvectors did for square matrices.</p>
 
         <h3>The decomposition</h3>
-        <div class="formula">A = UΣVᵀ</div>
-        <p>where <strong>U</strong> (left singular vectors) = eigenvectors of AAᵀ, <strong>V</strong> (right singular vectors) = eigenvectors of AᵀA, and <strong>Σ</strong> is diagonal with singular values σᵢ = √λᵢ (square roots of the eigenvalues of AᵀA). This is derived by noting AᵀA = VΣ²Vᵀ and AAᵀ = UΣ²Uᵀ — both are Eigenvalue Decompositions.</p>
+        <div class="formula">\[ A = U\Sigma V^\top \]</div>
+        <p>where <strong>\(U\)</strong> (left singular vectors) are the eigenvectors of \(AA^\top\), <strong>\(V\)</strong> (right singular vectors) are the eigenvectors of \(A^\top A\), and <strong>\(\Sigma\)</strong> is diagonal with singular values \(\sigma_i = \sqrt{\lambda_i}\) (the square roots of the eigenvalues of \(A^\top A\)). This is derived by noting \(A^\top A = V\Sigma^2 V^\top\) and \(AA^\top = U\Sigma^2 U^\top\) — both are standard Eigenvalue Decompositions.</p>
 
         <h3>Low-rank approximation (key application)</h3>
-        <div class="formula">A = Σ(i=1 to k) σᵢ·uᵢ·vᵢᵀ</div>
-        <p><strong>Theorem:</strong> the sum of the top-k terms (ranked by singular value) gives the <strong>best possible rank-k approximation</strong> of A in Frobenius-norm sense — i.e. min ‖A − B‖²_F over all rank-k matrices B is achieved exactly by this truncated SVD.</p>
+        <div class="formula">\[ A = \sum_{i=1}^{k} \sigma_i\, u_i v_i^\top \]</div>
+        <p><strong>Theorem:</strong> the sum of the top-\(k\) terms (ranked by singular value) gives the <strong>best possible rank-\(k\) approximation</strong> of \(A\) in the Frobenius-norm sense — i.e. \(\min \|A-B\|_F^2\) over all rank-\(k\) matrices \(B\) is achieved exactly by this truncated SVD.</p>
+
+        <h3>Solved numerical example</h3>
+        <p>SVD decomposes a matrix into three factors, \(A = U\Sigma V^\top\) — a left singular matrix (orthogonal, columns are left singular vectors of \(A\)), a diagonal matrix of singular values (sorted in descending order), and the transpose of a right singular matrix (orthogonal, columns are right singular vectors of \(A\)).</p>
+
+        <p><strong>Given:</strong> \(A = \begin{bmatrix}1&2\\2&1\end{bmatrix}\)</p>
+
+        <p><em>Step 1 — Compute \(A^\top A\) and \(AA^\top\):</em></p>
+        <div class="formula">
+          \[ A^\top = \begin{bmatrix}1&2\\2&1\end{bmatrix} \qquad A^\top A = A A^\top = \begin{bmatrix}1&2\\2&1\end{bmatrix}\begin{bmatrix}1&2\\2&1\end{bmatrix} = \begin{bmatrix}5&4\\4&5\end{bmatrix} \]
+        </div>
+        <p>(\(A\) happens to be symmetric here, so \(A^\top A = AA^\top\) — this won't generally be true for a non-symmetric matrix.)</p>
+
+        <p><em>Step 2 — Find the eigenvalues of \(A^\top A\):</em></p>
+        <div class="formula">
+          \[ |A^\top A - \lambda I| = 0 \implies (5-\lambda)^2 - 16 = 0 \implies \lambda = 9,\ \lambda = 1 \]
+        </div>
+
+        <p><em>Step 3 — Find the right singular vectors (eigenvectors of \(A^\top A\)):</em></p>
+        <p>For \(\lambda=9\): \(\begin{bmatrix}-4&4\\4&-4\end{bmatrix}v=0 \implies x_1=x_2\). Taking \(v_1=[1,1]^\top\), length \(=\sqrt{2}\), normalized: \(v_1 = [1/\sqrt2,\ 1/\sqrt2]^\top\).</p>
+        <p>For \(\lambda=1\): \(\begin{bmatrix}4&4\\4&4\end{bmatrix}v=0 \implies x_1=-x_2\). Taking \(v_2=[1,-1]^\top\), length \(=\sqrt{2}\), normalized: \(v_2 = [1/\sqrt2,\ -1/\sqrt2]^\top\).</p>
+        <div class="formula">
+          \[ V = \begin{bmatrix}1/\sqrt2 & 1/\sqrt2 \\ 1/\sqrt2 & -1/\sqrt2\end{bmatrix} \qquad V^\top = \begin{bmatrix}1/\sqrt2 & 1/\sqrt2 \\ 1/\sqrt2 & -1/\sqrt2\end{bmatrix} \]
+        </div>
+
+        <p><em>Step 4 — Find the singular value matrix \(\Sigma\):</em> singular values are the square roots of the eigenvalues, sorted in descending order.</p>
+        <div class="formula">
+          \[ \sigma_1 = \sqrt{9} = 3, \quad \sigma_2 = \sqrt{1} = 1 \qquad \Sigma = \begin{bmatrix}3&0\\0&1\end{bmatrix} \]
+        </div>
+
+        <p><em>Step 5 — Compute the left singular vectors:</em> \(u_i = \dfrac{1}{\sigma_i}Av_i\)</p>
+        <div class="formula">
+          \[ u_1 = \frac{1}{3}\begin{bmatrix}1&2\\2&1\end{bmatrix}\begin{bmatrix}1/\sqrt2\\1/\sqrt2\end{bmatrix} = \begin{bmatrix}1/\sqrt2\\1/\sqrt2\end{bmatrix} \]
+          \[ u_2 = \frac{1}{1}\begin{bmatrix}1&2\\2&1\end{bmatrix}\begin{bmatrix}1/\sqrt2\\-1/\sqrt2\end{bmatrix} = \begin{bmatrix}-1/\sqrt2\\1/\sqrt2\end{bmatrix} \]
+          \[ U = \begin{bmatrix}1/\sqrt2 & -1/\sqrt2 \\ 1/\sqrt2 & 1/\sqrt2\end{bmatrix} \]
+        </div>
+
+        <p><em>Step 6 — Assemble and verify:</em></p>
+        <div class="formula">
+          \[ A = U\Sigma V^\top = \begin{bmatrix}1/\sqrt2 & -1/\sqrt2 \\ 1/\sqrt2 & 1/\sqrt2\end{bmatrix}\begin{bmatrix}3&0\\0&1\end{bmatrix}\begin{bmatrix}1/\sqrt2 & 1/\sqrt2 \\ 1/\sqrt2 & -1/\sqrt2\end{bmatrix} = \begin{bmatrix}1&2\\2&1\end{bmatrix} = A \checkmark \]
+        </div>
+        <div class="source-note">Worked example cross-checked step-by-step against class notes.</div>
 
         <h3>Link to PCA / autoencoders</h3>
-        <p>SVD and PCA are closely related: if X is normalized (zero mean), the eigenvectors of XᵀX used in PCA are exactly the right singular vectors V of X. This is also the basis for showing that the encoder of a <strong>linear autoencoder equals PCA</strong> (see Q21 in Unit III).</p>
+        <p>SVD and PCA are closely related: if \(X\) is normalized (zero mean), the eigenvectors of \(X^\top X\) used in PCA are exactly the right singular vectors \(V\) of \(X\). This is also the basis for showing that the encoder of a <strong>linear autoencoder equals PCA</strong> (see Q21 in Unit III).</p>
 
         <h3>Use in deep learning</h3>
         <ul>
-          <li>Dimensionality reduction (same mechanism as PCA — low rank approximation compresses data while minimizing reconstruction error).</li>
-          <li>Compressing weight matrices in large models (low-rank factorization, e.g. LoRA-style adaptation).</li>
-          <li>Recommender systems — approximating a large sparse user-item matrix with a low-rank SVD to find latent factors.</li>
+          <li>Dimensionality reduction — the same mechanism as PCA; low-rank approximation compresses data while minimizing reconstruction error.</li>
+          <li>Compressing weight matrices in large models via low-rank factorization (e.g. LoRA-style adaptation).</li>
+          <li>Recommender systems — approximating a large, sparse user-item matrix with a low-rank SVD to recover latent factors.</li>
         </ul>
         <div class="source-note">Source: CS7015 Lecture 6 (Khapra), Module 6.8.</div>
       </div>

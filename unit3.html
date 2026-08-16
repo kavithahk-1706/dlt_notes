@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Unit III — Autoencoders & Regularization | Deep Learning Techniques</title>
 <link rel="stylesheet" href="styles.css">
+<script>
+MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } };
+</script>
+<script id="MathJax-script" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
 </head>
 <body>
 <div class="page-wrapper">
@@ -48,33 +52,67 @@
       <span class="q-tag important">Important — full answer</span>
       <h2 class="q-title">22. How do sparse autoencoders differ from traditional autoencoders, and what are some applications of sparse autoencoders in deep learning?</h2>
       <div class="answer-body">
-        <p><strong>Motivation:</strong> overcomplete autoencoders (hidden dim ≥ input dim) risk learning the trivial identity function — simply copying input to output without learning anything meaningful. Sparse autoencoders prevent this.</p>
+        <p><strong>Motivation:</strong> an overcomplete autoencoder (hidden dimension \(\geq\) input dimension) has enough capacity to simply copy its input straight through to the output — learning the trivial identity function rather than anything meaningful about the data. A sparse autoencoder is one way to prevent this from happening.</p>
 
         <h3>How sparsity is enforced</h3>
-        <p>A hidden neuron using sigmoid activation is considered "active" when its output is near 1, "inactive" near 0. A sparse autoencoder forces <strong>most hidden neurons to stay inactive most of the time</strong>.</p>
-        <div class="formula">
-          ρ̂_l = (1/m)Σᵢ h(xᵢ)_l &nbsp;&nbsp;(average activation of neuron l across the dataset)
+        <p>For a hidden neuron with sigmoid activation, "active" means its output is near 1, and "inactive" means near 0. A sparse autoencoder adds a constraint forcing <strong>most hidden neurons to stay inactive for most inputs</strong> — only a small subset of neurons may fire for any given input.</p>
+
+        <div class="svg-wrap">
+        <svg viewBox="0 0 460 180" xmlns="http://www.w3.org/2000/svg">
+          <text x="115" y="20" text-anchor="middle" fill="var(--text-muted)" font-size="12">Traditional AE (many active)</text>
+          <circle cx="45" cy="60" r="14" fill="var(--accent)" stroke="var(--accent-hover)"/>
+          <circle cx="85" cy="60" r="14" fill="var(--accent)" stroke="var(--accent-hover)"/>
+          <circle cx="125" cy="60" r="14" fill="var(--surface2)" stroke="var(--border)"/>
+          <circle cx="165" cy="60" r="14" fill="var(--accent)" stroke="var(--accent-hover)"/>
+          <circle cx="45" cy="100" r="14" fill="var(--accent)" stroke="var(--accent-hover)"/>
+          <circle cx="85" cy="100" r="14" fill="var(--surface2)" stroke="var(--border)"/>
+          <circle cx="125" cy="100" r="14" fill="var(--accent)" stroke="var(--accent-hover)"/>
+          <circle cx="165" cy="100" r="14" fill="var(--accent)" stroke="var(--accent-hover)"/>
+          <text x="115" y="135" text-anchor="middle" fill="var(--text-dim)" font-size="10">most neurons fire — risk of trivial copying</text>
+
+          <line x1="230" y1="10" x2="230" y2="150" stroke="var(--border)" stroke-dasharray="3,3"/>
+
+          <text x="345" y="20" text-anchor="middle" fill="var(--text-muted)" font-size="12">Sparse AE (few active)</text>
+          <circle cx="275" cy="60" r="14" fill="var(--surface2)" stroke="var(--border)"/>
+          <circle cx="315" cy="60" r="14" fill="var(--important)" stroke="var(--important)"/>
+          <circle cx="355" cy="60" r="14" fill="var(--surface2)" stroke="var(--border)"/>
+          <circle cx="395" cy="60" r="14" fill="var(--surface2)" stroke="var(--border)"/>
+          <circle cx="275" cy="100" r="14" fill="var(--surface2)" stroke="var(--border)"/>
+          <circle cx="315" cy="100" r="14" fill="var(--surface2)" stroke="var(--border)"/>
+          <circle cx="355" cy="100" r="14" fill="var(--surface2)" stroke="var(--border)"/>
+          <circle cx="395" cy="100" r="14" fill="var(--important)" stroke="var(--important)"/>
+          <text x="335" y="135" text-anchor="middle" fill="var(--text-dim)" font-size="10">most neurons off — forces genuinely useful features</text>
+        </svg>
         </div>
-        <p>We pick a sparsity target ρ (small, e.g. 0.005) and add a penalty forcing ρ̂_l → ρ:</p>
+
+        <p>The average activation of hidden neuron \(l\) across the dataset is:</p>
         <div class="formula">
-          Ω(θ) = Σₗ [ρ·log(ρ/ρ̂_l) + (1−ρ)·log((1−ρ)/(1−ρ̂_l))]
+          \[ \hat{\rho}_l = \frac{1}{m}\sum_{i} h(x_i)_l \]
         </div>
-        <p>This is a KL-divergence-style term, minimized exactly when ρ̂_l = ρ. Total loss: L̂(θ) = L(θ) + Ω(θ), where L(θ) is the usual reconstruction loss.</p>
+        <p>A small sparsity target \(\rho\) is chosen (e.g. \(\rho = 0.005\)), and a penalty is added that pushes \(\hat{\rho}_l\) toward \(\rho\) for every hidden neuron \(l\):</p>
+        <div class="formula">
+          \[ \Omega(\theta) = \sum_l \left[ \rho\log\frac{\rho}{\hat{\rho}_l} + (1-\rho)\log\frac{1-\rho}{1-\hat{\rho}_l} \right] \]
+        </div>
+        <p>This is a KL-divergence-style term between two Bernoulli distributions (one with mean \(\rho\), one with mean \(\hat{\rho}_l\)) — it is minimized exactly when \(\hat{\rho}_l = \rho\), i.e. when the neuron's actual average activation matches the sparsity target. The total loss being minimized is:</p>
+        <div class="formula">
+          \[ \hat{L}(\theta) = L(\theta) + \Omega(\theta) \]
+        </div>
+        <p>where \(L(\theta)\) is the ordinary reconstruction loss. The network is now optimizing two competing objectives at once: reconstruct the input well (\(L\)), while keeping most neurons inactive (\(\Omega\)) — this tension is exactly what prevents the trivial identity solution.</p>
 
         <h3>How it differs from a traditional (vanilla) autoencoder</h3>
         <table>
           <tr><th>Traditional AE</th><th>Sparse AE</th></tr>
-          <tr><td>No constraint on how many hidden neurons fire</td><td>Explicit penalty forcing most neurons to stay near-inactive</td></tr>
-          <tr><td>Overcomplete AE can trivially copy input → identity mapping</td><td>Sparsity prevents this — network must use only a few active neurons to reconstruct, forcing it to learn genuinely useful, disentangled features</td></tr>
-          <tr><td>Learned filters (visualized) often look unstructured/noisy</td><td>Learned filters tend to be more interpretable — e.g. localized, pen-stroke-like or edge-like detectors</td></tr>
+          <tr><td>No constraint on how many hidden neurons are allowed to fire</td><td>Explicit penalty \(\Omega(\theta)\) forcing most neurons to stay near-inactive</td></tr>
+          <tr><td>An overcomplete AE can trivially copy the input through to the output</td><td>Sparsity prevents this — the network must reconstruct using only a few active neurons, forcing it to learn genuinely useful, disentangled features</td></tr>
+          <tr><td>Learned filters, when visualized, often look unstructured or noisy</td><td>Learned filters tend to be more interpretable — e.g. localized, pen-stroke-like or edge-like detectors</td></tr>
         </table>
 
         <h3>Applications</h3>
         <ul>
-          <li>Unsupervised feature/representation learning as a pretraining step before supervised classifiers.</li>
-          <li>Anomaly detection — sparse codes trained on normal data reconstruct anomalies poorly.</li>
-          <li>Interpretable feature extraction (each active neuron corresponds to a meaningful, localized pattern).</li>
-          <li>Compression — sparse codes are efficient representations since most units are off for any given input.</li>
+          <li>Unsupervised feature/representation learning, used as a pretraining step before a supervised classifier.</li>
+          <li>Anomaly detection — sparse codes learned on normal data tend to reconstruct anomalous inputs poorly, which can be used as an anomaly signal.</li>
+          <li>Interpretable feature extraction, since each active neuron tends to correspond to a specific, localized pattern rather than an entangled mixture of features.</li>
+          <li>Compression — sparse codes are efficient representations, since most units are inactive for any given input.</li>
         </ul>
         <div class="source-note">Source: CS7015 Lecture 7 (Khapra), Module 7.5.</div>
       </div>
@@ -106,31 +144,73 @@
       <span class="q-tag important">Important — full answer</span>
       <h2 class="q-title">24. What is the role of denoising autoencoders in deep learning, and how do they enhance the robustness of a model?</h2>
       <div class="answer-body">
-        <p><strong>Core idea:</strong> a denoising autoencoder (DAE) corrupts the input using a probabilistic process P(x̃ᵢⱼ|xᵢⱼ) before feeding it to the encoder — but the training objective is still to reconstruct the <strong>original, uncorrupted</strong> input.</p>
+        <p><strong>Core idea:</strong> a denoising autoencoder (DAE) deliberately corrupts its input using a stochastic process \(P(\tilde{x}_{ij}\mid x_{ij})\) before feeding it into the encoder — but the training objective still asks the network to reconstruct the <strong>original, uncorrupted</strong> input, not the corrupted one it actually received.</p>
+
+        <div class="svg-wrap">
+        <svg viewBox="0 0 500 170" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="60" width="70" height="40" rx="6" fill="var(--surface2)" stroke="var(--accent)"/>
+          <text x="45" y="84" text-anchor="middle" fill="var(--text)" font-size="13">x</text>
+          <text x="45" y="52" text-anchor="middle" fill="var(--text-muted)" font-size="10">clean input</text>
+
+          <line x1="80" y1="80" x2="130" y2="80" stroke="var(--text-muted)" marker-end="url(#arrow2)"/>
+          <text x="105" y="72" text-anchor="middle" fill="var(--text-dim)" font-size="9">corrupt</text>
+
+          <rect x="130" y="60" width="70" height="40" rx="6" fill="var(--surface2)" stroke="var(--important)"/>
+          <text x="165" y="84" text-anchor="middle" fill="var(--text)" font-size="13">x̃</text>
+          <text x="165" y="52" text-anchor="middle" fill="var(--text-muted)" font-size="10">corrupted</text>
+
+          <line x1="200" y1="80" x2="250" y2="80" stroke="var(--text-muted)" marker-end="url(#arrow2)"/>
+          <text x="225" y="72" text-anchor="middle" fill="var(--text-dim)" font-size="9">encode</text>
+
+          <rect x="250" y="60" width="70" height="40" rx="6" fill="var(--surface2)" stroke="var(--accent)"/>
+          <text x="285" y="84" text-anchor="middle" fill="var(--text)" font-size="13">h</text>
+          <text x="285" y="52" text-anchor="middle" fill="var(--text-muted)" font-size="10">hidden code</text>
+
+          <line x1="320" y1="80" x2="370" y2="80" stroke="var(--text-muted)" marker-end="url(#arrow2)"/>
+          <text x="345" y="72" text-anchor="middle" fill="var(--text-dim)" font-size="9">decode</text>
+
+          <rect x="370" y="60" width="70" height="40" rx="6" fill="var(--surface2)" stroke="var(--accent)"/>
+          <text x="405" y="84" text-anchor="middle" fill="var(--text)" font-size="13">x̂</text>
+          <text x="405" y="52" text-anchor="middle" fill="var(--text-muted)" font-size="10">reconstruction</text>
+
+          <path d="M 45 100 C 45 140, 405 140, 405 100" fill="none" stroke="var(--important)" stroke-dasharray="4,3" marker-end="url(#arrow2)"/>
+          <text x="225" y="152" text-anchor="middle" fill="var(--important)" font-size="10">loss compares x̂ to the ORIGINAL x — not to x̃</text>
+
+          <defs>
+            <marker id="arrow2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="var(--text-muted)"/>
+            </marker>
+          </defs>
+        </svg>
+        </div>
 
         <h3>Corruption process</h3>
         <div class="formula">
-          P(x̃ᵢⱼ = 0 | xᵢⱼ) = q &nbsp;&nbsp;(flip to 0 with probability q)<br>
-          P(x̃ᵢⱼ = xᵢⱼ | xᵢⱼ) = 1 − q &nbsp;&nbsp;(retained as-is otherwise)
+          \[ P(\tilde{x}_{ij}=0 \mid x_{ij}) = q \qquad \text{(flipped to 0 with probability } q\text{)} \]
+          \[ P(\tilde{x}_{ij}=x_{ij} \mid x_{ij}) = 1-q \qquad \text{(retained as-is otherwise)} \]
         </div>
-        <p>(An alternative corruption is additive Gaussian noise: x̃ᵢⱼ = xᵢⱼ + N(0,1).)</p>
+        <p>(An alternative corruption process is additive Gaussian noise: \(\tilde{x}_{ij} = x_{ij} + \mathcal{N}(0,1)\).)</p>
 
         <h3>Why this works — the key mechanism</h3>
-        <p>Objective: min Σ(x̂ᵢⱼ − xᵢⱼ)² — reconstruct the <em>original</em>, not the corrupted, input. It no longer makes sense for the model to just copy the corrupted x̃ᵢ into h and then into x̂ᵢ, because that copy would reproduce the <em>corrupted</em> version, not the original — and the loss explicitly penalizes that. So the model is forced to learn to reconstruct a corrupted value by <strong>relying on its interactions/correlations with other elements of xᵢ</strong> — i.e., it must capture the true underlying structure/characteristics of the data rather than memorizing an identity mapping.</p>
+        <p>The training objective is:</p>
+        <div class="formula">
+          \[ \min \sum_{i,j} (\hat{x}_{ij} - x_{ij})^2 \]
+        </div>
+        <p>Notice this compares the reconstruction \(\hat{x}\) against the <em>original</em> \(x\), not the corrupted \(\tilde{x}\) that was actually fed in. This one design choice is what makes denoising autoencoders work: it is no longer useful for the model to simply copy the corrupted input \(\tilde{x}_i\) through to \(h\) and back out to \(\hat{x}_i\), because that copy would reproduce the corrupted version — and the loss explicitly penalizes that mismatch. The only way to reduce the loss is for the model to <strong>infer the missing/corrupted values from their correlations with the other, uncorrupted elements of \(x_i\)</strong>. In other words, it is forced to learn the true underlying structure of the data, rather than memorizing an identity mapping.</p>
 
         <h3>Evidence of robustness (from visualization)</h3>
         <ul>
-          <li>A vanilla (non-denoising) AE's hidden neurons, when visualized (as the input pattern that maximally activates each neuron), <strong>do not learn many meaningful patterns</strong>.</li>
-          <li>Denoising AE's hidden neurons act like <strong>pen-stroke detectors</strong> — e.g. a neuron fires for a stroke shape you'd expect in digits like '0', '2', '3', '8', '9'.</li>
-          <li>As corruption level q increases (e.g. from 25% to 50%), the learned filters become wider — the neuron must rely on more adjacent pixels/context to feel confident about a stroke, since more of any single pixel's information is unreliable.</li>
-          <li>On other datasets, DAE hidden neurons behave like <strong>edge detectors</strong> — something <strong>plain PCA cannot produce</strong> (PCA is restricted to linear, global directions of variance).</li>
+          <li>A vanilla (non-denoising) autoencoder's hidden neurons, when visualized as the input pattern that maximally activates each one, do not learn many meaningful patterns.</li>
+          <li>A denoising autoencoder's hidden neurons behave like <strong>pen-stroke detectors</strong> — for example, a neuron may fire specifically for a stroke shape found in digits like '0', '2', '3', '8', '9'.</li>
+          <li>As the corruption level \(q\) increases (e.g. from 25% to 50%), the learned filters become <strong>wider</strong> — the neuron must draw on more surrounding pixels to remain confident about a stroke, since any single pixel's information is now less reliable.</li>
+          <li>On other datasets, DAE hidden neurons behave like <strong>edge detectors</strong> — a capability plain PCA cannot produce, since PCA is restricted to linear, global directions of variance.</li>
         </ul>
 
         <h3>Role in deep learning</h3>
         <ul>
-          <li>Learns more robust, generalizable representations than a vanilla AE — the network can't rely on trivially copying inputs.</li>
-          <li>Useful as an unsupervised pretraining step (e.g. for MNIST digit recognition: learn important characteristics h ∈ ℝᵈ via a DAE, then train a classifier on top of h instead of raw 784-dim pixels).</li>
-          <li>Improves resilience to noisy/corrupted real-world inputs at inference time, since the model was explicitly trained to "see through" corruption.</li>
+          <li>Learns more robust, generalizable representations than a vanilla autoencoder, since the network cannot rely on trivially copying its input.</li>
+          <li>Useful as an unsupervised pretraining step — for example, on MNIST digit recognition, a DAE can first learn a compact representation \(h \in \mathbb{R}^d\), and a classifier is then trained on \(h\) instead of on the raw 784-dimensional pixel input.</li>
+          <li>Improves resilience to noisy or corrupted real-world inputs at inference time, since the model was explicitly trained to "see through" corruption during training.</li>
         </ul>
         <div class="source-note">Source: CS7015 Lecture 7 (Khapra), Module 7.4.</div>
       </div>
