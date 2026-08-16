@@ -53,7 +53,10 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
       <h2 class="q-title">22. How do sparse autoencoders differ from traditional autoencoders, and what are some applications of sparse autoencoders in deep learning?</h2>
       <div class="answer-body">
         <h3>The core difference</h3>
-        <p>A traditional (vanilla) autoencoder places no constraint on how many hidden neurons are allowed to fire for a given input. If the autoencoder is overcomplete (hidden dimension \(\geq\) input dimension), it has enough capacity to simply copy its input straight through to the output — learning the trivial identity function rather than anything meaningful about the data. A sparse autoencoder differs by adding an explicit constraint that forces <strong>most hidden neurons to remain inactive for most inputs</strong>, so that only a small subset of neurons may fire for any given input. This constraint is what prevents the trivial identity solution, and it is enforced through the mechanism below.</p>
+        <ul>
+          <li>A traditional (vanilla) autoencoder places no constraint on how many hidden neurons are allowed to fire for a given input. If the autoencoder is overcomplete (hidden dimension \(\geq\) input dimension), it has enough capacity to simply copy its input straight through to the output — learning the trivial identity function rather than anything meaningful about the data. </li>
+          <li>A sparse autoencoder differs by adding an explicit constraint that forces <strong>most hidden neurons to remain inactive for most inputs</strong>, so that only a small subset of neurons may fire for any given input. This constraint is what prevents the trivial identity solution, and it is enforced through the mechanism below.</li>
+        </ul>
 
         <p>For a hidden neuron with sigmoid activation, "active" means its output is near 1, and "inactive" means near 0.</p>
 

@@ -307,18 +307,18 @@ while not converged:
         <ol>
           <li>
             <strong>Gradient w.r.t. the output pre-activation:</strong>
-            \[ \nabla_{a_L} L(\theta) = -(e^{(\ell)} - \hat{y}) \]
-            This has a clean closed form specifically because softmax is paired with cross-entropy loss — the two are designed to cancel neatly under differentiation, so no separate gradient-of-softmax step is needed.
+            \[ \frac{\partial L}{\partial a_L} = \hat{y} - e^{(\ell)} \]
+            where \(e^{(\ell)}\) is the one-hot true label vector (1 at the correct class, 0 everywhere else). This clean closed form comes from softmax and cross-entropy cancelling neatly under differentiation — no separate gradient-of-softmax step needed.
           </li>
           <li>
             <strong>Gradient w.r.t. each hidden layer</strong> (computed backward, from layer \(L{-}1\) down to layer 1):
-            \[ \nabla_{h_i} L(\theta) = (W_{i+1})^{\top}\big(\nabla_{a_{i+1}} L(\theta)\big) \]
-            \[ \nabla_{a_i} L(\theta) = \nabla_{h_i} L(\theta) \odot g'(a_i) \]
-            The first line pushes the gradient back through the weight matrix of the layer <em>above</em>; the second line pushes it through this layer's own activation function (elementwise product with the activation's derivative).
+            \[ \frac{\partial L}{\partial h_i} = W_{i+1}^{\top} \cdot \frac{\partial L}{\partial a_{i+1}} \]
+            \[ \frac{\partial L}{\partial a_i} = \frac{\partial L}{\partial h_i} \odot g'(a_i) \]
+            The first line pushes the gradient back through the weight matrix of the layer <em>above</em> (transposed). The second line pushes it through this layer's own activation function — \(\odot\) means elementwise multiplication, and \(g'(a_i) = h_i(1-h_i)\) for sigmoid.
           </li>
           <li>
-            <strong>Gradient w.r.t. the parameters themselves</strong> (this is the actual quantity gradient descent needs):
-            \[ \nabla_{W_k} L(\theta) = \nabla_{a_k} L(\theta)\cdot h_{k-1}^{\top} \qquad \nabla_{b_k} L(\theta) = \nabla_{a_k} L(\theta) \]
+            <strong>Gradient w.r.t. the parameters themselves</strong> (what gradient descent actually uses):
+            \[ \frac{\partial L}{\partial W_k} = \frac{\partial L}{\partial a_k} \cdot h_{k-1}^{\top} \qquad \frac{\partial L}{\partial b_k} = \frac{\partial L}{\partial a_k} \]
           </li>
         </ol>
 
@@ -329,12 +329,12 @@ while not converged:
     theta_(t+1) = theta_t - eta * grad_theta_t
 
 backward_propagation:
-    grad_aL = -(e(y) - y_hat)
+    dL/daL = y_hat - e(ℓ)          # output error: predicted minus one-hot true label
     for k = L down to 1:
-        grad_Wk = grad_ak . h_(k-1)^T
-        grad_bk = grad_ak
-        grad_h_(k-1) = Wk^T . grad_ak
-        grad_a_(k-1) = grad_h_(k-1) (elementwise*) g'(a_(k-1))</code></pre>
+        dL/dWk = (dL/dak) · h_(k-1)ᵀ   # weight gradient
+        dL/dbk = dL/dak                  # bias gradient
+        dL/dh_(k-1) = Wkᵀ · (dL/dak)   # push back through weight matrix
+        dL/da_(k-1) = dL/dh_(k-1) ⊙ g'(a_(k-1))  # push back through sigmoid</code></pre>
 
         <h3>Why this matters for training</h3>
         <p>Without backpropagation, computing the gradient for every individual weight would require separately expanding a full chain-rule product per parameter — computationally infeasible for networks with millions of parameters. Backpropagation converts this into a single backward pass that computes and reuses each layer's gradient exactly once, which is what makes training deep networks computationally tractable.</p>
