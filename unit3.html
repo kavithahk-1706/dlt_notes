@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Unit III — Autoencoders & Regularization | Deep Learning Techniques</title>
+<title>Unit III — Autoencoders, Regularization &amp; Loss Functions | Deep Learning Techniques</title>
 <link rel="stylesheet" href="styles.css">
 <script>
 MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } };
@@ -15,7 +15,8 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
 
   <nav class="unit-nav">
     <a href="unit2.html" class="nav-prev">← Unit II</a>
-    <span class="nav-title">Unit III: Autoencoders &amp; Regularization</span>
+    <span class="nav-title">Unit III: Autoencoders, Regularization &amp; Loss Functions</span>
+    <a href="unit4.html" class="nav-next">Unit IV →</a>
     <a href="index.html" class="nav-home">Home</a>
   </nav>
 
@@ -25,6 +26,8 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
     <button class="tab-btn" onclick="showTab(2)">Q23</button>
     <button class="tab-btn important" onclick="showTab(3)">Q24</button>
     <button class="tab-btn" onclick="showTab(4)">Q25</button>
+    <button class="tab-btn important" onclick="showTab(5)">Q26</button>
+    <button class="tab-btn important" onclick="showTab(6)">Q27</button>
   </div>
 
   <!-- Q21 -->
@@ -256,7 +259,147 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
         <div class="source-note">Source: CS7015 Lecture 7 (Khapra), Module 7.6.</div>
       </div>
     </div>
-  </div>
+
+    <!-- ==================== Q26 ==================== -->
+    <div class="tab-content active" id="tab-5">
+      <div class="question-block">
+        <span class="q-tag important">Important — full answer</span>
+        <h2 class="q-title">26. Describe the concepts of parameter sharing and tying in the context of autoencoders.</h2>
+        <div class="answer-body">
+
+          <h3>Autoencoders — Overview</h3>
+          <p>An autoencoder is a feedforward neural network trained to reconstruct its input. It consists of two parts: an <strong>encoder</strong> that maps input \(\mathbf{x}\) to a hidden representation \(\mathbf{h}\), and a <strong>decoder</strong> that maps \(\mathbf{h}\) back to a reconstruction \(\hat{\mathbf{x}}\).</p>
+
+          <div class="formula">
+            \[\mathbf{h} = g(W\mathbf{x} + \mathbf{b}) \quad \text{(encoder)}\]
+            \[\hat{\mathbf{x}} = g(W^{*}\mathbf{h} + \mathbf{b}^{*}) \quad \text{(decoder)}\]
+          </div>
+
+          <p>Here \(W\) is the encoder weight matrix, \(W^{*}\) is the decoder weight matrix, and \(g\) is an activation function (e.g., sigmoid). The network is trained by minimising a reconstruction loss between \(\mathbf{x}\) and \(\hat{\mathbf{x}}\).</p>
+
+          <div class="svg-wrap">
+            <svg viewBox="0 0 620 200" xmlns="http://www.w3.org/2000/svg">
+              <!-- Input layer -->
+              <rect x="10" y="30" width="90" height="140" rx="6" fill="none" stroke="var(--border)" stroke-width="1.5"/>
+              <text x="55" y="20" text-anchor="middle" font-size="12" font-weight="600" fill="var(--accent)">Input x</text>
+              <circle cx="55" cy="60" r="8" fill="var(--accent)" opacity="0.7"/><circle cx="55" cy="90" r="8" fill="var(--accent)" opacity="0.7"/>
+              <circle cx="55" cy="120" r="8" fill="var(--accent)" opacity="0.7"/><circle cx="55" cy="150" r="8" fill="var(--accent)" opacity="0.7"/>
+              <!-- Encoder arrow -->
+              <line x1="105" y1="100" x2="180" y2="100" stroke="var(--text-muted)" stroke-width="1.5" marker-end="url(#arr)"/>
+              <text x="142" y="90" text-anchor="middle" font-size="11" fill="var(--text-muted)">W, b</text>
+              <!-- Hidden layer -->
+              <rect x="185" y="60" width="70" height="80" rx="6" fill="none" stroke="var(--accent)" stroke-width="2"/>
+              <text x="220" y="52" text-anchor="middle" font-size="12" font-weight="600" fill="var(--accent)">h</text>
+              <circle cx="220" cy="90" r="8" fill="var(--accent)"/><circle cx="220" cy="120" r="8" fill="var(--accent)"/>
+              <!-- Decoder arrow -->
+              <line x1="260" y1="100" x2="335" y2="100" stroke="var(--text-muted)" stroke-width="1.5" marker-end="url(#arr)"/>
+              <text x="298" y="90" text-anchor="middle" font-size="11" fill="var(--text-muted)">W*, b*</text>
+              <!-- Output layer -->
+              <rect x="340" y="30" width="90" height="140" rx="6" fill="none" stroke="var(--border)" stroke-width="1.5"/>
+              <text x="385" y="20" text-anchor="middle" font-size="12" font-weight="600" fill="var(--success)">x̂</text>
+              <circle cx="385" cy="60" r="8" fill="var(--success)" opacity="0.7"/><circle cx="385" cy="90" r="8" fill="var(--success)" opacity="0.7"/>
+              <circle cx="385" cy="120" r="8" fill="var(--success)" opacity="0.7"/><circle cx="385" cy="150" r="8" fill="var(--success)" opacity="0.7"/>
+              <!-- Tied label -->
+              <rect x="460" y="55" width="150" height="90" rx="6" fill="var(--surface)" stroke="var(--border)"/>
+              <text x="535" y="80" text-anchor="middle" font-size="11" font-weight="600" fill="var(--warning)">Tied weights:</text>
+              <text x="535" y="100" text-anchor="middle" font-size="12" fill="var(--text)">W* = W&#7488;</text>
+              <text x="535" y="120" text-anchor="middle" font-size="10" fill="var(--text-muted)">(decoder = encoder transposed)</text>
+              <defs><marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--text-muted)"/></marker></defs>
+            </svg>
+          </div>
+
+          <h3>Parameter Sharing</h3>
+          <p><strong>Parameter sharing</strong> means that the same set of parameters (weights) is used across different parts of the model. This is a form of regularisation because it reduces the total number of free parameters, thereby reducing model complexity (\(\Omega(\theta)\)).</p>
+          <p>In <strong>Convolutional Neural Networks (CNNs)</strong>, parameter sharing is a core design principle — the same convolutional filter (kernel) is applied across all spatial locations of the input. This means each filter learns one feature (e.g., an edge) that is reused everywhere, drastically reducing the parameter count compared to a fully connected layer.</p>
+          <p>In <strong>Recurrent Neural Networks (RNNs)</strong>, the same weight matrices \(W\), \(U\), and \(V\) are shared across all time steps. The network at each time step is executing the same function with the same parameters — only the input and hidden state change.</p>
+
+          <h3>Parameter Tying</h3>
+          <p><strong>Parameter tying</strong> is a specific form of parameter sharing where two sets of weights are constrained to be related (typically one is the transpose of the other). In autoencoders, this means:</p>
+          <div class="formula">
+            \[W^{*} = W^{T}\]
+          </div>
+          <p>That is, the decoder weight matrix \(W^{*}\) is constrained to be the transpose of the encoder weight matrix \(W\). This is also called <strong>tied weights</strong>.</p>
+
+          <p><strong>Effects of tying weights in autoencoders:</strong></p>
+          <ul>
+            <li>Reduces the number of learnable parameters by half (only \(W\) needs to be learned; \(W^{*}\) is derived from it).</li>
+            <li>Acts as a regulariser — reduces the capacity of the autoencoder, preventing it from simply learning the identity function.</li>
+            <li>This is especially important for <strong>overcomplete autoencoders</strong> (where \(\dim(\mathbf{h}) > \dim(\mathbf{x})\)), which can trivially copy the input to the hidden layer and back without learning useful representations.</li>
+          </ul>
+
+          <h3>Soft Weight Sharing</h3>
+          <p>An alternative to hard tying is <strong>soft weight sharing</strong>, where instead of forcing \(W^{*} = W^{T}\), a penalty is added to the loss function to encourage the encoder and decoder weights to be similar:</p>
+          <div class="formula">
+            \[\hat{L}(\theta) = L(\theta) + \lambda \|W - W^{*T}\|^{2}_{F}\]
+          </div>
+          <p>Here \(\lambda\) is the regularisation parameter and \(\|\cdot\|_F\) denotes the Frobenius norm. This allows the weights to differ slightly while still being encouraged towards agreement.</p>
+
+                <div class="source-note">Source: CS7015 Lecture 7 (Khapra), Modules 7.1–7.3.</div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== Q27 ==================== -->
+    <div class="tab-content" id="tab-6">
+      <div class="question-block">
+        <span class="q-tag important">Important — full answer</span>
+        <h2 class="q-title">27. Explain the concept of loss functions. Discuss the different types of loss functions used in deep learning.</h2>
+        <div class="answer-body">
+
+          <h3>What is a Loss Function?</h3>
+          <p>A <strong>loss function</strong> (also called objective function, error function, or cost function) quantifies the deviation between the predicted output \(\hat{y}\) and the true output \(y\). The goal of training is to find parameters \(\theta\) that minimise this loss over the training data:</p>
+          <div class="formula">
+            \[\theta^{*} = \arg\min_{\theta} \; \frac{1}{N} \sum_{i=1}^{N} \mathcal{L}(y_i, \hat{y}_i)\]
+          </div>
+          <p>The choice of loss function depends on the task (regression vs. classification) and the output activation function used.</p>
+
+          <h3>1. Squared Error Loss</h3>
+          <p>Used primarily for <strong>regression</strong> tasks where \(y_i \in \mathbb{R}^n\). The output activation is typically <strong>linear</strong> (identity function).</p>
+          <div class="formula">
+            \[\mathcal{L}(\theta) = \sum_{i=1}^{N} \| y_i - \hat{y}_i \|^{2} = \sum_{i=1}^{N} \sum_{j=1}^{n} (y_{ij} - \hat{y}_{ij})^2\]
+          </div>
+          <p>It penalises large deviations quadratically, making it sensitive to outliers. It is convex with respect to \(\hat{y}\) and is the standard loss for function approximation.</p>
+
+          <h3>2. Cross-Entropy Loss (Binary)</h3>
+          <p>Used for <strong>binary classification</strong> where \(y_i \in \{0, 1\}\). The output activation is the <strong>sigmoid</strong> function: \(\hat{y} = \sigma(a) = \frac{1}{1 + e^{-a}}\).</p>
+          <div class="formula">
+            \[\mathcal{L}(\theta) = -\sum_{i=1}^{N} \Big[ y_i \log(\hat{y}_i) + (1 - y_i) \log(1 - \hat{y}_i) \Big]\]
+          </div>
+          <p>When \(\hat{y}\) is close to the correct label, the loss is low; when it is far away, the loss approaches infinity. This provides stronger gradients for misclassified examples than squared error would in classification.</p>
+
+          <h3>3. Cross-Entropy Loss (Multi-class)</h3>
+          <p>Used for <strong>multi-class classification</strong> where \(y\) is a one-hot encoded vector over \(K\) classes. The output activation is the <strong>softmax</strong> function:</p>
+          <div class="formula">
+            \[\hat{y}_k = \text{softmax}(a_k) = \frac{e^{a_k}}{\sum_{j=1}^{K} e^{a_j}}\]
+          </div>
+          <p>The cross-entropy loss for multi-class is:</p>
+          <div class="formula">
+            \[\mathcal{L}(\theta) = -\sum_{i=1}^{N} \sum_{k=1}^{K} y_{ik} \log(\hat{y}_{ik})\]
+          </div>
+          <p>Since \(y\) is one-hot, this simplifies to \(-\log(\hat{y}_c)\) where \(c\) is the true class. Minimising this is equivalent to maximising the probability assigned to the correct class.</p>
+
+          <h3>Comparison</h3>
+          <table>
+            <thead>
+              <tr><th>Property</th><th>Squared Error</th><th>Cross-Entropy</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Task</td><td>Regression</td><td>Classification</td></tr>
+              <tr><td>Output activation</td><td>Linear</td><td>Sigmoid / Softmax</td></tr>
+              <tr><td>Gradient behaviour</td><td>Can saturate for sigmoid outputs</td><td>Stronger gradients; does not saturate</td></tr>
+              <tr><td>Interpretation</td><td>Geometric distance</td><td>Negative log-likelihood (probabilistic)</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Why Cross-Entropy over Squared Error for Classification?</h3>
+          <p>When using a sigmoid output with squared error, the gradient includes a \(\sigma'(a)\) term, which becomes very small when \(\sigma(a) \approx 0\) or \(1\) (saturation). This means learning is extremely slow for highly wrong predictions. Cross-entropy avoids this problem — the \(\sigma'(a)\) term cancels out during backpropagation, yielding a gradient proportional to \((\hat{y} - y)\), which provides a strong learning signal even when the prediction is far off.</p>
+
+                <div class="source-note">Source: CS7015 Lecture 7 (Khapra), Module 7.7.</div>
+
+        </div>
+      </div>
+    </div>
 
 </div>
 

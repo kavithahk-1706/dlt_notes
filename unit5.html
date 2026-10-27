@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit V — CNNs, Visualization, RNNs, GoogLeNet &amp; Transformers | Deep Learning Techniques</title>
+<link rel="stylesheet" href="styles.css">
+<script>
+MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } };
+</script>
+<script id="MathJax-script" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+</head>
+<body>
+<div class="page-wrapper">
+
+  <nav class="unit-nav">
+    <a href="unit4.html" class="nav-prev">← Unit IV</a>
+    <span class="nav-title">Unit V: CNNs, Visualization, RNNs, GoogLeNet &amp; Transformers</span>
+    <a href="index.html" class="nav-home">Home</a>
+  </nav>
+
+  <div class="tabs" role="tablist">
+      <button class="tab-btn active" onclick="showTab(0)">Q33</button>
+      <button class="tab-btn" onclick="showTab(1)">Q34</button>
+      <button class="tab-btn" onclick="showTab(2)">Q35</button>
+      <button class="tab-btn" onclick="showTab(3)">Q36</button>
+      <button class="tab-btn" onclick="showTab(4)">Q37</button>
+  </div>
+
+    <!-- ==================== Q33 ==================== -->
+    <div class="tab-content active" id="tab-0">
+      <div class="question-block">
+        <span class="q-tag important">Important — full answer</span>
+        <h2 class="q-title">33. Explain the general architecture of a Convolutional Neural Network (CNN). Describe the function of each layer with a neat diagram.</h2>
+        <div class="answer-body">
+
+          <p>A <strong>Convolutional Neural Network (CNN)</strong> is a specialised feedforward network designed to process data with a grid-like topology (e.g., images). It exploits spatial locality and parameter sharing to dramatically reduce the number of parameters compared to fully connected networks.</p>
+
+          <div class="svg-wrap">
+            <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg">
+              <!-- Input -->
+              <rect x="5" y="40" width="70" height="140" rx="5" fill="var(--surface)" stroke="var(--border)"/>
+              <text x="40" y="30" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)">Input</text>
+              <text x="40" y="115" text-anchor="middle" font-size="9" fill="var(--text-muted)">H×W×C</text>
+              <!-- Conv -->
+              <line x1="80" y1="110" x2="110" y2="110" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a4)"/>
+              <rect x="115" y="50" width="70" height="120" rx="5" fill="var(--surface2)" stroke="var(--accent)" stroke-width="1.5"/>
+              <text x="150" y="100" text-anchor="middle" font-size="10" fill="var(--accent)">Conv</text>
+              <text x="150" y="115" text-anchor="middle" font-size="8" fill="var(--text-muted)">+ Bias</text>
+              <!-- ReLU -->
+              <line x1="190" y1="110" x2="210" y2="110" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a4)"/>
+              <rect x="215" y="70" width="55" height="80" rx="5" fill="var(--surface)" stroke="var(--success)" stroke-width="1.5"/>
+              <text x="242" y="115" text-anchor="middle" font-size="10" fill="var(--success)">ReLU</text>
+              <!-- Pool -->
+              <line x1="275" y1="110" x2="295" y2="110" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a4)"/>
+              <rect x="300" y="65" width="60" height="90" rx="5" fill="var(--surface)" stroke="var(--warning)" stroke-width="1.5"/>
+              <text x="330" y="105" text-anchor="middle" font-size="10" fill="var(--warning)">Pool</text>
+              <text x="330" y="120" text-anchor="middle" font-size="8" fill="var(--text-muted)">2×2</text>
+              <!-- dots -->
+              <text x="385" y="115" font-size="16" fill="var(--text-dim)">···</text>
+              <!-- Flatten -->
+              <rect x="415" y="75" width="50" height="70" rx="5" fill="var(--surface)" stroke="var(--border)"/>
+              <text x="440" y="115" text-anchor="middle" font-size="9" fill="var(--text-muted)">Flatten</text>
+              <!-- FC -->
+              <line x1="470" y1="110" x2="490" y2="110" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a4)"/>
+              <rect x="495" y="60" width="65" height="100" rx="5" fill="var(--surface2)" stroke="var(--accent)" stroke-width="1.5"/>
+              <text x="527" y="105" text-anchor="middle" font-size="10" fill="var(--accent)">FC</text>
+              <text x="527" y="120" text-anchor="middle" font-size="8" fill="var(--text-muted)">Dense</text>
+              <!-- Output -->
+              <line x1="565" y1="110" x2="585" y2="110" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a4)"/>
+              <rect x="590" y="75" width="70" height="70" rx="5" fill="var(--surface)" stroke="var(--success)"/>
+              <text x="625" y="105" text-anchor="middle" font-size="10" fill="var(--success)">Softmax</text>
+              <text x="625" y="120" text-anchor="middle" font-size="8" fill="var(--text-muted)">Output</text>
+              <!-- Label -->
+              <text x="350" y="210" text-anchor="middle" font-size="11" font-weight="600" fill="var(--text-muted)">General CNN Architecture</text>
+              <defs><marker id="a4" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--text-muted)"/></marker></defs>
+            </svg>
+          </div>
+
+          <h3>1. Convolution Layer</h3>
+          <p>Applies a set of learnable filters (kernels) of size \(f \times f\) to the input. Each filter slides (convolves) across the spatial dimensions, computing dot products at every position to produce a <strong>feature map</strong> (activation map). For an input of size \(H \times W\) with filter size \(f\), stride \(s\), and padding \(p\):</p>
+          <div class="formula">
+            \[\text{Output size} = \left\lfloor \frac{H - f + 2p}{s} \right\rfloor + 1\]
+          </div>
+          <p><strong>Parameter sharing:</strong> The same filter weights are applied at every spatial location, greatly reducing parameters. Each filter detects a specific feature (edge, texture, etc.) regardless of position.</p>
+
+          <h3>2. Activation Layer (ReLU)</h3>
+          <p>Applied element-wise after each convolution: \(\text{ReLU}(x) = \max(0, x)\). It introduces non-linearity, enabling the network to learn complex patterns. Negative values are zeroed out, promoting sparse representations.</p>
+
+          <h3>3. Pooling Layer</h3>
+          <p>Reduces the spatial dimensions of feature maps while retaining the most important information. <strong>Max pooling</strong> (most common) takes the maximum value in each \(k \times k\) window. <strong>Average pooling</strong> takes the mean. Pooling provides translation invariance and reduces computational cost for subsequent layers.</p>
+
+          <h3>4. Fully Connected (FC) Layer</h3>
+          <p>After several rounds of convolution and pooling, the feature maps are <strong>flattened</strong> into a 1D vector and passed to one or more FC layers. These layers learn global patterns by combining all the local features extracted by the convolutional layers. Each neuron in an FC layer is connected to every activation from the previous layer.</p>
+
+          <h3>5. Output Layer</h3>
+          <p>The final FC layer maps to the number of classes. A <strong>softmax</strong> activation converts the raw logits into a probability distribution over classes. The predicted class is \(\arg\max\) of this distribution. The loss is typically cross-entropy.</p>
+
+                <div class="source-note">Source: CS7015 Lecture 11 (Khapra), Modules 11.1–11.5.</div>
+
+</div>
+      </div>
+    </div><!-- ==================== Q34 ==================== -->
+    <div class="tab-content" id="tab-1">
+      <div class="question-block">
+        <span class="q-tag important">Important — full answer</span>
+        <h2 class="q-title">34. Explain the concept of Guided Backpropagation. Discuss its role in visualizing Convolutional Neural Networks.</h2>
+        <div class="answer-body">
+
+          <h3>Why Visualize CNNs?</h3>
+          <p>CNNs are often treated as black boxes. Visualization techniques help us understand <em>what</em> features each layer has learned, and <em>which</em> parts of the input are responsible for a particular prediction. This is crucial for debugging, trust, and interpretability.</p>
+
+          <h3>Background: Gradient-Based Visualization</h3>
+          <p>The simplest approach is to compute the gradient of the output (or a specific class score) with respect to the input pixels: \(\frac{\partial S_c}{\partial \mathbf{x}}\). This tells us which pixels, if changed, would most affect the prediction. However, standard backpropagation through ReLU can produce noisy saliency maps.</p>
+
+          <h3>How ReLU Backpropagation Works</h3>
+          <p>Let \(h^l\) be the input to layer \(l\) and \(h^{l+1} = \text{ReLU}(h^l) = \max(0, h^l)\) be the output. Let \(G^{l+1} = \frac{\partial f}{\partial h^{l+1}}\) be the gradient received from the layer above.</p>
+          <p>In <strong>classical backpropagation</strong>:</p>
+          <div class="formula">
+            \[G^{l} = \mathbb{1}[h^l > 0] \cdot G^{l+1}\]
+          </div>
+          <p>Only positions where the forward-pass input was positive pass the gradient through (the ReLU gate).</p>
+          <p>In <strong>deconvolution</strong> (Zeiler &amp; Fergus):</p>
+          <div class="formula">
+            \[G^{l} = \mathbb{1}[G^{l+1} > 0] \cdot G^{l+1}\]
+          </div>
+          <p>Only positive gradients (positive influence) are allowed to flow back, regardless of the forward-pass sign.</p>
+
+          <h3>Guided Backpropagation</h3>
+          <p><strong>Guided Backpropagation</strong> (Springenberg et al., 2015) combines both conditions:</p>
+          <div class="formula">
+            \[G^{l} = \mathbb{1}[h^l > 0] \cdot \mathbb{1}[G^{l+1} > 0] \cdot G^{l+1}\]
+          </div>
+          <p>That is, the gradient flows back only when <strong>both</strong> the forward-pass activation was positive <strong>and</strong> the gradient flowing back is positive. This produces cleaner, sharper saliency maps compared to either method alone.</p>
+
+          <div class="svg-wrap">
+            <svg viewBox="0 0 620 240" xmlns="http://www.w3.org/2000/svg">
+              <text x="310" y="20" text-anchor="middle" font-size="12" font-weight="700" fill="var(--accent)">Comparison of Backward Pass Through ReLU</text>
+              <!-- Classical BP -->
+              <rect x="10" y="35" width="185" height="80" rx="6" fill="var(--surface)" stroke="var(--border)"/>
+              <text x="102" y="55" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)">Classical Backprop</text>
+              <text x="102" y="75" text-anchor="middle" font-size="10" fill="var(--text-muted)">Gate: forward input > 0</text>
+              <text x="102" y="95" text-anchor="middle" font-size="9" fill="var(--text-dim)">Gˡ = 𝟙[hˡ>0] · Gˡ⁺¹</text>
+              <!-- Deconv -->
+              <rect x="215" y="35" width="185" height="80" rx="6" fill="var(--surface)" stroke="var(--border)"/>
+              <text x="307" y="55" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text)">Deconvolution</text>
+              <text x="307" y="75" text-anchor="middle" font-size="10" fill="var(--text-muted)">Gate: gradient > 0</text>
+              <text x="307" y="95" text-anchor="middle" font-size="9" fill="var(--text-dim)">Gˡ = 𝟙[Gˡ⁺¹>0] · Gˡ⁺¹</text>
+              <!-- Guided -->
+              <rect x="420" y="35" width="185" height="80" rx="6" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>
+              <text x="512" y="55" text-anchor="middle" font-size="10" font-weight="600" fill="var(--accent)">Guided Backprop</text>
+              <text x="512" y="75" text-anchor="middle" font-size="10" fill="var(--text-muted)">Gate: BOTH > 0</text>
+              <text x="512" y="95" text-anchor="middle" font-size="9" fill="var(--text-dim)">Gˡ = 𝟙[hˡ>0]·𝟙[Gˡ⁺¹>0]·Gˡ⁺¹</text>
+              <!-- Result labels -->
+              <text x="102" y="140" text-anchor="middle" font-size="9" fill="var(--warning)">Noisy maps</text>
+              <text x="307" y="140" text-anchor="middle" font-size="9" fill="var(--warning)">Smooth but diffuse</text>
+              <text x="512" y="140" text-anchor="middle" font-size="9" fill="var(--success)">Sharp &amp; clean</text>
+            </svg>
+          </div>
+
+          <h3>Role in CNN Visualization</h3>
+          <p>Guided Backpropagation is used to generate <strong>saliency maps</strong> that highlight which pixels in the input image are most relevant to a particular neuron's activation or a class prediction. The resulting maps are high-resolution and show fine-grained details (edges, textures) that the network attends to. It can be applied to any intermediate layer or to the output class score.</p>
+
+          <h3>Guided Grad-CAM</h3>
+          <p>Guided Backpropagation can be combined with Grad-CAM (which produces coarse, class-discriminative heat maps) via element-wise multiplication to produce <strong>Guided Grad-CAM</strong> — visualisations that are both high-resolution and class-specific.</p>
+
+                <div class="source-note">Source: CS7015 Lecture 13 (Khapra), Module 13.3.</div>
+
+</div>
+      </div>
+    </div><!-- ==================== Q35 ==================== -->
+    <div class="tab-content" id="tab-2">
+      <div class="question-block">
+        <span class="q-tag important">Important — full answer</span>
+        <h2 class="q-title">35. Explain the concept of Recurrent Neural Networks (RNNs). Discuss the role of Backpropagation Through Time (BPTT) in training RNNs.</h2>
+        <div class="answer-body">
+
+          <h3>Sequence Learning Problems</h3>
+          <p>Many tasks involve sequential data where the current output depends not just on the current input but also on previous inputs — e.g., language modelling, speech recognition, POS tagging, machine translation. The input size is not fixed (sentences can have arbitrary length), and a feedforward network with fixed input size cannot handle this.</p>
+
+          <h3>Recurrent Neural Networks</h3>
+          <p>An RNN introduces a <strong>recurrent connection</strong> that maintains a hidden state \(\mathbf{s}_t\) across time steps. The same parameters are <strong>shared across all time steps</strong> (parameter sharing). At each time step \(t\):</p>
+          <div class="formula">
+            \[\mathbf{s}_t = g(W \mathbf{s}_{t-1} + U \mathbf{x}_t + \mathbf{b})\]
+            \[\mathbf{o}_t = V \mathbf{s}_t + \mathbf{c}\]
+          </div>
+          <p>Here \(\mathbf{x}_t\) is the input at time \(t\), \(\mathbf{s}_t\) is the hidden state, \(\mathbf{o}_t\) is the output, \(W\) is the recurrent weight matrix (hidden-to-hidden), \(U\) is the input-to-hidden weight matrix, \(V\) is the hidden-to-output weight matrix, and \(g\) is an activation (typically tanh).</p>
+
+          <div class="svg-wrap">
+            <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+              <!-- Folded RNN -->
+              <rect x="10" y="60" width="90" height="80" rx="8" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>
+              <text x="55" y="95" text-anchor="middle" font-size="11" fill="var(--accent)">RNN</text>
+              <text x="55" y="110" text-anchor="middle" font-size="9" fill="var(--text-muted)">W, U, V</text>
+              <path d="M75,60 C85,40 95,40 95,55" fill="none" stroke="var(--warning)" stroke-width="1.5" marker-end="url(#a5)"/>
+              <text x="100" y="40" font-size="8" fill="var(--warning)">sₜ</text>
+              <line x1="55" y1="145" x2="55" y2="170" stroke="var(--text-muted)" stroke-width="1"/>
+              <text x="55" y="185" text-anchor="middle" font-size="9" fill="var(--text-muted)">xₜ</text>
+              <line x1="55" y1="60" x2="55" y2="35" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a5)"/>
+              <text x="55" y="25" text-anchor="middle" font-size="9" fill="var(--text-muted)">oₜ</text>
+              <!-- Equals sign -->
+              <text x="130" y="100" font-size="20" fill="var(--text-dim)">=</text>
+              <!-- Unrolled RNN -->
+              <g transform="translate(160,0)">
+                <!-- t-1 -->
+                <rect x="10" y="60" width="60" height="60" rx="5" fill="var(--surface)" stroke="var(--accent)"/>
+                <text x="40" y="95" text-anchor="middle" font-size="10" fill="var(--accent)">RNN</text>
+                <line x1="40" y1="125" x2="40" y2="150" stroke="var(--text-muted)" stroke-width="1"/>
+                <text x="40" y="165" text-anchor="middle" font-size="9" fill="var(--text-muted)">x₁</text>
+                <line x1="40" y1="60" x2="40" y2="35" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a5)"/>
+                <text x="40" y="25" text-anchor="middle" font-size="9" fill="var(--text-muted)">o₁</text>
+                <!-- arrow -->
+                <line x1="75" y1="90" x2="110" y2="90" stroke="var(--warning)" stroke-width="1.5" marker-end="url(#a5)"/>
+                <text x="93" y="83" font-size="8" fill="var(--warning)">s₁</text>
+                <!-- t -->
+                <rect x="115" y="60" width="60" height="60" rx="5" fill="var(--surface)" stroke="var(--accent)"/>
+                <text x="145" y="95" text-anchor="middle" font-size="10" fill="var(--accent)">RNN</text>
+                <line x1="145" y1="125" x2="145" y2="150" stroke="var(--text-muted)" stroke-width="1"/>
+                <text x="145" y="165" text-anchor="middle" font-size="9" fill="var(--text-muted)">x₂</text>
+                <line x1="145" y1="60" x2="145" y2="35" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a5)"/>
+                <text x="145" y="25" text-anchor="middle" font-size="9" fill="var(--text-muted)">o₂</text>
+                <line x1="180" y1="90" x2="215" y2="90" stroke="var(--warning)" stroke-width="1.5" marker-end="url(#a5)"/>
+                <text x="198" y="83" font-size="8" fill="var(--warning)">s₂</text>
+                <!-- t+1 -->
+                <text x="230" y="95" font-size="16" fill="var(--text-dim)">···</text>
+                <line x1="255" y1="90" x2="285" y2="90" stroke="var(--warning)" stroke-width="1.5" marker-end="url(#a5)"/>
+                <rect x="290" y="60" width="60" height="60" rx="5" fill="var(--surface)" stroke="var(--accent)"/>
+                <text x="320" y="95" text-anchor="middle" font-size="10" fill="var(--accent)">RNN</text>
+                <line x1="320" y1="125" x2="320" y2="150" stroke="var(--text-muted)" stroke-width="1"/>
+                <text x="320" y="165" text-anchor="middle" font-size="9" fill="var(--text-muted)">xₜ</text>
+                <line x1="320" y1="60" x2="320" y2="35" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a5)"/>
+                <text x="320" y="25" text-anchor="middle" font-size="9" fill="var(--text-muted)">oₜ</text>
+              </g>
+              <text x="400" y="195" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text-muted)">Unrolled RNN</text>
+              <defs><marker id="a5" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--text-muted)"/></marker></defs>
+            </svg>
+          </div>
+
+          <h3>Backpropagation Through Time (BPTT)</h3>
+          <p>To train an RNN, we <strong>unroll</strong> the network across all \(T\) time steps — treating it as a deep feedforward network with shared weights. The total loss is the sum of per-time-step losses:</p>
+          <div class="formula">
+            \[\mathcal{L} = \sum_{t=1}^{T} \mathcal{L}_t\]
+          </div>
+          <p>BPTT computes gradients by applying the chain rule backward through the unrolled graph. For the recurrent weights \(W\):</p>
+          <div class="formula">
+            \[\frac{\partial \mathcal{L}}{\partial W} = \sum_{t=1}^{T} \frac{\partial \mathcal{L}_t}{\partial W} = \sum_{t=1}^{T} \sum_{k=1}^{t} \frac{\partial \mathcal{L}_t}{\partial \mathbf{s}_t} \left(\prod_{j=k+1}^{t} \frac{\partial \mathbf{s}_j}{\partial \mathbf{s}_{j-1}}\right) \frac{\partial \mathbf{s}_k}{\partial W}\]
+          </div>
+
+          <h3>Vanishing and Exploding Gradients</h3>
+          <p>The product \(\prod_{j=k+1}^{t} \frac{\partial \mathbf{s}_j}{\partial \mathbf{s}_{j-1}}\) involves repeated multiplication of the Jacobian matrices. If the largest eigenvalue of \(W\) is &lt; 1, the product shrinks exponentially — <strong>vanishing gradients</strong> — and the network cannot learn long-range dependencies. If > 1, it grows exponentially — <strong>exploding gradients</strong>.</p>
+          <p><strong>Solutions:</strong> Gradient clipping (for exploding gradients), and architecturally: <strong>LSTMs</strong> and <strong>GRUs</strong> introduce gating mechanisms to maintain gradient flow over long sequences. <strong>Truncated BPTT</strong> limits the number of time steps the gradient is propagated back, trading long-range learning for computational feasibility.</p>
+
+                <div class="source-note">Source: CS7015 Lecture 14 (Khapra), Modules 14.1–14.4.</div>
+
+</div>
+      </div>
+    </div><!-- ==================== Q36 ==================== -->
+    <div class="tab-content" id="tab-3">
+      <div class="question-block">
+        <span class="q-tag important">Important — full answer</span>
+        <h2 class="q-title">36. Explore the GoogLeNet architecture and elucidate some of its significant contributions to the field of deep learning.</h2>
+        <div class="answer-body">
+
+          <h3>Overview</h3>
+          <p><strong>GoogLeNet</strong> (Szegedy et al., 2015) won the ILSVRC 2014 image classification challenge. It is a 22-layer deep network that introduced the <strong>Inception module</strong> as its core building block. Despite its depth, it has only ~4 million parameters (compared to AlexNet's ~60 million), making it both deeper and more parameter-efficient.</p>
+
+          <h3>The Inception Module</h3>
+          <p>Instead of choosing a single filter size for a convolutional layer, the Inception module applies multiple filter sizes <strong>in parallel</strong> and concatenates their outputs. A typical Inception module contains:</p>
+          <ul>
+            <li><strong>\(1 \times 1\) convolution</strong> — captures channel-wise patterns</li>
+            <li><strong>\(3 \times 3\) convolution</strong> — captures local spatial patterns</li>
+            <li><strong>\(5 \times 5\) convolution</strong> — captures wider spatial patterns</li>
+            <li><strong>\(3 \times 3\) max pooling</strong> — retains dominant features</li>
+          </ul>
+          <p>All branches operate on the same input and their outputs are concatenated along the channel dimension.</p>
+
+          <div class="svg-wrap">
+            <svg viewBox="0 0 500 280" xmlns="http://www.w3.org/2000/svg">
+              <!-- Input -->
+              <rect x="190" y="230" width="120" height="35" rx="5" fill="var(--surface2)" stroke="var(--border)"/>
+              <text x="250" y="252" text-anchor="middle" font-size="11" fill="var(--text)">Previous Layer</text>
+              <!-- Branches -->
+              <line x1="210" y1="230" x2="60" y2="190" stroke="var(--text-dim)" stroke-width="1"/>
+              <line x1="235" y1="230" x2="180" y2="190" stroke="var(--text-dim)" stroke-width="1"/>
+              <line x1="265" y1="230" x2="310" y2="190" stroke="var(--text-dim)" stroke-width="1"/>
+              <line x1="290" y1="230" x2="430" y2="190" stroke="var(--text-dim)" stroke-width="1"/>
+              <!-- 1x1 -->
+              <rect x="20" y="155" width="80" height="35" rx="5" fill="var(--surface)" stroke="var(--accent)"/>
+              <text x="60" y="177" text-anchor="middle" font-size="10" fill="var(--accent)">1×1 conv</text>
+              <!-- 1x1 + 3x3 -->
+              <rect x="130" y="155" width="80" height="35" rx="5" fill="var(--surface)" stroke="var(--accent)"/>
+              <text x="170" y="177" text-anchor="middle" font-size="10" fill="var(--accent)">1×1 conv</text>
+              <line x1="170" y1="155" x2="170" y2="125" stroke="var(--text-dim)" stroke-width="1"/>
+              <rect x="130" y="90" width="80" height="35" rx="5" fill="var(--surface)" stroke="var(--success)"/>
+              <text x="170" y="112" text-anchor="middle" font-size="10" fill="var(--success)">3×3 conv</text>
+              <!-- 1x1 + 5x5 -->
+              <rect x="270" y="155" width="80" height="35" rx="5" fill="var(--surface)" stroke="var(--accent)"/>
+              <text x="310" y="177" text-anchor="middle" font-size="10" fill="var(--accent)">1×1 conv</text>
+              <line x1="310" y1="155" x2="310" y2="125" stroke="var(--text-dim)" stroke-width="1"/>
+              <rect x="270" y="90" width="80" height="35" rx="5" fill="var(--surface)" stroke="var(--success)"/>
+              <text x="310" y="112" text-anchor="middle" font-size="10" fill="var(--success)">5×5 conv</text>
+              <!-- pool + 1x1 -->
+              <rect x="390" y="155" width="85" height="35" rx="5" fill="var(--surface)" stroke="var(--warning)"/>
+              <text x="432" y="177" text-anchor="middle" font-size="10" fill="var(--warning)">3×3 pool</text>
+              <line x1="432" y1="155" x2="432" y2="125" stroke="var(--text-dim)" stroke-width="1"/>
+              <rect x="390" y="90" width="85" height="35" rx="5" fill="var(--surface)" stroke="var(--accent)"/>
+              <text x="432" y="112" text-anchor="middle" font-size="10" fill="var(--accent)">1×1 conv</text>
+              <!-- Concat -->
+              <line x1="60" y1="155" x2="60" y2="55" stroke="var(--text-dim)" stroke-width="1"/>
+              <line x1="170" y1="90" x2="170" y2="55" stroke="var(--text-dim)" stroke-width="1"/>
+              <line x1="310" y1="90" x2="310" y2="55" stroke="var(--text-dim)" stroke-width="1"/>
+              <line x1="432" y1="90" x2="432" y2="55" stroke="var(--text-dim)" stroke-width="1"/>
+              <rect x="30" y="20" width="430" height="35" rx="5" fill="var(--surface2)" stroke="var(--accent)" stroke-width="2"/>
+              <text x="245" y="42" text-anchor="middle" font-size="11" font-weight="600" fill="var(--accent)">Filter Concatenation</text>
+              <text x="250" y="275" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text-muted)">Inception Module</text>
+            </svg>
+          </div>
+
+          <h3>The Role of 1×1 Convolutions</h3>
+          <p>\(1 \times 1\) convolutions serve as <strong>dimensionality reduction</strong> bottlenecks. Before the expensive \(3 \times 3\) and \(5 \times 5\) convolutions, a \(1 \times 1\) convolution reduces the number of input channels, dramatically reducing computation. This is the key to making the Inception module computationally feasible.</p>
+
+          <h3>Global Average Pooling</h3>
+          <p>Instead of multiple fully connected layers at the end (which dominate parameter counts in AlexNet/VGGNet), GoogLeNet uses <strong>global average pooling</strong> — each feature map is averaged into a single value. This replaces thousands of FC parameters and also acts as a structural regulariser. Accuracy improved by ~0.6% while significantly reducing parameters.</p>
+
+          <h3>Auxiliary Classifiers</h3>
+          <p>To combat the vanishing gradient problem in such a deep network, GoogLeNet attaches <strong>auxiliary classifiers</strong> at intermediate layers (connected to inception (4a) and inception (4d)). These inject gradients directly into intermediate layers during training, improving convergence. They are discarded at inference time.</p>
+
+          <h3>Significant Contributions</h3>
+          <ul>
+            <li><strong>Multi-scale feature extraction</strong> via parallel filters in a single layer</li>
+            <li><strong>1×1 convolutions for dimensionality reduction</strong> — now standard practice</li>
+            <li><strong>Global average pooling replacing FC layers</strong> — reduces parameters by orders of magnitude</li>
+            <li><strong>Auxiliary classifiers</strong> — a training strategy to help gradient flow in very deep networks</li>
+            <li>Showed that networks can go much deeper (22 layers) while using fewer parameters than shallower networks</li>
+          </ul>
+
+                <div class="source-note">Source: CS7015 Lecture 11 (Khapra), Module 11.8 (GoogLeNet).</div>
+
+</div>
+      </div>
+    </div><!-- ==================== Q37 ==================== -->
+    <div class="tab-content" id="tab-4">
+      <div class="question-block">
+        <span class="q-tag important">Important — full answer</span>
+        <h2 class="q-title">37. Explain the Transformer architecture and Large Language Models (LLMs). Discuss their applications in deep learning.</h2>
+        <div class="answer-body">
+
+          <h3>Motivation: Limitations of RNNs</h3>
+          <p>RNNs process sequences one token at a time, making them inherently <strong>sequential</strong> — they cannot be parallelised across time steps. They also struggle with <strong>long-range dependencies</strong> due to vanishing gradients, even with LSTMs/GRUs. The <strong>Transformer</strong> (Vaswani et al., 2017) addresses both issues by relying entirely on <strong>attention mechanisms</strong> instead of recurrence.</p>
+
+          <h3>Self-Attention Mechanism</h3>
+          <p>Self-attention allows each token in a sequence to attend to (look at) <em>every other token</em> directly, computing a weighted sum of representations. For each token, we compute three vectors from the input embedding \(\mathbf{x}\):</p>
+          <div class="formula">
+            \[\mathbf{Q} = \mathbf{X} W_Q, \quad \mathbf{K} = \mathbf{X} W_K, \quad \mathbf{V} = \mathbf{X} W_V\]
+          </div>
+          <p>\(\mathbf{Q}\) (Query), \(\mathbf{K}\) (Key), \(\mathbf{V}\) (Value) are obtained via learned linear projections. The attention output is:</p>
+          <div class="formula">
+            \[\text{Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{softmax}\left(\frac{\mathbf{Q}\mathbf{K}^T}{\sqrt{d_k}}\right) \mathbf{V}\]
+          </div>
+          <p>The scaling factor \(\sqrt{d_k}\) prevents the dot products from becoming too large, which would push the softmax into saturation.</p>
+
+          <h3>Multi-Head Attention</h3>
+          <p>Instead of a single attention function, the Transformer uses <strong>multiple attention heads</strong> in parallel, each with different learned projections. This allows the model to attend to different types of relationships simultaneously:</p>
+          <div class="formula">
+            \[\text{MultiHead}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{Concat}(\text{head}_1, \ldots, \text{head}_h) \, W_O\]
+          </div>
+          <p>where each \(\text{head}_i = \text{Attention}(\mathbf{Q} W_Q^i, \mathbf{K} W_K^i, \mathbf{V} W_V^i)\).</p>
+
+          <h3>Transformer Architecture</h3>
+          <p>The original Transformer is an <strong>encoder-decoder</strong> model:</p>
+          <p><strong>Encoder:</strong> A stack of \(N\) identical layers, each containing (i) a multi-head <strong>self-attention</strong> sublayer, and (ii) a position-wise <strong>feedforward</strong> sublayer. Each sublayer has a <strong>residual connection</strong> and <strong>layer normalisation</strong>.</p>
+          <p><strong>Decoder:</strong> Similar to the encoder, but with an additional <strong>cross-attention</strong> sublayer that attends to the encoder's output. The self-attention in the decoder is <strong>masked</strong> to prevent attending to future positions (maintaining autoregressive generation).</p>
+          <p><strong>Positional Encoding:</strong> Since there is no recurrence, position information is injected via sinusoidal positional encodings added to the input embeddings:</p>
+          <div class="formula">
+            \[PE_{(pos, 2i)} = \sin\left(\frac{pos}{10000^{2i/d}}\right), \quad PE_{(pos, 2i+1)} = \cos\left(\frac{pos}{10000^{2i/d}}\right)\]
+          </div>
+
+          <h3>Large Language Models (LLMs)</h3>
+          <p>LLMs are Transformer-based models trained on massive text corpora to predict the next token. They scale the Transformer architecture to billions of parameters. Key variants:</p>
+          <ul>
+            <li><strong>GPT (Generative Pre-trained Transformer):</strong> Uses only the <strong>decoder</strong> stack. Trained autoregressively (predicts next token). Used for text generation, conversation, code generation.</li>
+            <li><strong>BERT (Bidirectional Encoder Representations from Transformers):</strong> Uses only the <strong>encoder</strong> stack. Pre-trained with masked language modelling (predicting masked tokens). Used for classification, NER, question answering.</li>
+          </ul>
+
+          <h3>Applications</h3>
+          <ul>
+            <li><strong>Machine Translation:</strong> The original Transformer use-case; outperformed all RNN-based models.</li>
+            <li><strong>Text Generation &amp; Summarisation:</strong> GPT models generate coherent, contextual text.</li>
+            <li><strong>Computer Vision:</strong> Vision Transformers (ViT) apply self-attention to image patches for image classification.</li>
+            <li><strong>Speech Recognition:</strong> Whisper and other models use Transformer architectures for ASR.</li>
+            <li><strong>Code Generation:</strong> Models like Codex generate code from natural language descriptions.</li>
+            <li><strong>Multimodal Tasks:</strong> Models combining vision and language (image captioning, visual QA).</li>
+          </ul>
+
+                <div class="source-note">Source: CS7015 Lecture 16 (Khapra), Modules 16.1–16.5.</div>
+
+</div>
+      </div>
+    </div>
+
+</div>
+
+<script>
+function showTab(i) {
+  document.querySelectorAll('.tab-content').forEach((el, idx) => {
+    el.classList.toggle('active', idx === i);
+  });
+  document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
+    btn.classList.toggle('active', idx === i);
+  });
+}
+showTab(0);
+</script>
+</body>
+</html>

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit IV — Activation, Initialization, Word2Vec, Recommendations &amp; Object Detection | Deep Learning Techniques</title>
+<link rel="stylesheet" href="styles.css">
+<script>
+MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } };
+</script>
+<script id="MathJax-script" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+</head>
+<body>
+<div class="page-wrapper">
+
+  <nav class="unit-nav">
+    <a href="unit3.html" class="nav-prev">← Unit III</a>
+    <span class="nav-title">Unit IV: Activation, Initialization, Word2Vec, Recommendations &amp; Object Detection</span>
+    <a href="unit5.html" class="nav-next">Unit V →</a>
+    <a href="index.html" class="nav-home">Home</a>
+  </nav>
+
+  <div class="tabs" role="tablist">
+      <button class="tab-btn active" onclick="showTab(0)">Q28</button>
+      <button class="tab-btn" onclick="showTab(1)">Q29</button>
+      <button class="tab-btn" onclick="showTab(2)">Q30</button>
+      <button class="tab-btn" onclick="showTab(3)">Q31</button>
+      <button class="tab-btn" onclick="showTab(4)">Q32</button>
+  </div>
+
+    <!-- ==================== Q28 ==================== -->
+    <div class="tab-content active" id="tab-0">
+      <div class="question-block">
+        <span class="q-tag important">Important — full answer</span>
+        <h2 class="q-title">28. Explain the concept of activation functions. Discuss the commonly used activation functions and their advantages.</h2>
+        <div class="answer-body">
+
+          <h3>What is an Activation Function?</h3>
+          <p>In a feedforward neural network, the <strong>pre-activation</strong> at layer \(i\) is \(a_i = b_i + W_i h_{i-1}\), and the <strong>activation</strong> is \(h_i = g(a_i)\), where \(g\) is the activation function. It introduces non-linearity, which allows the network to learn complex decision boundaries. Without an activation function (or with a linear one), the entire network collapses into a single linear transformation regardless of depth.</p>
+
+          <h3>1. Sigmoid (Logistic)</h3>
+          <div class="formula">
+            \[\sigma(a) = \frac{1}{1 + e^{-a}} \qquad \text{Range: } (0, 1)\]
+          </div>
+          <p><strong>Advantages:</strong> Smooth, differentiable, outputs can be interpreted as probabilities. <strong>Disadvantages:</strong> (i) Outputs are not zero-centred. (ii) Saturates for large \(|a|\), causing <em>vanishing gradients</em> — since \(\sigma'(a) = \sigma(a)(1 - \sigma(a))\), the gradient \(\to 0\) when \(a\) is very large or very small. (iii) Involves exponential computation.</p>
+
+          <h3>2. Tanh (Hyperbolic Tangent)</h3>
+          <div class="formula">
+            \[\tanh(a) = \frac{e^a - e^{-a}}{e^a + e^{-a}} \qquad \text{Range: } (-1, 1)\]
+          </div>
+          <p>This is a scaled and shifted sigmoid: \(\tanh(a) = 2\sigma(2a) - 1\). <strong>Advantages:</strong> Zero-centred outputs, which helps gradient-based learning converge faster. <strong>Disadvantages:</strong> Still saturates for large \(|a|\) (vanishing gradient issue persists).</p>
+
+          <h3>3. ReLU (Rectified Linear Unit)</h3>
+          <div class="formula">
+            \[\text{ReLU}(a) = \max(0, a) \qquad \text{Range: } [0, \infty)\]
+          </div>
+          <p><strong>Advantages:</strong> (i) Does not saturate in the positive region — gradient is always 1 for \(a > 0\), which accelerates convergence significantly over sigmoid/tanh. (ii) Computationally efficient (just a threshold). (iii) Leads to sparse activations (many neurons output 0). <strong>Disadvantages:</strong> <em>Dying ReLU problem</em> — if \(a < 0\), gradient is 0, and the neuron may never activate again (especially with large learning rates). Not zero-centred.</p>
+
+          <h3>4. Leaky ReLU</h3>
+          <div class="formula">
+            \[\text{LeakyReLU}(a) = \begin{cases} a & \text{if } a > 0 \\ \alpha \, a & \text{if } a \leq 0 \end{cases} \qquad \alpha \approx 0.01\]
+          </div>
+          <p>Addresses the dying ReLU problem by allowing a small non-zero gradient (\(\alpha\)) for negative inputs. The neuron never fully dies.</p>
+
+          <h3>5. Parametric ReLU (PReLU)</h3>
+          <div class="formula">
+            \[\text{PReLU}(a) = \max(0, a) + \alpha \cdot \min(0, a)\]
+          </div>
+          <p>Same as Leaky ReLU, but \(\alpha\) is a <strong>learnable parameter</strong> that is updated via backpropagation. This allows the network to adaptively determine the optimal slope for negative values.</p>
+
+          <div class="svg-wrap">
+            <svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg">
+              <!-- Sigmoid -->
+              <g transform="translate(10,10)">
+                <rect width="140" height="180" rx="6" fill="var(--surface)" stroke="var(--border)"/>
+                <text x="70" y="20" text-anchor="middle" font-size="11" font-weight="600" fill="var(--accent)">Sigmoid</text>
+                <line x1="20" y1="100" x2="120" y2="100" stroke="var(--text-dim)" stroke-width="0.5"/>
+                <line x1="70" y1="35" x2="70" y2="165" stroke="var(--text-dim)" stroke-width="0.5"/>
+                <path d="M20,155 C35,155 50,150 60,130 Q70,100 80,70 C90,50 105,45 120,45" fill="none" stroke="var(--accent)" stroke-width="2"/>
+                <text x="70" y="175" text-anchor="middle" font-size="9" fill="var(--text-muted)">(0, 1)</text>
+              </g>
+              <!-- Tanh -->
+              <g transform="translate(165,10)">
+                <rect width="140" height="180" rx="6" fill="var(--surface)" stroke="var(--border)"/>
+                <text x="70" y="20" text-anchor="middle" font-size="11" font-weight="600" fill="var(--accent)">Tanh</text>
+                <line x1="20" y1="100" x2="120" y2="100" stroke="var(--text-dim)" stroke-width="0.5"/>
+                <line x1="70" y1="35" x2="70" y2="165" stroke="var(--text-dim)" stroke-width="0.5"/>
+                <path d="M20,155 C40,155 55,140 63,115 Q70,100 77,85 C85,60 100,45 120,45" fill="none" stroke="var(--accent)" stroke-width="2"/>
+                <text x="70" y="175" text-anchor="middle" font-size="9" fill="var(--text-muted)">(-1, 1)</text>
+              </g>
+              <!-- ReLU -->
+              <g transform="translate(320,10)">
+                <rect width="140" height="180" rx="6" fill="var(--surface)" stroke="var(--border)"/>
+                <text x="70" y="20" text-anchor="middle" font-size="11" font-weight="600" fill="var(--accent)">ReLU</text>
+                <line x1="20" y1="100" x2="120" y2="100" stroke="var(--text-dim)" stroke-width="0.5"/>
+                <line x1="70" y1="35" x2="70" y2="165" stroke="var(--text-dim)" stroke-width="0.5"/>
+                <line x1="20" y1="100" x2="70" y2="100" stroke="var(--accent)" stroke-width="2"/>
+                <line x1="70" y1="100" x2="120" y2="50" stroke="var(--accent)" stroke-width="2"/>
+                <text x="70" y="175" text-anchor="middle" font-size="9" fill="var(--text-muted)">[0, ∞)</text>
+              </g>
+              <!-- Leaky ReLU -->
+              <g transform="translate(475,10)">
+                <rect width="140" height="180" rx="6" fill="var(--surface)" stroke="var(--border)"/>
+                <text x="70" y="20" text-anchor="middle" font-size="11" font-weight="600" fill="var(--accent)">Leaky ReLU</text>
+                <line x1="20" y1="100" x2="120" y2="100" stroke="var(--text-dim)" stroke-width="0.5"/>
+                <line x1="70" y1="35" x2="70" y2="165" stroke="var(--text-dim)" stroke-width="0.5"/>
+                <line x1="20" y1="105" x2="70" y2="100" stroke="var(--accent)" stroke-width="2"/>
+                <line x1="70" y1="100" x2="120" y2="50" stroke="var(--accent)" stroke-width="2"/>
+                <text x="35" y="120" font-size="9" fill="var(--text-muted)">αa</text>
+                <text x="70" y="175" text-anchor="middle" font-size="9" fill="var(--text-muted)">(-∞, ∞)</text>
+              </g>
+            </svg>
+          </div>
+
+          <h3>Summary of Choice</h3>
+          <p>In practice, <strong>ReLU</strong> is the default choice for hidden layers (much faster convergence than sigmoid/tanh). If dying neurons are a concern, use <strong>Leaky ReLU</strong> or <strong>PReLU</strong>. Sigmoid is primarily used at the output layer for binary classification, and softmax for multi-class classification.</p>
+
+                <div class="source-note">Source: CS7015 Lecture 9 (Khapra), Modules 9.1–9.5.</div>
+
+</div>
+      </div>
+    </div><!-- ==================== Q29 ==================== -->
+    <div class="tab-content" id="tab-1">
+      <div class="question-block">
+        <span class="q-tag important">Important — full answer</span>
+        <h2 class="q-title">29. What is weight initialization? Discuss the commonly used weight initialization methods in deep learning.</h2>
+        <div class="answer-body">
+
+          <h3>Why Weight Initialization Matters</h3>
+          <p>Training deep neural networks is a <em>game of gradients</em>. The gradient with respect to a parameter is proportional to the input to that parameter. If weights are initialized poorly, the activations at each layer can either <strong>explode</strong> (grow exponentially) or <strong>vanish</strong> (shrink to near zero), making learning impossible. Good initialization ensures that the variance of activations and gradients remains stable across layers.</p>
+
+          <h3>Naive Initialization (Problems)</h3>
+          <p><strong>All zeros:</strong> Every neuron computes the same output; gradients are identical; the network cannot break symmetry. <strong>Small random values (e.g., \(\mathcal{N}(0, 0.01)\)):</strong> Works for shallow networks, but in deep networks the activations shrink exponentially layer by layer (variance collapses), leading to vanishing gradients. <strong>Large random values:</strong> Activations saturate (for sigmoid/tanh), gradients vanish again.</p>
+
+          <h3>Xavier / Glorot Initialization</h3>
+          <p>Designed for networks using <strong>sigmoid</strong> or <strong>tanh</strong> activations (symmetric, approximately linear near zero). The key insight is to keep the variance of activations the same across layers.</p>
+          <div class="formula">
+            \[W \sim \mathcal{N}\left(0, \; \frac{2}{n_{\text{in}} + n_{\text{out}}}\right)\]
+          </div>
+          <p>Alternatively, using a uniform distribution:</p>
+          <div class="formula">
+            \[W \sim \mathcal{U}\left(-\sqrt{\frac{6}{n_{\text{in}} + n_{\text{out}}}}, \; \sqrt{\frac{6}{n_{\text{in}} + n_{\text{out}}}}\right)\]
+          </div>
+          <p>Here \(n_{\text{in}}\) is the number of input neurons (fan-in) and \(n_{\text{out}}\) is the number of output neurons (fan-out) of the layer. This ensures \(\text{Var}(h_i) \approx \text{Var}(h_{i-1})\) — i.e., the signal neither amplifies nor decays.</p>
+
+          <h3>He (Kaiming) Initialization</h3>
+          <p>Designed for networks using <strong>ReLU</strong> activations. Since ReLU sets all negative inputs to zero, half the neurons are inactive on average. He initialization compensates for this by using a larger variance:</p>
+          <div class="formula">
+            \[W \sim \mathcal{N}\left(0, \; \frac{2}{n_{\text{in}}}\right)\]
+          </div>
+          <p>The factor of 2 (instead of 1) accounts for the fact that ReLU zeros out approximately half the activations. This maintains stable activation magnitudes throughout deep ReLU networks.</p>
+
+          <h3>Summary</h3>
+          <table>
+            <thead>
+              <tr><th>Method</th><th>Variance</th><th>Best For</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Xavier / Glorot</td><td>\(\frac{2}{n_{\text{in}} + n_{\text{out}}}\)</td><td>Sigmoid, Tanh</td></tr>
+              <tr><td>He / Kaiming</td><td>\(\frac{2}{n_{\text{in}}}\)</td><td>ReLU and variants</td></tr>
+            </tbody>
+          </table>
+          <p>Modern deep learning frameworks typically default to He initialization for ReLU networks. When using batch normalisation, the sensitivity to initialisation is reduced, but proper initialisation still provides faster convergence.</p>
+
+                <div class="source-note">Source: CS7015 Lecture 9 (Khapra), Module 9.6.</div>
+
+</div>
+      </div>
+    </div><!-- ==================== Q30 ==================== -->
+    <div class="tab-content" id="tab-2">
+      <div class="question-block">
+        <span class="q-tag important">Important — full answer</span>
+        <h2 class="q-title">30. What is Word2Vec? Describe how Word2Vec generates word embeddings.</h2>
+        <div class="answer-body">
+
+          <h3>Motivation</h3>
+          <p>Traditional representations like <strong>one-hot vectors</strong> encode each word as a sparse vector of size \(|V|\) (vocabulary size), where only the \(i\)-th element is 1. This representation has two problems: (i) it is very high-dimensional (\(|V|\) can be \(10^5\)+), and (ii) it captures no semantic similarity — the dot product between any two one-hot vectors is 0.</p>
+          <p><strong>Word2Vec</strong> (Mikolov et al., 2013) is a method that learns dense, low-dimensional vector representations of words (called <strong>word embeddings</strong>) such that semantically similar words have similar vectors. The core idea comes from the <em>distributional hypothesis</em>: a word's meaning is captured by the words that frequently appear near it.</p>
+
+          <h3>Architecture 1: Continuous Bag of Words (CBOW)</h3>
+          <p>CBOW predicts a <strong>target (centre) word</strong> given its surrounding <strong>context words</strong>. Given a window of size \(c\) around the target word \(w_t\), the model maximises:</p>
+          <div class="formula">
+            \[\frac{1}{T}\sum_{t=1}^{T} \log P(w_t \mid w_{t-c}, \ldots, w_{t-1}, w_{t+1}, \ldots, w_{t+c})\]
+          </div>
+          <p>The context word vectors are averaged and passed through a hidden layer (no activation), and then a softmax output layer predicts the probability over the vocabulary. The hidden layer weights give the word embeddings.</p>
+
+          <h3>Architecture 2: Skip-gram</h3>
+          <p>Skip-gram does the opposite — it predicts the <strong>context words</strong> given a single <strong>input (centre) word</strong>. It maximises:</p>
+          <div class="formula">
+            \[\frac{1}{T}\sum_{t=1}^{T} \sum_{-c \leq j \leq c, \; j \neq 0} \log P(w_{t+j} \mid w_t)\]
+          </div>
+          <p>The probability is computed using softmax:</p>
+          <div class="formula">
+            \[P(w_O \mid w_I) = \frac{\exp(\mathbf{u}_{w_O}^T \mathbf{v}_{w_I})}{\sum_{w=1}^{|V|} \exp(\mathbf{u}_{w}^T \mathbf{v}_{w_I})}\]
+          </div>
+          <p>Here \(\mathbf{v}_{w_I}\) is the input vector of the centre word and \(\mathbf{u}_{w_O}\) is the output vector of the context word. There are two embedding matrices — one for input and one for output. Typically, the input matrix is used as the final word embeddings.</p>
+
+          <div class="svg-wrap">
+            <svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg">
+              <!-- CBOW side -->
+              <text x="140" y="15" text-anchor="middle" font-size="12" font-weight="700" fill="var(--accent)">CBOW</text>
+              <rect x="10" y="30" width="80" height="170" rx="5" fill="var(--surface)" stroke="var(--border)"/>
+              <text x="50" y="55" text-anchor="middle" font-size="10" fill="var(--text)">w(t-2)</text>
+              <text x="50" y="85" text-anchor="middle" font-size="10" fill="var(--text)">w(t-1)</text>
+              <text x="50" y="145" text-anchor="middle" font-size="10" fill="var(--text)">w(t+1)</text>
+              <text x="50" y="175" text-anchor="middle" font-size="10" fill="var(--text)">w(t+2)</text>
+              <text x="50" y="112" text-anchor="middle" font-size="9" fill="var(--text-dim)">context</text>
+              <line x1="95" y1="115" x2="135" y2="115" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#arr2)"/>
+              <rect x="140" y="85" width="60" height="60" rx="5" fill="none" stroke="var(--accent)" stroke-width="2"/>
+              <text x="170" y="120" text-anchor="middle" font-size="10" fill="var(--accent)">avg</text>
+              <line x1="205" y1="115" x2="245" y2="115" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#arr2)"/>
+              <rect x="250" y="95" width="50" height="40" rx="5" fill="var(--surface2)" stroke="var(--accent)"/>
+              <text x="275" y="120" text-anchor="middle" font-size="10" fill="var(--success)">w(t)</text>
+              <text x="275" y="150" text-anchor="middle" font-size="9" fill="var(--text-muted)">target</text>
+
+              <!-- Skip-gram side -->
+              <text x="460" y="15" text-anchor="middle" font-size="12" font-weight="700" fill="var(--accent)">Skip-gram</text>
+              <rect x="370" y="85" width="60" height="50" rx="5" fill="var(--surface2)" stroke="var(--accent)"/>
+              <text x="400" y="115" text-anchor="middle" font-size="10" fill="var(--success)">w(t)</text>
+              <text x="400" y="150" text-anchor="middle" font-size="9" fill="var(--text-muted)">input</text>
+              <line x1="435" y1="110" x2="475" y2="110" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#arr2)"/>
+              <rect x="480" y="30" width="100" height="170" rx="5" fill="var(--surface)" stroke="var(--border)"/>
+              <text x="530" y="55" text-anchor="middle" font-size="10" fill="var(--text)">w(t-2)</text>
+              <text x="530" y="85" text-anchor="middle" font-size="10" fill="var(--text)">w(t-1)</text>
+              <text x="530" y="145" text-anchor="middle" font-size="10" fill="var(--text)">w(t+1)</text>
+              <text x="530" y="175" text-anchor="middle" font-size="10" fill="var(--text)">w(t+2)</text>
+              <text x="530" y="112" text-anchor="middle" font-size="9" fill="var(--text-dim)">context</text>
+              <defs><marker id="arr2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--text-muted)"/></marker></defs>
+            </svg>
+          </div>
+
+          <h3>Negative Sampling</h3>
+          <p>Computing the full softmax over \(|V|\) words is expensive. <strong>Negative sampling</strong> approximates it by training the model to distinguish the true context word from \(k\) randomly sampled "negative" (non-context) words. The objective for a pair \((w_I, w_O)\) becomes:</p>
+          <div class="formula">
+            \[\log \sigma(\mathbf{u}_{w_O}^T \mathbf{v}_{w_I}) + \sum_{i=1}^{k} \mathbb{E}_{w_i \sim P_n(w)} \left[\log \sigma(-\mathbf{u}_{w_i}^T \mathbf{v}_{w_I})\right]\]
+          </div>
+          <p>Negative words are sampled from a noise distribution \(P_n(w) \propto f(w)^{3/4}\), where \(f(w)\) is the word frequency.</p>
+
+          <h3>Key Properties of Word2Vec Embeddings</h3>
+          <p>The learned vectors exhibit semantic regularities. For example, vector arithmetic captures analogies: \(\mathbf{v}_{\text{king}} - \mathbf{v}_{\text{man}} + \mathbf{v}_{\text{woman}} \approx \mathbf{v}_{\text{queen}}\). Similarity between words is measured by cosine similarity between their embedding vectors.</p>
+
+                <div class="source-note">Source: CS7015 Lecture 10 (Khapra), Modules 10.1–10.4.</div>
+
+</div>
+      </div>
+    </div><!-- ==================== Q31 ==================== -->
+    <div class="tab-content" id="tab-3">
+      <div class="question-block">
+        <span class="q-tag important">Important — full answer</span>
+        <h2 class="q-title">31. How is user history used to generate product or content recommendations? Discuss its applications.</h2>
+        <div class="answer-body">
+
+          <h3>Recommendations Using Deep Learning</h3>
+          <p>Recommendation systems aim to predict a user's preference for items (products, movies, songs, etc.) based on their past interactions. Deep learning enables learning complex, non-linear relationships between users and items from large-scale interaction data.</p>
+
+          <h3>User History as Input</h3>
+          <p>A user's <strong>history</strong> is a sequence of past interactions — items viewed, clicked, purchased, rated, or time spent. This history is fed to the model as input features. Common representations include:</p>
+          <ul>
+            <li><strong>Embeddings:</strong> Each item in the user's history is mapped to a dense vector (similar to word embeddings in Word2Vec). The user's history becomes a sequence of embedding vectors.</li>
+            <li><strong>Aggregated profile:</strong> The item embeddings are averaged or pooled to create a single user-profile vector.</li>
+            <li><strong>Sequential models:</strong> RNNs or Transformers process the ordered history to capture temporal patterns (e.g., what a user is likely to want <em>next</em> based on their recent activity).</li>
+          </ul>
+
+          <h3>Collaborative Filtering with Deep Learning</h3>
+          <p>In matrix factorisation approaches, users and items are each represented as latent vectors. The predicted rating is the dot product of the user and item vectors. Deep learning extends this by passing the concatenated user and item embeddings through a feedforward network to capture non-linear interactions:</p>
+          <div class="formula">
+            \[\hat{r}_{ui} = f_\theta(\mathbf{e}_u, \mathbf{e}_i)\]
+          </div>
+          <p>where \(\mathbf{e}_u\) is the user embedding, \(\mathbf{e}_i\) is the item embedding, and \(f_\theta\) is a neural network.</p>
+
+          <h3>Content-Based Filtering with Deep Features</h3>
+          <p>CNNs and RNNs can extract features from the content itself — images (CNN features from product photos), text (RNN/Transformer features from reviews or descriptions). These content features are combined with collaborative signals to improve recommendations, especially for new items with no interaction history (cold-start problem).</p>
+
+          <h3>Applications</h3>
+          <ul>
+            <li><strong>E-commerce:</strong> Product recommendations based on browsing and purchase history (Amazon, Flipkart).</li>
+            <li><strong>Video/Music streaming:</strong> Netflix uses deep learning to recommend shows based on watch history; Spotify uses it for playlist generation.</li>
+            <li><strong>Social media:</strong> Feed ranking and content recommendation on platforms like YouTube, Instagram — using user engagement history (likes, shares, watch time).</li>
+            <li><strong>Advertising:</strong> Predicting click-through rates (CTR) for ads based on user behaviour history.</li>
+            <li><strong>News:</strong> Personalised news feeds based on reading patterns and topic preferences.</li>
+          </ul>
+
+                <div class="source-note">Source: CS7015 Lecture 10 (Khapra), Module 10.5; general deep learning recommendations.</div>
+
+</div>
+      </div>
+    </div><!-- ==================== Q32 ==================== -->
+    <div class="tab-content" id="tab-4">
+      <div class="question-block">
+        <span class="q-tag important">Important — full answer</span>
+        <h2 class="q-title">32. Describe the process of object detection in images and videos using deep learning.</h2>
+        <div class="answer-body">
+
+          <h3>Object Detection vs. Classification</h3>
+          <p><strong>Image classification</strong> assigns a single label to the entire image. <strong>Object detection</strong> goes further: it must (i) localise one or more objects in the image by drawing <strong>bounding boxes</strong> around them, and (ii) classify each detected object.</p>
+
+          <h3>R-CNN (Regions with CNN features)</h3>
+          <p>The first major deep-learning-based object detection pipeline (Girshick et al., 2014):</p>
+          <ol>
+            <li><strong>Region proposals:</strong> Use a method like Selective Search to generate ~2000 candidate bounding box regions.</li>
+            <li><strong>Feature extraction:</strong> Warp each region to a fixed size and pass it through a CNN (e.g., AlexNet) to extract a feature vector.</li>
+            <li><strong>Classification:</strong> Feed the feature vector into SVMs (one per class) to classify the region.</li>
+            <li><strong>Bounding box regression:</strong> Refine the bounding box coordinates using a linear regressor.</li>
+          </ol>
+          <p><strong>Limitation:</strong> Very slow — each region proposal requires a separate forward pass through the CNN.</p>
+
+          <h3>Fast R-CNN</h3>
+          <p>Runs the CNN on the <strong>entire image once</strong> to produce a shared feature map. Region proposals are then projected onto this feature map, and <strong>RoI (Region of Interest) pooling</strong> extracts a fixed-size feature vector for each region. A single network jointly performs classification and bounding box regression. This is significantly faster than R-CNN.</p>
+
+          <h3>Faster R-CNN</h3>
+          <p>Replaces Selective Search with a <strong>Region Proposal Network (RPN)</strong> — a small CNN that slides over the feature map and predicts whether each location contains an object, along with a bounding box. The RPN and the detection network share the same convolutional feature map, making the entire pipeline end-to-end trainable and much faster.</p>
+
+          <div class="svg-wrap">
+            <svg viewBox="0 0 620 140" xmlns="http://www.w3.org/2000/svg">
+              <rect x="5" y="30" width="80" height="80" rx="5" fill="var(--surface)" stroke="var(--border)"/>
+              <text x="45" y="75" text-anchor="middle" font-size="11" fill="var(--text)">Image</text>
+              <line x1="90" y1="70" x2="130" y2="70" stroke="var(--text-muted)" stroke-width="1.5" marker-end="url(#arr3)"/>
+              <rect x="135" y="30" width="90" height="80" rx="5" fill="var(--surface2)" stroke="var(--accent)"/>
+              <text x="180" y="65" text-anchor="middle" font-size="10" fill="var(--accent)">Shared</text>
+              <text x="180" y="80" text-anchor="middle" font-size="10" fill="var(--accent)">CNN</text>
+              <line x1="230" y1="55" x2="280" y2="35" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#arr3)"/>
+              <line x1="230" y1="85" x2="280" y2="105" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#arr3)"/>
+              <rect x="285" y="10" width="90" height="50" rx="5" fill="var(--surface)" stroke="var(--warning)"/>
+              <text x="330" y="30" text-anchor="middle" font-size="9" font-weight="600" fill="var(--warning)">RPN</text>
+              <text x="330" y="45" text-anchor="middle" font-size="8" fill="var(--text-muted)">Proposals</text>
+              <rect x="285" y="80" width="90" height="50" rx="5" fill="var(--surface)" stroke="var(--success)"/>
+              <text x="330" y="100" text-anchor="middle" font-size="9" font-weight="600" fill="var(--success)">RoI Pool</text>
+              <text x="330" y="115" text-anchor="middle" font-size="8" fill="var(--text-muted)">+ Classify</text>
+              <line x1="375" y1="35" x2="405" y2="55" stroke="var(--text-muted)" stroke-width="1"/>
+              <line x1="380" y1="105" x2="405" y2="85" stroke="var(--text-muted)" stroke-width="1"/>
+              <rect x="410" y="45" width="100" height="55" rx="5" fill="var(--surface)" stroke="var(--border)"/>
+              <text x="460" y="68" text-anchor="middle" font-size="9" fill="var(--text)">Class + BBox</text>
+              <text x="460" y="83" text-anchor="middle" font-size="9" fill="var(--text)">predictions</text>
+              <text x="310" y="140" text-anchor="middle" font-size="10" font-weight="600" fill="var(--text-muted)">Faster R-CNN Pipeline</text>
+              <defs><marker id="arr3" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="var(--text-muted)"/></marker></defs>
+            </svg>
+          </div>
+
+          <h3>YOLO (You Only Look Once)</h3>
+          <p>A fundamentally different approach — treats object detection as a <strong>single regression problem</strong>. The image is divided into an \(S \times S\) grid. Each grid cell predicts \(B\) bounding boxes (each with coordinates and a confidence score) and class probabilities simultaneously, in a single forward pass.</p>
+          <p><strong>Advantages:</strong> Extremely fast — capable of real-time detection. <strong>Trade-off:</strong> May be less accurate on small or overlapping objects compared to two-stage methods like Faster R-CNN.</p>
+
+          <h3>Extension to Video</h3>
+          <p>For video, object detection is applied frame-by-frame. Temporal consistency is maintained through tracking algorithms or by using 3D CNNs / temporal attention that consider sequences of frames.</p>
+
+                <div class="source-note">Source: CS7015 Lecture 12 (Khapra), Modules 12.1–12.5.</div>
+
+</div>
+      </div>
+    </div>
+
+</div>
+
+<script>
+function showTab(i) {
+  document.querySelectorAll('.tab-content').forEach((el, idx) => {
+    el.classList.toggle('active', idx === i);
+  });
+  document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
+    btn.classList.toggle('active', idx === i);
+  });
+}
+showTab(0);
+</script>
+</body>
+</html>

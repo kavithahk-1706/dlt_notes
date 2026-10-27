@@ -168,7 +168,7 @@ while not converged:
         </table>
         <p><strong>Result: converged after epoch 4</strong> with \(w_1=1,\ w_2=1,\ b=-1\) — no weight changed, so training stops.</p>
         <p>Final decision boundary: \(x_1 + x_2 - 1 = 0\), which correctly classifies all 4 points of OR — a perceptron can represent OR precisely because it is linearly separable.</p>
-        <div class="source-note">Source: CS7015 Lecture 2 (Khapra, IIT Madras) — Modules 2.3–2.6. Worked format follows class notes (PLA epoch table method).</div>
+        <div class="source-note">Source: CS7015 Lecture 2 (Khapra, IIT Madras) — Modules 2.3–2.6.</div>
       </div>
     </div>
   </div>
@@ -197,9 +197,9 @@ while not converged:
       <h2 class="q-title">4. What are multilayer perceptrons (MLPs), and how do they differ from single-layer perceptrons?</h2>
       <div class="answer-body">
         <ul>
-          <li><strong>MLP:</strong> a network with an input layer, one or more <strong>hidden layers</strong>, and an output layer — "multilayered network of perceptrons."</li>
-          <li>Each hidden neuron fires for specific input regions; combining several such neurons in a hidden layer lets the network carve up input space into more than one hyperplane region.</li>
-          <li><strong>Key theorem (Khapra Lec 2):</strong> any boolean function of n inputs can be represented exactly by an MLP with one hidden layer containing 2ⁿ perceptrons + one output perceptron. So MLPs can represent even non-linearly-separable functions like XOR (SLPs cannot).</li>
+          <li><strong>MLP:</strong> a network with an input layer, one or more <strong>hidden layers</strong>, and an output layer.</li>
+          <li>Each hidden neuron fires for specific input regions; combining several such neurons lets the network carve up input space into more than one hyperplane region.</li>
+          <li><strong>Key theorem (Khapra Lec 2):</strong> any boolean function of n inputs can be represented exactly by an MLP with one hidden layer containing 2ⁿ perceptrons + one output perceptron.</li>
           <li>Differences table:</li>
         </ul>
         <table>
@@ -219,10 +219,10 @@ while not converged:
       <h2 class="q-title">5. Explain the role of sigmoid neurons in feed forward neural networks.</h2>
       <div class="answer-body">
         <ul>
-          <li>Perceptron's hard threshold is "harsh" — a tiny change in input (e.g. rating 0.49 → 0.51) flips the output completely.</li>
-          <li><strong>Sigmoid neuron</strong> replaces this with a smooth function: y = σ(wx+b) = 1/(1+e^−(wx+b)). Output is a continuous value between 0 and 1, not a hard 0/1.</li>
-          <li>This smoothness is exactly what makes the loss function <strong>differentiable</strong> — enabling gradient descent to work, since small changes in weights produce small, smooth changes in output/loss (no discontinuous jumps).</li>
-          <li>Without smooth activations, we couldn't compute meaningful gradients for learning — this directly motivates the shift from perceptrons to sigmoid-based feedforward networks trained by gradient descent + backpropagation.</li>
+          <li>Perceptron's hard threshold is "harsh" — a tiny change in input flips the output completely.</li>
+          <li><strong>Sigmoid neuron</strong> replaces this with a smooth function: y = σ(wx+b) = 1/(1+e⁻⁽ʷˣ⁺ᵇ⁾). Output is a continuous value between 0 and 1.</li>
+          <li>This smoothness is exactly what makes the loss function <strong>differentiable</strong> — enabling gradient descent to work.</li>
+          <li>Without smooth activations, we couldn't compute meaningful gradients for learning.</li>
         </ul>
       </div>
     </div>
@@ -234,110 +234,34 @@ while not converged:
       <span class="q-tag important">Important — full answer</span>
       <h2 class="q-title">6. What is back propagation, and how is it used to train feed forward neural networks?</h2>
       <div class="answer-body">
-        <p><strong>Backpropagation</strong> is the algorithm used to compute the gradient of the loss function \(L(\theta)\) with respect to every weight and bias in a feedforward network, so that gradient descent can update the parameters. It is not a separate learning rule from gradient descent — it is the efficient method used to obtain the gradients that gradient descent then applies.</p>
-
-        <h3>Notation used below</h3>
+        <p><strong>Backpropagation</strong> is the algorithm used to compute the gradient of the loss function \(L(\theta)\) with respect to every weight and bias in a feedforward network, so that gradient descent can update the parameters.</p>
+        <h3>Notation</h3>
         <table>
           <tr><th>Symbol</th><th>Meaning</th></tr>
-          <tr><td>\(x\)</td><td>network input</td></tr>
           <tr><td>\(W_i,\ b_i\)</td><td>weight matrix and bias of layer \(i\)</td></tr>
-          <tr><td>\(a_i\)</td><td>pre-activation of layer \(i\): \(a_i = b_i + W_i h_{i-1}\)</td></tr>
-          <tr><td>\(h_i\)</td><td>activation of layer \(i\): \(h_i = g(a_i)\), where \(g\) is a non-linearity (e.g. sigmoid)</td></tr>
-          <tr><td>\(\hat{y}\)</td><td>predicted output (from the final layer)</td></tr>
-          <tr><td>\(y\)</td><td>true/target label</td></tr>
-          <tr><td>\(\theta\)</td><td>the full set of trainable parameters \(\{W_1,b_1,\dots,W_L,b_L\}\)</td></tr>
+          <tr><td>\(a_i\)</td><td>pre-activation: \(a_i = b_i + W_i h_{i-1}\)</td></tr>
+          <tr><td>\(h_i\)</td><td>activation: \(h_i = g(a_i)\)</td></tr>
+          <tr><td>\(\hat{y}\)</td><td>predicted output</td></tr>
         </table>
-
-        <h3>Network diagram</h3>
-        <div class="svg-wrap">
-        <svg viewBox="0 0 520 220" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="50" cy="70" r="16" fill="var(--surface2)" stroke="var(--border)"/>
-          <text x="50" y="75" text-anchor="middle" fill="var(--text)" font-size="12">x</text>
-          <circle cx="180" cy="50" r="16" fill="var(--surface2)" stroke="var(--accent)"/>
-          <text x="180" y="55" text-anchor="middle" fill="var(--text)" font-size="11">h₁</text>
-          <circle cx="180" cy="110" r="16" fill="var(--surface2)" stroke="var(--accent)"/>
-          <text x="180" y="115" text-anchor="middle" fill="var(--text)" font-size="11">h₁</text>
-          <circle cx="320" cy="50" r="16" fill="var(--surface2)" stroke="var(--accent)"/>
-          <text x="320" y="55" text-anchor="middle" fill="var(--text)" font-size="11">h₂</text>
-          <circle cx="320" cy="110" r="16" fill="var(--surface2)" stroke="var(--accent)"/>
-          <text x="320" y="115" text-anchor="middle" fill="var(--text)" font-size="11">h₂</text>
-          <circle cx="450" cy="80" r="18" fill="var(--surface2)" stroke="var(--important)"/>
-          <text x="450" y="85" text-anchor="middle" fill="var(--text)" font-size="11">ŷ</text>
-
-          <line x1="65" y1="70" x2="166" y2="52" stroke="var(--text-muted)"/>
-          <line x1="65" y1="70" x2="166" y2="108" stroke="var(--text-muted)"/>
-          <line x1="196" y1="50" x2="306" y2="52" stroke="var(--text-muted)"/>
-          <line x1="196" y1="110" x2="306" y2="108" stroke="var(--text-muted)"/>
-          <line x1="196" y1="50" x2="306" y2="108" stroke="var(--text-muted)"/>
-          <line x1="196" y1="110" x2="306" y2="52" stroke="var(--text-muted)"/>
-          <line x1="336" y1="52" x2="435" y2="76" stroke="var(--text-muted)"/>
-          <line x1="336" y1="108" x2="435" y2="84" stroke="var(--text-muted)"/>
-
-          <text x="255" y="20" text-anchor="middle" fill="var(--accent-hover)" font-size="11">forward pass →</text>
-          <path d="M 450 150 L 60 150" stroke="var(--important)" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
-          <text x="255" y="170" text-anchor="middle" fill="var(--important)" font-size="11">← gradient flows backward (this is backprop)</text>
-          <defs>
-            <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-              <path d="M0,0 L6,3 L0,6 Z" fill="var(--important)"/>
-            </marker>
-          </defs>
-        </svg>
-        </div>
-
         <h3>The core idea — responsibility via the chain rule</h3>
-        <p>A loss is observed only at the output. To know how much a weight deep inside the network (e.g. \(W_1\)) is "responsible" for that loss, we cannot connect it to the loss directly — we must pass responsibility back <em>through</em> every layer that lies between \(W_1\) and \(\hat{y}\). This is precisely what the chain rule computes:</p>
         <div class="formula">
-          \[
-          \frac{\partial L}{\partial W_1} =
-          \frac{\partial L}{\partial \hat{y}} \cdot
-          \frac{\partial \hat{y}}{\partial a_3} \cdot
-          \frac{\partial a_3}{\partial h_2} \cdot
-          \frac{\partial h_2}{\partial a_2} \cdot
-          \frac{\partial a_2}{\partial h_1} \cdot
-          \frac{\partial h_1}{\partial a_1} \cdot
-          \frac{\partial a_1}{\partial W_1}
-          \]
+          \[\frac{\partial L}{\partial W_1} = \frac{\partial L}{\partial \hat{y}} \cdot \frac{\partial \hat{y}}{\partial a_3} \cdot \frac{\partial a_3}{\partial h_2} \cdot \frac{\partial h_2}{\partial a_2} \cdot \frac{\partial a_2}{\partial h_1} \cdot \frac{\partial h_1}{\partial a_1} \cdot \frac{\partial a_1}{\partial W_1}\]
         </div>
-        <p>Computed as one long product per weight, this is intractable for a deep network. Backpropagation avoids this by computing gradients <strong>layer by layer, from the output backward</strong>, reusing each layer's result for the layer before it — instead of re-deriving the full chain separately for every parameter.</p>
-
-        <h3>Setup</h3>
-        <p>For layer \(i\): pre-activation \(a_i = b_i + W_i h_{i-1}\), activation \(h_i = g(a_i)\). The output layer uses <strong>softmax</strong>, \(\hat{y}_j = \dfrac{e^{a_{L,j}}}{\sum_i e^{a_{L,i}}}\), paired with <strong>cross-entropy loss</strong> \(L(\theta) = -\log \hat{y}_\ell\), where \(\ell\) is the true class index.</p>
-
+        <p>Backpropagation computes gradients <strong>layer by layer, from output backward</strong>, reusing each layer's result for the layer before it.</p>
         <h3>Three gradient computations, in order</h3>
         <ol>
-          <li>
-            <strong>Gradient w.r.t. the output pre-activation:</strong>
-            \[ \frac{\partial L}{\partial a_L} = \hat{y} - e^{(\ell)} \]
-            where \(e^{(\ell)}\) is the one-hot true label vector (1 at the correct class, 0 everywhere else). This clean closed form comes from softmax and cross-entropy cancelling neatly under differentiation — no separate gradient-of-softmax step needed.
-          </li>
-          <li>
-            <strong>Gradient w.r.t. each hidden layer</strong> (computed backward, from layer \(L{-}1\) down to layer 1):
-            \[ \frac{\partial L}{\partial h_i} = W_{i+1}^{\top} \cdot \frac{\partial L}{\partial a_{i+1}} \]
-            \[ \frac{\partial L}{\partial a_i} = \frac{\partial L}{\partial h_i} \odot g'(a_i) \]
-            The first line pushes the gradient back through the weight matrix of the layer <em>above</em> (transposed). The second line pushes it through this layer's own activation function — \(\odot\) means elementwise multiplication, and \(g'(a_i) = h_i(1-h_i)\) for sigmoid.
-          </li>
-          <li>
-            <strong>Gradient w.r.t. the parameters themselves</strong> (what gradient descent actually uses):
-            \[ \frac{\partial L}{\partial W_k} = \frac{\partial L}{\partial a_k} \cdot h_{k-1}^{\top} \qquad \frac{\partial L}{\partial b_k} = \frac{\partial L}{\partial a_k} \]
-          </li>
+          <li><strong>Output pre-activation:</strong> \(\frac{\partial L}{\partial a_L} = \hat{y} - e^{(\ell)}\) (softmax + cross-entropy)</li>
+          <li><strong>Hidden layers</strong> (backward): \(\frac{\partial L}{\partial h_i} = W_{i+1}^{\top} \cdot \frac{\partial L}{\partial a_{i+1}}\), then \(\frac{\partial L}{\partial a_i} = \frac{\partial L}{\partial h_i} \odot g'(a_i)\)</li>
+          <li><strong>Parameters:</strong> \(\frac{\partial L}{\partial W_k} = \frac{\partial L}{\partial a_k} \cdot h_{k-1}^{\top}\), \(\frac{\partial L}{\partial b_k} = \frac{\partial L}{\partial a_k}\)</li>
         </ol>
-
         <h3>Algorithm</h3>
-        <pre><code>for t in range(max_iterations):
-    h, a, y_hat = forward_propagation(theta_t)
-    grad_theta_t = backward_propagation(h, a, y, y_hat)
-    theta_(t+1) = theta_t - eta * grad_theta_t
-
-backward_propagation:
-    dL/daL = y_hat - e(ℓ)          # output error: predicted minus one-hot true label
+        <pre><code>backward_propagation:
+    dL/daL = y_hat - e(ℓ)
     for k = L down to 1:
-        dL/dWk = (dL/dak) · h_(k-1)ᵀ   # weight gradient
-        dL/dbk = dL/dak                  # bias gradient
-        dL/dh_(k-1) = Wkᵀ · (dL/dak)   # push back through weight matrix
-        dL/da_(k-1) = dL/dh_(k-1) ⊙ g'(a_(k-1))  # push back through sigmoid</code></pre>
-
-        <h3>Why this matters for training</h3>
-        <p>Without backpropagation, computing the gradient for every individual weight would require separately expanding a full chain-rule product per parameter — computationally infeasible for networks with millions of parameters. Backpropagation converts this into a single backward pass that computes and reuses each layer's gradient exactly once, which is what makes training deep networks computationally tractable.</p>
+        dL/dWk = (dL/dak) · h_(k-1)ᵀ
+        dL/dbk = dL/dak
+        dL/dh_(k-1) = Wkᵀ · (dL/dak)
+        dL/da_(k-1) = dL/dh_(k-1) ⊙ g'(a_(k-1))</code></pre>
         <div class="source-note">Source: CS7015 Lecture 4 (Khapra) — Modules 4.4–4.8.</div>
       </div>
     </div>
@@ -349,67 +273,30 @@ backward_propagation:
       <span class="q-tag important">Important — full answer (numerical)</span>
       <h2 class="q-title">7. Apply back propagation algorithm for a Multi-layer perceptron, assuming actual output y = 0.5 and learning rate α = 1.</h2>
       <div class="answer-body">
-        <div class="svg-wrap">
-          <img src="public\ques7.png" alt="Network diagram: x1=0.35, x2=0.9, W13=0.1, W14=0.4, W23=0.8, W24=0.6, W35=0.3, W45=0.9" style="max-width:100%; border-radius:6px;">
-        </div>
-
-        <p><strong>Given:</strong> \(x_1=0.35,\ x_2=0.9\); weights \(W_{13}=0.1,\ W_{14}=0.4,\ W_{23}=0.8,\ W_{24}=0.6,\ W_{35}=0.3,\ W_{45}=0.9\) (no biases in this network); sigmoid activation; target \(y=0.5\); learning rate \(\alpha=1\). Single input pair, one epoch.</p>
-
+        <p><strong>Given:</strong> \(x_1=0.35,\ x_2=0.9\); weights \(W_{13}=0.1,\ W_{14}=0.4,\ W_{23}=0.8,\ W_{24}=0.6,\ W_{35}=0.3,\ W_{45}=0.9\); sigmoid activation; target \(y=0.5\); learning rate \(\alpha=1\).</p>
         <h3>Step 1: Forward pass</h3>
-        <p><em>i) Input neurons</em></p>
-        <table>
-          <tr><th>Neuron</th><th>Value</th></tr>
-          <tr><td>\(x_1\)</td><td>0.35</td></tr>
-          <tr><td>\(x_2\)</td><td>0.9</td></tr>
-        </table>
-
-        <p><em>ii) Net input &amp; output at hidden and output layers</em> — \(I_j = \sum_i x_i w_{ij}\), \(O_j = \dfrac{1}{1+e^{-I_j}}\)</p>
         <table>
           <tr><th>Unit</th><th>Net input \(I_j\)</th><th>Output \(O_j\)</th></tr>
-          <tr><td>\(x_3\)</td><td>\(I_3 = W_{13}x_1+W_{23}x_2 = 0.1(0.35)+0.8(0.9) = 0.755\)</td><td>\(\dfrac{1}{1+e^{-0.755}} = 0.6803\)</td></tr>
-          <tr><td>\(x_4\)</td><td>\(I_4 = W_{14}x_1+W_{24}x_2 = 0.4(0.35)+0.6(0.9) = 0.68\)</td><td>\(\dfrac{1}{1+e^{-0.68}} = 0.6637\)</td></tr>
-          <tr><td>\(x_5\)</td><td>\(I_5 = W_{35}x_3+W_{45}x_4 = 0.3(0.6803)+0.9(0.6637) = 0.8014\)</td><td>\(\dfrac{1}{1+e^{-0.8014}} = 0.6903\)</td></tr>
+          <tr><td>\(x_3\)</td><td>\(0.1(0.35)+0.8(0.9) = 0.755\)</td><td>\(0.6803\)</td></tr>
+          <tr><td>\(x_4\)</td><td>\(0.4(0.35)+0.6(0.9) = 0.68\)</td><td>\(0.6637\)</td></tr>
+          <tr><td>\(x_5\)</td><td>\(0.3(0.6803)+0.9(0.6637) = 0.8014\)</td><td>\(0.6903\)</td></tr>
         </table>
-
-        <p><em>iii) Calculate error:</em> \(\text{Err} = y - O_5 = 0.5 - 0.6903 = -0.1903\)</p>
-
+        <p>Error: \(y - O_5 = 0.5 - 0.6903 = -0.1903\)</p>
         <h3>Step 2: Backpropagation</h3>
-        <div class="formula">
-          \[ \text{Err}_k = O_k(1-O_k)(y-O_k) \quad \text{for } k \text{ in output layer} \]
-          \[ \text{Err}_j = O_j(1-O_j)\sum_k \text{Err}_k\, w_{jk} \quad \text{for } j \text{ in hidden layer} \]
-        </div>
-        <p><em>i) \(\text{Err}_5\) (output):</em></p>
-        <div class="formula">
-          \[ = O_5(1-O_5)(y-O_5) = 0.6903(1-0.6903)(-0.1903) \]
-          \[ = 0.6903(0.3097)(-0.1903) = \mathbf{-0.0407} \]
-        </div>
-        <p><em>ii) \(\text{Err}_4\) (h/l):</em></p>
-        <div class="formula">
-          \[ = O_4(1-O_4)\cdot \text{Err}_5 \cdot W_{45} = 0.6637(0.3363)(-0.0407)(0.9) = \mathbf{-0.00818} \]
-        </div>
-        <p><em>iii) \(\text{Err}_3\) (h/l):</em></p>
-        <div class="formula">
-          \[ = O_3(1-O_3)\cdot \text{Err}_5 \cdot W_{35} = 0.6803(0.3197)(-0.0407)(0.3) = \mathbf{-0.00266} \]
-        </div>
-
+        <div class="formula">\[\text{Err}_5 = 0.6903(0.3097)(-0.1903) = -0.0407\]</div>
+        <div class="formula">\[\text{Err}_4 = 0.6637(0.3363)(-0.0407)(0.9) = -0.00818\]</div>
+        <div class="formula">\[\text{Err}_3 = 0.6803(0.3197)(-0.0407)(0.3) = -0.00266\]</div>
         <h3>Step 3: Update weights</h3>
-        <div class="formula">
-          \[ \alpha = 1, \quad W_{ij} = W_{ij} + \alpha\cdot\text{Err}_j\cdot O_i \]
-        </div>
-        <p><em>Update weights \(W_{13}, W_{14}, W_{23}, W_{24}, W_{35}, W_{45}\):</em></p>
         <table>
-          <tr><th>\(W_{ij}\)</th><th>\(W_{ij} = W_{ij}+\alpha\, \text{Err}_j\, O_i\)</th><th>New weight</th></tr>
-          <tr><td>\(W_{13}=0.1\)</td><td>\(0.1+1(-0.00266)(0.35) = 0.1-0.00093\)</td><td><strong>0.0991</strong></td></tr>
-          <tr><td>\(W_{14}=0.4\)</td><td>\(0.4+1(-0.00818)(0.35) = 0.4-0.00286\)</td><td><strong>0.3971</strong></td></tr>
-          <tr><td>\(W_{23}=0.8\)</td><td>\(0.8+1(-0.00266)(0.9) = 0.8-0.00239\)</td><td><strong>0.7976</strong></td></tr>
-          <tr><td>\(W_{24}=0.6\)</td><td>\(0.6+1(-0.00818)(0.9) = 0.6-0.00736\)</td><td><strong>0.5926</strong></td></tr>
-          <tr><td>\(W_{35}=0.3\)</td><td>\(0.3+1(-0.0407)(0.6803) = 0.3-0.02769\)</td><td><strong>0.2723</strong></td></tr>
-          <tr><td>\(W_{45}=0.9\)</td><td>\(0.9+1(-0.0407)(0.6637) = 0.9-0.02701\)</td><td><strong>0.8730</strong></td></tr>
+          <tr><th>\(W_{ij}\)</th><th>Calculation</th><th>New weight</th></tr>
+          <tr><td>\(W_{13}=0.1\)</td><td>\(0.1+(-0.00266)(0.35)\)</td><td><strong>0.0991</strong></td></tr>
+          <tr><td>\(W_{14}=0.4\)</td><td>\(0.4+(-0.00818)(0.35)\)</td><td><strong>0.3971</strong></td></tr>
+          <tr><td>\(W_{23}=0.8\)</td><td>\(0.8+(-0.00266)(0.9)\)</td><td><strong>0.7976</strong></td></tr>
+          <tr><td>\(W_{24}=0.6\)</td><td>\(0.6+(-0.00818)(0.9)\)</td><td><strong>0.5926</strong></td></tr>
+          <tr><td>\(W_{35}=0.3\)</td><td>\(0.3+(-0.0407)(0.6803)\)</td><td><strong>0.2723</strong></td></tr>
+          <tr><td>\(W_{45}=0.9\)</td><td>\(0.9+(-0.0407)(0.6637)\)</td><td><strong>0.8730</strong></td></tr>
         </table>
-        <p><em>No biases exist in this network, so there's no bias-update table here — unlike Q8, which has \(b_3, b_4, b_5\).</em></p>
-
-        <p><strong>Final weights after this input:</strong> \(W_{13}=0.0991,\ W_{14}=0.3971,\ W_{23}=0.7976,\ W_{24}=0.5926,\ W_{35}=0.2723,\ W_{45}=0.8730\)</p>
-        <div class="source-note">Method and format follow the same class-notes structure used in Q8. Values computed from the network diagram provided.</div>
+        <div class="source-note">Values computed from network diagram provided in class.</div>
       </div>
     </div>
   </div>
@@ -418,19 +305,12 @@ backward_propagation:
   <div class="tab-content" id="tab-7">
     <div class="question-block">
       <span class="q-tag important">Important — full answer (numerical)</span>
-      <h2 class="q-title">8. Multilayer feed-forward network, learning rate 0.5. Train the network for tuples (1,1,0) and (0,1,1) using backpropagation. Sigmoid activation.</h2>
+      <h2 class="q-title">8. Multilayer feed-forward network, learning rate 0.5. Train for tuples (1,1,0) and (0,1,1).</h2>
       <div class="answer-body">
-        <p><strong>Already solved — refer to Assignment, Question 1.</strong> This is the classic Han/Kamber-style backprop numerical: initial weights \(W_{13}=0.5,\ W_{14}=0.2,\ W_{23}=-0.3,\ W_{24}=0.5,\ W_{35}=0.1,\ W_{45}=0.3\), biases \(b_3=0.6,\ b_4=-0.4,\ b_5=0.8\), learning rate \(\alpha=0.5\).</p>
-
-        <p>Method (for reference — same structure as Q7, but with biases, and repeated for two tuples):</p>
-        <ol>
-          <li><strong>Step 1 — Forward pass:</strong> \(I_j = \sum_i w_{ij}x_i + b_j\), \(O_j = \dfrac{1}{1+e^{-I_j}}\), for each hidden unit then the output unit. Then \(\text{Err} = y - O_{\text{output}}\).</li>
-          <li><strong>Step 2 — Backpropagation:</strong> \(\text{Err}_k = O_k(1-O_k)(y-O_k)\) at the output; \(\text{Err}_j = O_j(1-O_j)\sum_k \text{Err}_k\, w_{jk}\) at each hidden unit, working backward.</li>
-          <li><strong>Step 3 — Update weights and biases:</strong> \(w_{ij} = w_{ij} + \alpha\, \text{Err}_j\, O_i\); \(b_j = b_j + \alpha\, \text{Err}_j\).</li>
-          <li><strong>Repeat for tuple 2</strong>, using the updated weights/biases from tuple 1 as the new starting point.</li>
-        </ol>
-        <p><strong>Final weights after tuple 1 (1,1,0), from your assignment:</strong> \(W_{13}=0.4985,\ W_{14}=0.1948,\ W_{23}=-0.3015,\ W_{24}=0.4947,\ W_{35}=0.0508,\ W_{45}=0.2591\); biases \(b_3=0.5985,\ b_4=-0.4052,\ b_5=0.7287\). Continue with tuple 2 (0,1,1) from your assignment for the full answer.</p>
-        <div class="source-note">Full worked solution in Assignment Q1 — write both tuples out fully in the exam using that structure.</div>
+        <p><strong>Already solved — refer to Assignment, Question 1.</strong> Initial weights \(W_{13}=0.5,\ W_{14}=0.2,\ W_{23}=-0.3,\ W_{24}=0.5,\ W_{35}=0.1,\ W_{45}=0.3\), biases \(b_3=0.6,\ b_4=-0.4,\ b_5=0.8\), \(\alpha=0.5\).</p>
+        <p>Method: same as Q7 but with biases (\(I_j = \sum w_{ij}x_i + b_j\)), and repeated for two tuples sequentially (tuple 2 uses updated weights from tuple 1).</p>
+        <p><strong>Final weights after tuple 1 (1,1,0):</strong> \(W_{13}=0.4985,\ W_{14}=0.1948,\ W_{23}=-0.3015,\ W_{24}=0.4947,\ W_{35}=0.0508,\ W_{45}=0.2591\); biases \(b_3=0.5985,\ b_4=-0.4052,\ b_5=0.7287\).</p>
+        <div class="source-note">Full worked solution in Assignment Q1.</div>
       </div>
     </div>
   </div>
@@ -439,17 +319,16 @@ backward_propagation:
   <div class="tab-content" id="tab-8">
     <div class="question-block">
       <span class="q-tag skeleton">Skeleton</span>
-      <h2 class="q-title">9. Write the differences between Feed Forward and Feed Backward Neural networks.</h2>
+      <h2 class="q-title">9. Differences between Feed Forward and Feed Backward Neural networks.</h2>
       <div class="answer-body">
         <table>
-          <tr><th>Feedforward Network</th><th>Feed-backward / Recurrent Network</th></tr>
-          <tr><td>Information flows only forward: input → hidden → output</td><td>Connections can loop back — output/hidden state feeds into earlier/same layer at next time step</td></tr>
-          <tr><td>No memory of previous inputs</td><td>Maintains a hidden state that carries information across time steps (memory)</td></tr>
-          <tr><td>Fixed-size input (e.g. images)</td><td>Handles variable-length sequential input (e.g. text, speech)</td></tr>
-          <tr><td>Trained via standard backpropagation</td><td>Trained via Backpropagation Through Time (BPTT)</td></tr>
+          <tr><th>Feedforward Network</th><th>Recurrent Network</th></tr>
+          <tr><td>Information flows only forward</td><td>Connections loop back — hidden state carries across time steps</td></tr>
+          <tr><td>No memory of previous inputs</td><td>Maintains hidden state (memory)</td></tr>
+          <tr><td>Fixed-size input</td><td>Variable-length sequential input</td></tr>
+          <tr><td>Trained via standard backpropagation</td><td>Trained via BPTT</td></tr>
           <tr><td>Examples: MLP, CNN</td><td>Examples: RNN, LSTM, GRU</td></tr>
         </table>
-        <p><em>Note: "backpropagation" itself (the gradient computation for training) applies to feedforward nets too — this question is contrasting feedforward <strong>architecture</strong> with recurrent/feedback <strong>architecture</strong>, not the training algorithm.</em></p>
       </div>
     </div>
   </div>
@@ -458,51 +337,48 @@ backward_propagation:
   <div class="tab-content" id="tab-9">
     <div class="question-block">
       <span class="q-tag important">Important — full answer (code)</span>
-      <h2 class="q-title">10. Write a python code for backward propagation in a neural network using concepts like error calculation, and learning rate.</h2>
+      <h2 class="q-title">10. Write a python code for backward propagation in a neural network.</h2>
       <div class="answer-body">
-        <p>Simple, from-scratch backprop for a single-hidden-layer network with sigmoid activations — matches the derivation in Q6/Q8 exactly (error → delta → weight update).</p>
         <pre><code>import numpy as np
 
 def sigmoid(z):
     return 1 / (1 + np.exp(-z))
 
 def sigmoid_derivative(a):
-    # a is already sigmoid(z)
     return a * (1 - a)
 
-# --- network setup ---
 np.random.seed(0)
 input_size, hidden_size, output_size = 2, 2, 1
-lr = 0.5   # learning rate
+lr = 0.5
 
 W1 = np.random.randn(input_size, hidden_size)
 b1 = np.zeros((1, hidden_size))
 W2 = np.random.randn(hidden_size, output_size)
 b2 = np.zeros((1, output_size))
 
-X = np.array([[1, 1]])   # example input
-y = np.array([[0]])      # target output
+X = np.array([[1, 1]])
+y = np.array([[0]])
 
-# --- forward pass ---
+# forward pass
 a1 = X.dot(W1) + b1
 h1 = sigmoid(a1)
 a2 = h1.dot(W2) + b2
 y_hat = sigmoid(a2)
 
-# --- error calculation ---
+# error
 error = y - y_hat
 loss = np.mean(0.5 * error ** 2)
 
-# --- backward pass ---
-delta_output = -error * sigmoid_derivative(y_hat)          # dL/da2
+# backward pass
+delta_output = -error * sigmoid_derivative(y_hat)
 grad_W2 = h1.T.dot(delta_output)
 grad_b2 = np.sum(delta_output, axis=0, keepdims=True)
 
-delta_hidden = delta_output.dot(W2.T) * sigmoid_derivative(h1)  # dL/da1
+delta_hidden = delta_output.dot(W2.T) * sigmoid_derivative(h1)
 grad_W1 = X.T.dot(delta_hidden)
 grad_b1 = np.sum(delta_hidden, axis=0, keepdims=True)
 
-# --- gradient descent update ---
+# update
 W2 -= lr * grad_W2
 b2 -= lr * grad_b2
 W1 -= lr * grad_W1
@@ -511,8 +387,7 @@ b1 -= lr * grad_b1
 print("Loss:", loss)
 print("Updated W1:\n", W1)
 print("Updated W2:\n", W2)</code></pre>
-        <p><strong>Mapping to theory (say this in the exam if asked to explain):</strong> <code>delta_output</code> = ∇<sub>aL</sub>L(θ) from Q6, <code>delta_hidden</code> = ∇<sub>a</sub>L(θ) for the hidden layer computed via (Wᵀ · downstream delta) ⊙ g′(a), and the weight gradients follow ∇W = δ · hᵀ exactly as derived.</p>
-        <div class="source-note">Structure matches the backprop pseudocode in CS7015 Lecture 4 (Khapra), Module 4.8.</div>
+        <div class="source-note">Structure matches CS7015 Lecture 4 (Khapra), Module 4.8.</div>
       </div>
     </div>
   </div>
