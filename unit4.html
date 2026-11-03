@@ -21,18 +21,69 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
   </nav>
 
   <div class="tabs" role="tablist">
-      <button class="tab-btn active" onclick="showTab(0)">Q28</button>
-      <button class="tab-btn" onclick="showTab(1)">Q29</button>
-      <button class="tab-btn" onclick="showTab(2)">Q30</button>
-      <button class="tab-btn" onclick="showTab(3)">Q31</button>
-      <button class="tab-btn" onclick="showTab(4)">Q32</button>
+    <button class="tab-btn" onclick="showTab(0)">Q31</button>
+    <button class="tab-btn" onclick="showTab(1)">Q32</button>
+    <button class="tab-btn" onclick="showTab(2)">Q33</button>
+    <button class="tab-btn" onclick="showTab(3)">Q34</button>
+    <button class="tab-btn" onclick="showTab(4)">Q35</button>
+    <button class="tab-btn" onclick="showTab(5)">Q36</button>
+    <button class="tab-btn" onclick="showTab(6)">Q37</button>
+    <button class="tab-btn" onclick="showTab(7)">Q38</button>
+    <button class="tab-btn" onclick="showTab(8)">Q39</button>
+    <button class="tab-btn" onclick="showTab(9)">Q40</button>
   </div>
 
-    <!-- ==================== Q28 ==================== -->
-    <div class="tab-content active" id="tab-0">
-      <div class="question-block">
-        <span class="q-tag important">Important — full answer</span>
-        <h2 class="q-title">28. Explain the concept of activation functions. Discuss the commonly used activation functions and their advantages.</h2>
+  <!-- Q31 -->
+  <div class="tab-content" id="tab-0">
+    <div class="question-block" data-qid="u4-q31">
+      <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u4-q31', 0)" aria-label="Mark as done"></button>
+        <h2 class="q-title">31. Explain the concept of Greedy Layer-wise Pre-training. Discuss its role in training deep neural networks.</h2>
+      </div>
+      <div class="answer-body">
+<p><strong>Greedy layer-wise pre-training</strong> trains a deep network <strong>one layer at a time with an unsupervised objective</strong>, and only then fine-tunes the whole network with labels. It is "greedy" because each layer is optimised on its own instead of jointly.</p>
+<div class="svg-wrap">
+<svg viewBox="0 0 700 248" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a51" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--text-muted)"/></marker></defs><rect x="14" y="20" width="40" height="28" rx="5" fill="var(--surface2)" stroke="var(--border)"/><text x="34.0" y="38.0" text-anchor="middle" fill="var(--text)" font-size="12">x</text><rect x="78" y="20" width="40" height="28" rx="5" fill="var(--surface2)" stroke="var(--accent)"/><text x="98.0" y="38.0" text-anchor="middle" fill="var(--text)" font-size="12">h₁</text><line x1="54" y1="34" x2="78" y2="34" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a51)"/><rect x="142" y="20" width="40" height="28" rx="5" fill="var(--surface2)" stroke="var(--border)"/><text x="162.0" y="38.0" text-anchor="middle" fill="var(--text)" font-size="12">x̂</text><line x1="118" y1="34" x2="142" y2="34" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a51)"/><text x="328" y="38" text-anchor="start" fill="var(--text-muted)" font-size="10.5">1. Train layer 1 (unsupervised): reconstruct x from h₁</text><rect x="14" y="72" width="40" height="28" rx="5" fill="var(--surface2)" stroke="var(--border)"/><text x="34.0" y="90.0" text-anchor="middle" fill="var(--text)" font-size="12">x</text><rect x="78" y="72" width="40" height="28" rx="5" fill="var(--surface2)" stroke="var(--text-dim)" stroke-dasharray="4 3"/><text x="98.0" y="90.0" text-anchor="middle" fill="var(--text)" font-size="12">h₁</text><line x1="54" y1="86" x2="78" y2="86" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a51)"/><rect x="142" y="72" width="40" height="28" rx="5" fill="var(--surface2)" stroke="var(--accent)"/><text x="162.0" y="90.0" text-anchor="middle" fill="var(--text)" font-size="12">h₂</text><line x1="118" y1="86" x2="142" y2="86" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a51)"/><rect x="206" y="72" width="40" height="28" rx="5" fill="var(--surface2)" stroke="var(--border)"/><text x="226.0" y="90.0" text-anchor="middle" fill="var(--text)" font-size="12">ĥ₁</text><line x1="182" y1="86" x2="206" y2="86" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a51)"/><text x="328" y="90" text-anchor="start" fill="var(--text-muted)" font-size="10.5">2. Fix layer 1; train layer 2: reconstruct h₁ from h₂</text><rect x="14" y="124" width="40" height="28" rx="5" fill="var(--surface2)" stroke="var(--border)"/><text x="34.0" y="142.0" text-anchor="middle" fill="var(--text)" font-size="12">x</text><rect x="78" y="124" width="40" height="28" rx="5" fill="var(--surface2)" stroke="var(--text-dim)" stroke-dasharray="4 3"/><text x="98.0" y="142.0" text-anchor="middle" fill="var(--text)" font-size="12">h₁</text><line x1="54" y1="138" x2="78" y2="138" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a51)"/><rect x="142" y="124" width="40" height="28" rx="5" fill="var(--surface2)" stroke="var(--text-dim)" stroke-dasharray="4 3"/><text x="162.0" y="142.0" text-anchor="middle" fill="var(--text)" font-size="12">h₂</text><line x1="118" y1="138" x2="142" y2="138" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a51)"/><rect x="206" y="124" width="40" height="28" rx="5" fill="var(--surface2)" stroke="var(--accent)"/><text x="226.0" y="142.0" text-anchor="middle" fill="var(--text)" font-size="12">h₃</text><line x1="182" y1="138" x2="206" y2="138" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a51)"/><rect x="270" y="124" width="40" height="28" rx="5" fill="var(--surface2)" stroke="var(--border)"/><text x="290.0" y="142.0" text-anchor="middle" fill="var(--text)" font-size="12">ĥ₂</text><line x1="246" y1="138" x2="270" y2="138" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a51)"/><text x="328" y="142" text-anchor="start" fill="var(--text-muted)" font-size="10.5">3. Repeat, one layer at a time, up to the last hidden layer</text><rect x="14" y="176" width="40" height="28" rx="5" fill="var(--surface2)" stroke="var(--border)"/><text x="34.0" y="194.0" text-anchor="middle" fill="var(--text)" font-size="12">x</text><rect x="78" y="176" width="40" height="28" rx="5" fill="var(--surface2)" stroke="var(--accent)"/><text x="98.0" y="194.0" text-anchor="middle" fill="var(--text)" font-size="12">h₁</text><line x1="54" y1="190" x2="78" y2="190" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a51)"/><rect x="142" y="176" width="40" height="28" rx="5" fill="var(--surface2)" stroke="var(--accent)"/><text x="162.0" y="194.0" text-anchor="middle" fill="var(--text)" font-size="12">h₂</text><line x1="118" y1="190" x2="142" y2="190" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a51)"/><rect x="206" y="176" width="40" height="28" rx="5" fill="var(--surface2)" stroke="var(--accent)"/><text x="226.0" y="194.0" text-anchor="middle" fill="var(--text)" font-size="12">h₃</text><line x1="182" y1="190" x2="206" y2="190" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a51)"/><rect x="270" y="176" width="40" height="28" rx="5" fill="var(--surface2)" stroke="var(--accent)"/><text x="290.0" y="194.0" text-anchor="middle" fill="var(--text)" font-size="12">y</text><line x1="246" y1="190" x2="270" y2="190" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a51)"/><text x="328" y="194" text-anchor="start" fill="var(--accent-hover)" font-size="10.5">4. Add output layer; fine-tune the whole network (supervised)</text><text x="14" y="236" text-anchor="start" fill="var(--text-muted)" font-size="10.5">accent border = layer being trained,   dashed = layers kept fixed</text></svg>
+</div>
+<h3>Steps</h3>
+<ol>
+  <li><strong>Layer 1:</strong> treat \(x\to h_1\to\hat x\) as an autoencoder and train it to reconstruct the input:
+    \(\ \min\ \frac{1}{m}\sum_{i=1}^{m}\sum_{j=1}^{n}(\hat x_{ij}-x_{ij})^2\).</li>
+  <li><strong>Layer 2:</strong> fix layer 1, and train \(h_1\to h_2\to\hat h_1\) to reconstruct \(h_1\):
+    \(\ \min\ \frac{1}{m}\sum_{i=1}^{m}\sum_{j}(\hat h_{1,ij}-h_{1,ij})^2\).</li>
+  <li>Continue the same way until the last hidden layer.</li>
+  <li><strong>Fine-tuning:</strong> add the output layer and train all layers together on the supervised loss:
+    \(\ \min_{\theta}\ \frac{1}{m}\sum_{i=1}^{m}\bigl(y_i-f(x_i)\bigr)^2\).</li>
+</ol>
+<h3>Why it helps in training deep networks</h3>
+<table>
+  <tr><th>View</th><th>Explanation</th></tr>
+  <tr><td>Better initialisation</td><td>The pre-trained weights start the supervised search in a good region of the highly non-convex error surface, instead of a random point.</td></tr>
+  <tr><td>Optimisation</td><td>Helps most when the network has limited capacity; with a very large last layer the supervised loss can reach 0 even without pre-training.</td></tr>
+  <tr><td>Regularisation</td><td>The unsupervised objective acts as an extra constraint \(\Omega(\theta)\), keeping weights in regions that capture the characteristics of the data, so learning is less greedy with respect to the labelled loss.</td></tr>
+</table>
+<p><strong>Role today:</strong> it made deep networks trainable before better activations (ReLU), initialisation and Batch Normalisation (Q32, Q34, Q36) existed. These now largely remove the need for it, but it remains useful when labelled data is scarce and unlabelled data is plentiful.</p>
+<h3>Worked example &mdash; a 784&ndash;256&ndash;64&ndash;10 network</h3>
+<table>
+  <tr><th>Stage</th><th>What is trained</th><th>Data</th><th>Reconstruction target</th></tr>
+  <tr><td>1</td><td>autoencoder \(784\to256\to784\)</td><td>unlabelled images \(x\)</td><td>\(x\)</td></tr>
+  <tr><td>2</td><td>autoencoder \(256\to64\to256\) (layer 1 fixed)</td><td>\(h_1\) from stage 1</td><td>\(h_1\)</td></tr>
+  <tr><td>3</td><td>softmax layer \(64\to10\) added; all layers fine-tuned</td><td>small labelled set \((x,y)\)</td><td>label \(y\)</td></tr>
+</table>
+<p>Stages 1&ndash;2 can use a very large pool of <em>unlabelled</em> data; only stage 3 needs labels. That is the practical value: when labelled data is scarce, the lower layers have already learned features of the inputs, so fine-tuning starts from a sensible point rather than from random weights.</p>
+<p><strong>Why "greedy":</strong> each layer is trained to be good by itself (it only reconstructs its own input), without knowing what the final task is. Fine-tuning then adjusts all layers together to fit the task.</p>
+<div class="source-note">Source: CS7015 Lecture 9 (Khapra) &mdash; unsupervised pre-training and why it works.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q32 -->
+  <div class="tab-content" id="tab-1">
+      <div class="question-block" data-qid="u4-q32">
+              <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u4-q32', 1)" aria-label="Mark as done"></button>
+        <h2 class="q-title">32. Explain the concept of activation functions. Discuss the commonly used activation functions and their advantages.</h2>
+      </div>
         <div class="answer-body">
 
           <h3>What is an Activation Function?</h3>
@@ -119,11 +170,71 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
 
 </div>
       </div>
-    </div><!-- ==================== Q29 ==================== -->
-    <div class="tab-content" id="tab-1">
-      <div class="question-block">
-        <span class="q-tag important">Important — full answer</span>
-        <h2 class="q-title">29. What is weight initialization? Discuss the commonly used weight initialization methods in deep learning.</h2>
+    </div>
+
+  <!-- Q33 -->
+  <div class="tab-content" id="tab-2">
+    <div class="question-block" data-qid="u4-q33">
+      <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u4-q33', 2)" aria-label="Mark as done"></button>
+        <h2 class="q-title">33. Differentiate between linear and non-linear activation functions. Why are non-linear activation functions preferred in deep learning?</h2>
+      </div>
+      <div class="answer-body">
+<p>An <strong>activation function</strong> \(g\) turns the pre-activation \(a_i=b_i+W_ih_{i-1}\) into the layer output \(h_i=g(a_i)\). It is either linear or non-linear.</p>
+<h3>Linear activation</h3>
+<p>\(g(a)=a\) (or \(ca\)). A stack of linear layers is still one linear map:</p>
+<div class="formula">\[\hat y=W_L\bigl(\cdots W_2(W_1x+b_1)+b_2\cdots\bigr)+b_L=W'x+b'\]</div>
+<p>So however deep the network, it can only represent a linear function and draws only a straight decision boundary. It cannot even represent XOR (Q3, Q4).</p>
+<h3>Non-linear activation</h3>
+<p>Sigmoid, tanh, ReLU, Leaky ReLU, etc. Because \(g\) is non-linear, each layer re-shapes the space, so stacking layers builds up progressively more complex functions.</p>
+<div class="svg-wrap">
+<svg viewBox="0 0 640 215" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a53" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--text-muted)"/></marker></defs><text x="150" y="16" text-anchor="middle" fill="var(--text-muted)" font-size="12">(a) stacked linear layers collapse</text><rect x="24" y="36" width="48" height="30" rx="5" fill="var(--surface2)" stroke="var(--border)"/><text x="48.0" y="55.0" text-anchor="middle" fill="var(--text)" font-size="12">x</text><rect x="92" y="36" width="48" height="30" rx="5" fill="var(--surface2)" stroke="var(--accent)"/><text x="116.0" y="55.0" text-anchor="middle" fill="var(--text)" font-size="12">W₁</text><rect x="160" y="36" width="48" height="30" rx="5" fill="var(--surface2)" stroke="var(--accent)"/><text x="184.0" y="55.0" text-anchor="middle" fill="var(--text)" font-size="12">W₂</text><rect x="228" y="36" width="48" height="30" rx="5" fill="var(--surface2)" stroke="var(--border)"/><text x="252.0" y="55.0" text-anchor="middle" fill="var(--text)" font-size="12">ŷ</text><line x1="72" y1="51" x2="92" y2="51" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a53)"/><line x1="140" y1="51" x2="160" y2="51" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a53)"/><line x1="208" y1="51" x2="228" y2="51" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a53)"/><text x="150" y="100" text-anchor="middle" fill="var(--text-muted)" font-size="11.5">ŷ = W₂(W₁x + b₁) + b₂</text><text x="150" y="120" text-anchor="middle" fill="var(--text-muted)" font-size="11.5">= (W₂W₁)x + (W₂b₁ + b₂)</text><text x="150" y="150" text-anchor="middle" fill="var(--important)" font-size="12" font-weight="600">= W′x + b′   (one linear layer)</text><text x="150" y="176" text-anchor="middle" fill="var(--important)" font-size="11">extra depth adds nothing</text><text x="475" y="16" text-anchor="middle" fill="var(--text-muted)" font-size="12">(b) common activation functions</text><rect x="330" y="40" width="290" height="150" rx="2" fill="none" stroke="var(--border)"/><line x1="330" y1="143.05882352941177" x2="620" y2="143.05882352941177" stroke="var(--text-dim)" stroke-width="1" stroke-dasharray="3 3"/><line x1="475.0" y1="40" x2="475.0" y2="190" stroke="var(--text-dim)" stroke-width="1" stroke-dasharray="3 3"/><path d="M330.0,231.3 L333.6,229.1 L337.2,226.9 L340.9,224.7 L344.5,222.5 L348.1,220.3 L351.8,218.1 L355.4,215.9 L359.0,213.6 L362.6,211.4 L366.2,209.2 L369.9,207.0 L373.5,204.8 L377.1,202.6 L380.8,200.4 L384.4,198.2 L388.0,196.0 L391.6,193.8 L395.2,191.6 L398.9,189.4 L402.5,187.2 L406.1,185.0 L409.8,182.8 L413.4,180.6 L417.0,178.4 L420.6,176.1 L424.2,173.9 L427.9,171.7 L431.5,169.5 L435.1,167.3 L438.8,165.1 L442.4,162.9 L446.0,160.7 L449.6,158.5 L453.2,156.3 L456.9,154.1 L460.5,151.9 L464.1,149.7 L467.8,147.5 L471.4,145.3 L475.0,143.1 L478.6,140.9 L482.2,138.6 L485.9,136.4 L489.5,134.2 L493.1,132.0 L496.8,129.8 L500.4,127.6 L504.0,125.4 L507.6,123.2 L511.2,121.0 L514.9,118.8 L518.5,116.6 L522.1,114.4 L525.8,112.2 L529.4,110.0 L533.0,107.8 L536.6,105.6 L540.2,103.4 L543.9,101.1 L547.5,98.9 L551.1,96.7 L554.8,94.5 L558.4,92.3 L562.0,90.1 L565.6,87.9 L569.2,85.7 L572.9,83.5 L576.5,81.3 L580.1,79.1 L583.8,76.9 L587.4,74.7 L591.0,72.5 L594.6,70.3 L598.2,68.1 L601.9,65.9 L605.5,63.6 L609.1,61.4 L612.8,59.2 L616.4,57.0 L620.0,54.8" fill="none" stroke="var(--text-muted)" stroke-width="2" stroke-dasharray="5 3"/><path d="M330.0,143.1 L333.6,143.1 L337.2,143.1 L340.9,143.1 L344.5,143.1 L348.1,143.1 L351.8,143.1 L355.4,143.1 L359.0,143.1 L362.6,143.1 L366.2,143.1 L369.9,143.1 L373.5,143.1 L377.1,143.1 L380.8,143.1 L384.4,143.1 L388.0,143.1 L391.6,143.1 L395.2,143.1 L398.9,143.1 L402.5,143.1 L406.1,143.1 L409.8,143.1 L413.4,143.1 L417.0,143.1 L420.6,143.1 L424.2,143.1 L427.9,143.1 L431.5,143.1 L435.1,143.1 L438.8,143.1 L442.4,143.1 L446.0,143.1 L449.6,143.1 L453.2,143.1 L456.9,143.1 L460.5,143.1 L464.1,143.1 L467.8,143.1 L471.4,143.1 L475.0,143.1 L478.6,138.6 L482.2,134.2 L485.9,129.8 L489.5,125.4 L493.1,121.0 L496.8,116.6 L500.4,112.2 L504.0,107.8 L507.6,103.4 L511.2,98.9 L514.9,94.5 L518.5,90.1 L522.1,85.7 L525.8,81.3 L529.4,76.9 L533.0,72.5 L536.6,68.1 L540.2,63.6 L543.9,59.2 L547.5,54.8 L551.1,50.4 L554.8,46.0" fill="none" stroke="var(--important)" stroke-width="2.3"/><path d="M330.0,187.1 L333.6,187.1 L337.2,187.1 L340.9,187.1 L344.5,187.1 L348.1,187.1 L351.8,187.1 L355.4,187.1 L359.0,187.0 L362.6,187.0 L366.2,187.0 L369.9,186.9 L373.5,186.9 L377.1,186.8 L380.8,186.7 L384.4,186.6 L388.0,186.5 L391.6,186.3 L395.2,186.1 L398.9,185.9 L402.5,185.6 L406.1,185.2 L409.8,184.8 L413.4,184.3 L417.0,183.7 L420.6,183.0 L424.2,182.1 L427.9,181.1 L431.5,179.8 L435.1,178.4 L438.8,176.7 L442.4,174.7 L446.0,172.4 L449.6,169.7 L453.2,166.8 L456.9,163.4 L460.5,159.8 L464.1,155.9 L467.8,151.8 L471.4,147.5 L475.0,143.1 L478.6,138.7 L482.2,134.4 L485.9,130.2 L489.5,126.3 L493.1,122.7 L496.8,119.4 L500.4,116.4 L504.0,113.8 L507.6,111.5 L511.2,109.5 L514.9,107.7 L518.5,106.3 L522.1,105.0 L525.8,104.0 L529.4,103.1 L533.0,102.4 L536.6,101.8 L540.2,101.3 L543.9,100.9 L547.5,100.5 L551.1,100.2 L554.8,100.0 L558.4,99.8 L562.0,99.7 L565.6,99.5 L569.2,99.4 L572.9,99.3 L576.5,99.3 L580.1,99.2 L583.8,99.2 L587.4,99.1 L591.0,99.1 L594.6,99.1 L598.2,99.0 L601.9,99.0 L605.5,99.0 L609.1,99.0 L612.8,99.0 L616.4,99.0 L620.0,99.0" fill="none" stroke="var(--accent)" stroke-width="2.3"/><path d="M330.0,142.3 L333.6,142.2 L337.2,142.1 L340.9,142.0 L344.5,141.9 L348.1,141.8 L351.8,141.6 L355.4,141.5 L359.0,141.3 L362.6,141.2 L366.2,141.0 L369.9,140.8 L373.5,140.5 L377.1,140.3 L380.8,140.0 L384.4,139.7 L388.0,139.4 L391.6,139.0 L395.2,138.7 L398.9,138.2 L402.5,137.8 L406.1,137.3 L409.8,136.8 L413.4,136.2 L417.0,135.6 L420.6,135.0 L424.2,134.3 L427.9,133.6 L431.5,132.8 L435.1,132.0 L438.8,131.2 L442.4,130.3 L446.0,129.4 L449.6,128.4 L453.2,127.4 L456.9,126.4 L460.5,125.4 L464.1,124.3 L467.8,123.2 L471.4,122.1 L475.0,121.0 L478.6,119.9 L482.2,118.8 L485.9,117.7 L489.5,116.6 L493.1,115.6 L496.8,114.6 L500.4,113.6 L504.0,112.6 L507.6,111.7 L511.2,110.8 L514.9,110.0 L518.5,109.2 L522.1,108.4 L525.8,107.7 L529.4,107.0 L533.0,106.4 L536.6,105.8 L540.2,105.2 L543.9,104.7 L547.5,104.2 L551.1,103.8 L554.8,103.3 L558.4,103.0 L562.0,102.6 L565.6,102.3 L569.2,102.0 L572.9,101.7 L576.5,101.5 L580.1,101.2 L583.8,101.0 L587.4,100.8 L591.0,100.7 L594.6,100.5 L598.2,100.4 L601.9,100.2 L605.5,100.1 L609.1,100.0 L612.8,99.9 L616.4,99.8 L620.0,99.7" fill="none" stroke="var(--warning)" stroke-width="2.3"/><text x="336" y="56" text-anchor="start" fill="var(--accent-hover)" font-size="11" font-weight="600">tanh</text><text x="336" y="70" text-anchor="start" fill="var(--warning)" font-size="11" font-weight="600">sigmoid</text><text x="336" y="84" text-anchor="start" fill="var(--important)" font-size="11" font-weight="600">ReLU</text><text x="336" y="98" text-anchor="start" fill="var(--text-muted)" font-size="11" font-weight="600">linear (dashed)</text></svg>
+</div>
+<h3>Comparison</h3>
+<table>
+  <tr><th></th><th>Linear</th><th>Non-linear</th></tr>
+  <tr><td>Form</td><td>\(g(a)=a\)</td><td>\(\sigma(a),\ \tanh(a),\ \max(0,a),\dots\)</td></tr>
+  <tr><td>Effect of depth</td><td>Layers collapse into one</td><td>Each extra layer adds representational power</td></tr>
+  <tr><td>Decision boundary</td><td>Straight line / hyperplane</td><td>Curved, arbitrarily complex</td></tr>
+  <tr><td>Derivative \(g'(a)\)</td><td>Constant &mdash; gives no information about the input</td><td>Depends on \(a\), so backpropagation can assign credit differently to each unit</td></tr>
+  <tr><td>Typical use</td><td>Output layer of regression; linear decoder of an autoencoder</td><td>Hidden layers</td></tr>
+</table>
+<h3>Why non-linear activations are preferred</h3>
+<ul>
+  <li><strong>Expressiveness:</strong> they make depth meaningful; with them a network can represent XOR and any boolean function (Q4).</li>
+  <li><strong>Universal approximation:</strong> one hidden layer of non-linear sigmoid units can approximate any continuous function to any desired precision.</li>
+  <li><strong>Real data is non-linear</strong> (images, speech, text), so linear models underfit.</li>
+  <li>They must also be differentiable (for backpropagation) and ideally non-saturating and zero-centred &mdash; hence ReLU-type units (Q32).</li>
+</ul>
+<h3>Worked example &mdash; linear layers collapse, non-linear ones do not</h3>
+<p>Let \(W_1=\begin{bmatrix}1&-2\\0&1\end{bmatrix}\), \(W_2=\begin{bmatrix}1&-1\end{bmatrix}\), biases 0, input \(x=(1,2)^T\).</p>
+<table>
+  <tr><th>Network</th><th>Computation</th><th>Output</th></tr>
+  <tr><td>Linear (no activation)</td><td>\(W_1x=(-3,2)\), then \(W_2(-3,2)=-3-2\)</td><td>\(-5\)</td></tr>
+  <tr><td>Same, collapsed</td><td>\(W_2W_1=\begin{bmatrix}1&-3\end{bmatrix}\), so \(W_2W_1x=1-6\)</td><td>\(-5\) (identical)</td></tr>
+  <tr><td>With ReLU after layer 1</td><td>\(\mathrm{ReLU}(-3,2)=(0,2)\), then \(0-2\)</td><td>\(-2\)</td></tr>
+</table>
+<p>The two linear computations agree exactly, so the extra layer added nothing. The ReLU network gives a different answer that <em>no single linear map</em> reproduces for all inputs &mdash; it has really used its second layer.</p>
+<h3>Derivatives</h3>
+<table>
+  <tr><th>Activation</th><th>\(g'(a)\)</th><th>Comment</th></tr>
+  <tr><td>Linear \(g(a)=a\)</td><td>1</td><td>no saturation, but no extra power</td></tr>
+  <tr><td>Sigmoid</td><td>\(\sigma(1-\sigma)\le0.25\)</td><td>vanishes at both ends</td></tr>
+  <tr><td>tanh</td><td>\(1-\tanh^2(a)\le1\)</td><td>zero-centred, still saturates</td></tr>
+  <tr><td>ReLU</td><td>1 if \(a>0\), else 0</td><td>no saturation for \(a>0\); cheap</td></tr>
+</table>
+<div class="source-note">Source: CS7015 Lectures 2, 3 and 9 (Khapra) &mdash; representation power of networks and choice of activation functions.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q34 -->
+  <div class="tab-content" id="tab-3">
+      <div class="question-block" data-qid="u4-q34">
+              <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u4-q34', 3)" aria-label="Mark as done"></button>
+        <h2 class="q-title">34. What is weight initialization? Discuss the commonly used weight initialization methods in deep learning.</h2>
+      </div>
         <div class="answer-body">
 
           <h3>Why Weight Initialization Matters</h3>
@@ -166,11 +277,102 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
 
 </div>
       </div>
-    </div><!-- ==================== Q30 ==================== -->
-    <div class="tab-content" id="tab-2">
-      <div class="question-block">
-        <span class="q-tag important">Important — full answer</span>
-        <h2 class="q-title">30. What is Word2Vec? Describe how Word2Vec generates word embeddings.</h2>
+    </div>
+
+  <!-- Q35 -->
+  <div class="tab-content" id="tab-4">
+    <div class="question-block" data-qid="u4-q35">
+      <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u4-q35', 4)" aria-label="Mark as done"></button>
+        <h2 class="q-title">35. Why is weight initialization important in deep learning? Explain the problems caused by poor weight initialization.</h2>
+      </div>
+      <div class="answer-body">
+<p>Training a deep network is a game of gradients: the gradient of a weight is proportional to the <strong>input</strong> that weight sees. If the initial weights are badly chosen, the signal and the gradients either die or blow up as they pass through the layers, and learning stalls.</p>
+<h3>Problems caused by poor initialisation</h3>
+<table>
+  <tr><th>Initialisation</th><th>What goes wrong</th></tr>
+  <tr><td><strong>All zeros / constant</strong></td><td>\(a_{11}=a_{12}=0\Rightarrow h_{11}=h_{12}\Rightarrow\nabla w_{11}=\nabla w_{21}\). Neurons in a layer stay identical forever (<em>symmetry</em> is never broken), so they all learn the same feature.</td></tr>
+  <tr><td><strong>Large random weights</strong> (sigmoid / tanh)</td><td>Pre-activations are large, the units <em>saturate</em> at 0 or 1, \(\sigma'\approx0\), and gradients vanish.</td></tr>
+  <tr><td><strong>Small random weights</strong> (tanh)</td><td>Activations shrink towards 0 layer after layer; since weight gradients are proportional to the incoming activations, they vanish too.</td></tr>
+  <tr><td><strong>Variance too large in deep nets</strong></td><td>Signals and gradients grow exponentially with depth (exploding).</td></tr>
+</table>
+<h3>The variance argument</h3>
+<p>Assume zero-mean inputs and weights. For a unit with \(n\) inputs, \(s_{11}=\sum_{i=1}^{n}w_{1i}x_i\), so</p>
+<div class="formula">\[\mathrm{Var}(s_{11})=\sum_{i=1}^{n}\mathrm{Var}(w_{1i}x_i)=n\,\mathrm{Var}(w)\,\mathrm{Var}(x),\qquad \mathrm{Var}(s_{k})=\bigl[n\,\mathrm{Var}(w)\bigr]^{k}\,\mathrm{Var}(x)\]</div>
+<div class="svg-wrap">
+<svg viewBox="0 0 460 215" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a55" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--text-muted)"/></marker></defs><text x="230" y="16" text-anchor="middle" fill="var(--text-muted)" font-size="12">Var(sₖ) = [n·Var(w)]ᵏ · Var(x)  (log scale)</text><line x1="60" y1="190" x2="390" y2="190" stroke="var(--text-dim)" stroke-width="1"/><line x1="60" y1="190" x2="60" y2="34" stroke="var(--text-dim)" stroke-width="1"/><line x1="60" y1="115.0" x2="390" y2="115.0" stroke="var(--text-dim)" stroke-width="1" stroke-dasharray="3 3"/><path d="M60.0,115.0 L93.0,107.9 L126.0,100.9 L159.0,93.8 L192.0,86.8 L225.0,79.7 L258.0,72.7 L291.0,65.6 L324.0,58.6 L357.0,51.5 L390.0,44.4" fill="none" stroke="var(--warning)" stroke-width="2.5"/><text x="384" y="53.0" text-anchor="end" fill="var(--warning)" font-size="11" font-weight="600">n·Var(w) = 2 : explodes</text><path d="M60.0,115.0 L93.0,115.0 L126.0,115.0 L159.0,115.0 L192.0,115.0 L225.0,115.0 L258.0,115.0 L291.0,115.0 L324.0,115.0 L357.0,115.0 L390.0,115.0" fill="none" stroke="var(--success)" stroke-width="2.5"/><text x="384" y="103.0" text-anchor="end" fill="var(--success)" font-size="11" font-weight="600">n·Var(w) = 1 : stable</text><path d="M60.0,115.0 L93.0,122.1 L126.0,129.1 L159.0,136.2 L192.0,143.2 L225.0,150.3 L258.0,157.3 L291.0,164.4 L324.0,171.4 L357.0,178.5 L390.0,185.6" fill="none" stroke="var(--important)" stroke-width="2.5"/><text x="384" y="177.0" text-anchor="end" fill="var(--important)" font-size="11" font-weight="600">n·Var(w) = 0.5 : vanishes</text><text x="225.0" y="208" text-anchor="middle" fill="var(--text-muted)" font-size="10.5">layer k</text><text x="52" y="119.0" text-anchor="end" fill="var(--text-muted)" font-size="10">0</text><text x="52" y="48" text-anchor="end" fill="var(--text-muted)" font-size="10">+3</text><text x="52" y="188" text-anchor="end" fill="var(--text-muted)" font-size="10">−3</text></svg>
+</div>
+<p>Over \(k\) layers the variance is multiplied by \(n\,\mathrm{Var}(w)\) each time: if this is below 1 the signal vanishes, above 1 it explodes. We therefore want <strong>\(n\,\mathrm{Var}(w)=1\)</strong>.</p>
+<h3>Remedy</h3>
+<ul>
+  <li>Draw weights from a unit Gaussian and scale by \(1/\sqrt n\): \(\ w=z/\sqrt n\), so \(n\,\mathrm{Var}(w)=1\) (Xavier-type scaling).</li>
+  <li>For ReLU use an extra factor of 2 (He initialisation), because ReLU keeps only the positive half of its inputs (details in Q34).</li>
+  <li>Use small random values to break symmetry, never zeros; for ReLU units a small positive bias (e.g. 0.01) helps avoid dead units.</li>
+</ul>
+<h3>Worked example &mdash; effect of \(n\,\mathrm{Var}(w)\) over 10 layers</h3>
+<p>Layers have \(n=100\) inputs. The variance of the pre-activation is multiplied by \(n\,\mathrm{Var}(w)\) at each layer:</p>
+<table>
+  <tr><th>\(\mathrm{Var}(w)\)</th><th>\(n\,\mathrm{Var}(w)\)</th><th>Factor after 10 layers</th><th>Result</th></tr>
+  <tr><td>0.005</td><td>0.5</td><td>\(0.5^{10}\approx0.001\)</td><td>signal vanishes</td></tr>
+  <tr><td>0.01</td><td>1</td><td>1</td><td>stable</td></tr>
+  <tr><td>0.02</td><td>2</td><td>\(2^{10}=1024\)</td><td>explodes (standard deviation &times;32)</td></tr>
+</table>
+<p>A mere factor of 2 in the weight variance is enough to change the signal by a factor of 1000 over only ten layers. For ReLU, half of the units output 0, so the variance is halved at every layer; to compensate, take \(\mathrm{Var}(w)=2/n\) (He initialisation).</p>
+<h3>Why zero initialisation fails &mdash; tiny example</h3>
+<p>Two hidden units with identical incoming weights give \(h_1=h_2\) for every input. The error reaching them is the same, so \(\nabla w_{1}=\nabla w_{2}\) and after the update they are <em>still</em> identical. Two (or 1000) neurons behave as one, and the layer's capacity is wasted. Random initialisation breaks this symmetry.</p>
+<div class="source-note">Source: CS7015 Lecture 9 (Khapra) &mdash; weight initialisation and the variance argument.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q36 -->
+  <div class="tab-content" id="tab-5">
+    <div class="question-block" data-qid="u4-q36">
+      <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u4-q36', 5)" aria-label="Mark as done"></button>
+        <h2 class="q-title">36. Explain Batch Normalization. What are its advantages in training deep neural networks?</h2>
+      </div>
+      <div class="answer-body">
+<p><strong>Batch Normalisation (BN)</strong> keeps the pre-activations of every layer well-behaved during training by standardising them, so that a layer's input does not keep shifting as the weights below it change. It was introduced to make very deep networks easier to train.</p>
+<h3>Idea</h3>
+<p>Unit-Gaussian pre-activations avoid both saturation (Q35) and vanishing/exploding signals. So instead of only <em>hoping</em> for this through initialisation, we <strong>force</strong> it: take the pre-activation \(s_{ik}\) of the \(k\)-th unit in layer \(i\) and standardise it:</p>
+<div class="formula">\[\hat s_{ik}=\frac{s_{ik}-E[s_{ik}]}{\sqrt{\mathrm{Var}[s_{ik}]}}\]</div>
+<p>This is a differentiable operation, so it can sit inside the network and gradients flow through it during backpropagation. \(E\) and \(\mathrm{Var}\) are estimated on the current mini-batch of \(m\) examples:</p>
+<div class="formula">\[\mu_B=\frac1m\sum_{j=1}^{m}s_{ik}^{(j)},\qquad \sigma_B^2=\frac1m\sum_{j=1}^{m}\bigl(s_{ik}^{(j)}-\mu_B\bigr)^2,\qquad \hat s^{(j)}_{ik}=\frac{s^{(j)}_{ik}-\mu_B}{\sqrt{\sigma_B^2+\epsilon}}\]</div>
+<p>(\(\epsilon\) is a tiny constant that avoids division by zero.)</p>
+<h3>Restoring representational power</h3>
+<p>Forcing every unit to have mean 0 and variance 1 may be too restrictive, so BN adds two <strong>learnable</strong> parameters per unit, a scale \(\gamma\) and a shift \(\beta\):</p>
+<div class="formula">\[y_{ik}=\gamma_k\,\hat s_{ik}+\beta_k\]</div>
+<p>The network can learn \(\gamma_k=\sqrt{\mathrm{Var}[s_{ik}]}\) and \(\beta_k=E[s_{ik}]\), which would undo the normalisation if that turns out best. \(\gamma,\beta\) are updated by gradient descent like any other parameter. The layer then becomes \(h_i=g(y_i)\).</p>
+<div class="svg-wrap">
+<svg viewBox="0 0 700 140" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a57" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--text-muted)"/></marker></defs><rect x="14" y="30" width="44" height="44" rx="6" fill="var(--surface2)" stroke="var(--border)"/><text x="36.0" y="56.0" text-anchor="middle" fill="var(--text)" font-size="12">hᵢ₋₁</text><rect x="88" y="30" width="62" height="44" rx="6" fill="var(--surface2)" stroke="var(--border)"/><text x="119.0" y="56.0" text-anchor="middle" fill="var(--text)" font-size="12">Wᵢ, bᵢ</text><rect x="180" y="30" width="40" height="44" rx="6" fill="var(--surface2)" stroke="var(--border)"/><text x="200.0" y="56.0" text-anchor="middle" fill="var(--text)" font-size="12">aᵢ</text><rect x="250" y="30" width="110" height="44" rx="6" fill="var(--surface2)" stroke="var(--accent)"/><text x="305.0" y="48" text-anchor="middle" fill="var(--text)" font-size="11">standardise</text><text x="305.0" y="64" text-anchor="middle" fill="var(--text)" font-size="10">(aᵢ−E)/√Var</text><rect x="390" y="30" width="40" height="44" rx="6" fill="var(--surface2)" stroke="var(--border)"/><text x="410.0" y="56.0" text-anchor="middle" fill="var(--text)" font-size="12">ŝᵢ</text><rect x="460" y="30" width="70" height="44" rx="6" fill="var(--surface2)" stroke="var(--accent)"/><text x="495.0" y="56.0" text-anchor="middle" fill="var(--text)" font-size="12">γ·ŝ + β</text><rect x="560" y="30" width="50" height="44" rx="6" fill="var(--surface2)" stroke="var(--border)"/><text x="585.0" y="56.0" text-anchor="middle" fill="var(--text)" font-size="12">g(·)</text><rect x="640" y="30" width="40" height="44" rx="6" fill="var(--surface2)" stroke="var(--border)"/><text x="660.0" y="56.0" text-anchor="middle" fill="var(--text)" font-size="12">hᵢ</text><line x1="58" y1="52" x2="88" y2="52" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a57)"/><line x1="150" y1="52" x2="180" y2="52" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a57)"/><line x1="220" y1="52" x2="250" y2="52" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a57)"/><line x1="360" y1="52" x2="390" y2="52" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a57)"/><line x1="430" y1="52" x2="460" y2="52" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a57)"/><line x1="530" y1="52" x2="560" y2="52" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a57)"/><line x1="610" y1="52" x2="640" y2="52" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a57)"/><text x="305" y="98" text-anchor="middle" fill="var(--text-muted)" font-size="10.5">fixed: mean 0, var 1</text><text x="495" y="98" text-anchor="middle" fill="var(--accent-hover)" font-size="10.5">learned γ, β</text><text x="350" y="126" text-anchor="middle" fill="var(--text-muted)" font-size="11">BN sits between the linear part (a = Wh) and the non-linearity g</text></svg>
+</div>
+<h3>Where it is used and at test time</h3>
+<ul>
+  <li>It is inserted <strong>before the non-linearity</strong> of each layer (after \(a_i=W_ih_{i-1}+b_i\), before \(g\)).</li>
+  <li>At test time there may be no mini-batch, so a running average of \(\mu_B\) and \(\sigma_B^2\) collected during training is used (standard practice, an addition to the slide treatment).</li>
+</ul>
+<h3>Advantages</h3>
+<table>
+  <tr><th>Advantage</th><th>Why</th></tr>
+  <tr><td>Faster training</td><td>Stable activation scale lets us use much larger learning rates.</td></tr>
+  <tr><td>Reduces vanishing/exploding gradients</td><td>Pre-activations stay in the sensitive region of sigmoid/tanh and in a sensible range for ReLU.</td></tr>
+  <tr><td>Less sensitive to initialisation</td><td>Whatever the starting weights, each layer's output is re-standardised.</td></tr>
+  <tr><td>Mild regularisation</td><td>The mini-batch statistics add noise to each example, sometimes reducing the need for dropout.</td></tr>
+  <tr><td>Fewer training epochs</td><td>Converges in far fewer steps to the same accuracy.</td></tr>
+</table>
+<div class="source-note">Source: CS7015 Lecture 9 (Khapra) &mdash; batch normalisation (\(\hat s_{ik}\), \(\gamma\), \(\beta\)). The \(\mu_B,\sigma_B^2,\epsilon\), running-average form is the standard version and is added for completeness.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q37 -->
+  <div class="tab-content" id="tab-6">
+      <div class="question-block" data-qid="u4-q37">
+              <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u4-q37', 6)" aria-label="Mark as done"></button>
+        <h2 class="q-title">37. What is Word2Vec? Describe how Word2Vec generates word embeddings.</h2>
+      </div>
         <div class="answer-body">
 
           <h3>Motivation</h3>
@@ -243,52 +445,61 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
 
 </div>
       </div>
-    </div><!-- ==================== Q31 ==================== -->
-    <div class="tab-content" id="tab-3">
-      <div class="question-block">
-        <span class="q-tag important">Important — full answer</span>
-        <h2 class="q-title">31. How is user history used to generate product or content recommendations? Discuss its applications.</h2>
-        <div class="answer-body">
+    </div>
 
-          <h3>Recommendations Using Deep Learning</h3>
-          <p>Recommendation systems aim to predict a user's preference for items (products, movies, songs, etc.) based on their past interactions. Deep learning enables learning complex, non-linear relationships between users and items from large-scale interaction data.</p>
-
-          <h3>User History as Input</h3>
-          <p>A user's <strong>history</strong> is a sequence of past interactions — items viewed, clicked, purchased, rated, or time spent. This history is fed to the model as input features. Common representations include:</p>
-          <ul>
-            <li><strong>Embeddings:</strong> Each item in the user's history is mapped to a dense vector (similar to word embeddings in Word2Vec). The user's history becomes a sequence of embedding vectors.</li>
-            <li><strong>Aggregated profile:</strong> The item embeddings are averaged or pooled to create a single user-profile vector.</li>
-            <li><strong>Sequential models:</strong> RNNs or Transformers process the ordered history to capture temporal patterns (e.g., what a user is likely to want <em>next</em> based on their recent activity).</li>
-          </ul>
-
-          <h3>Collaborative Filtering with Deep Learning</h3>
-          <p>In matrix factorisation approaches, users and items are each represented as latent vectors. The predicted rating is the dot product of the user and item vectors. Deep learning extends this by passing the concatenated user and item embeddings through a feedforward network to capture non-linear interactions:</p>
-          <div class="formula">
-            \[\hat{r}_{ui} = f_\theta(\mathbf{e}_u, \mathbf{e}_i)\]
-          </div>
-          <p>where \(\mathbf{e}_u\) is the user embedding, \(\mathbf{e}_i\) is the item embedding, and \(f_\theta\) is a neural network.</p>
-
-          <h3>Content-Based Filtering with Deep Features</h3>
-          <p>CNNs and RNNs can extract features from the content itself — images (CNN features from product photos), text (RNN/Transformer features from reviews or descriptions). These content features are combined with collaborative signals to improve recommendations, especially for new items with no interaction history (cold-start problem).</p>
-
-          <h3>Applications</h3>
-          <ul>
-            <li><strong>E-commerce:</strong> Product recommendations based on browsing and purchase history (Amazon, Flipkart).</li>
-            <li><strong>Video/Music streaming:</strong> Netflix uses deep learning to recommend shows based on watch history; Spotify uses it for playlist generation.</li>
-            <li><strong>Social media:</strong> Feed ranking and content recommendation on platforms like YouTube, Instagram — using user engagement history (likes, shares, watch time).</li>
-            <li><strong>Advertising:</strong> Predicting click-through rates (CTR) for ads based on user behaviour history.</li>
-            <li><strong>News:</strong> Personalised news feeds based on reading patterns and topic preferences.</li>
-          </ul>
-
-                <div class="source-note">Source: CS7015 Lecture 10 (Khapra), Module 10.5; general deep learning recommendations.</div>
-
-</div>
+  <!-- Q38 -->
+  <div class="tab-content" id="tab-7">
+    <div class="question-block" data-qid="u4-q38">
+      <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u4-q38', 7)" aria-label="Mark as done"></button>
+        <h2 class="q-title">38. What is object detection in computer vision? Discuss its applications.</h2>
       </div>
-    </div><!-- ==================== Q32 ==================== -->
-    <div class="tab-content" id="tab-4">
-      <div class="question-block">
-        <span class="q-tag important">Important — full answer</span>
-        <h2 class="q-title">32. Describe the process of object detection in images and videos using deep learning.</h2>
+      <div class="answer-body">
+<p><strong>Object detection</strong> is the task of finding <em>what</em> objects are in an image <em>and where</em> they are. For every object of interest, the model outputs a <strong>class label</strong> together with a <strong>bounding box</strong>, and an image can contain any number of objects of different classes.</p>
+<div class="svg-wrap">
+<svg viewBox="0 0 660 175" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a59" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--text-muted)"/></marker></defs><text x="130" y="16" text-anchor="middle" fill="var(--text-muted)" font-size="12">(a) the three tasks</text><rect x="10" y="30" width="120" height="100" rx="3" fill="none" stroke="var(--border)"/><text x="70" y="148" text-anchor="middle" fill="var(--text)" font-size="11">classification</text><text x="70" y="86" text-anchor="middle" fill="var(--text-muted)" font-size="11">"cat, dog"</text><rect x="150" y="30" width="120" height="100" rx="3" fill="none" stroke="var(--border)"/><rect x="170" y="60" width="50" height="50" rx="2" fill="none" stroke="var(--accent)"/><text x="173" y="57" text-anchor="start" fill="var(--accent)" font-size="9.5" font-weight="600">cat</text><text x="210" y="148" text-anchor="middle" fill="var(--text)" font-size="11">localisation</text><rect x="290" y="30" width="120" height="100" rx="3" fill="none" stroke="var(--border)"/><rect x="300" y="70" width="45" height="45" rx="2" fill="none" stroke="var(--accent)"/><text x="303" y="67" text-anchor="start" fill="var(--accent)" font-size="9.5" font-weight="600">cat</text><rect x="355" y="55" width="48" height="60" rx="2" fill="none" stroke="var(--important)"/><text x="358" y="52" text-anchor="start" fill="var(--important)" font-size="9.5" font-weight="600">dog</text><text x="350" y="148" text-anchor="middle" fill="var(--text)" font-size="11">detection</text><text x="520" y="16" text-anchor="middle" fill="var(--text-muted)" font-size="12">(b) Intersection over Union</text><rect x="450" y="40" width="100" height="80" rx="2" fill="none" stroke="var(--accent)"/><rect x="500" y="70" width="100" height="80" rx="2" fill="none" stroke="var(--important)"/><rect x="500" y="70" width="50" height="50" rx="0" fill="none" stroke="var(--success)"/><text x="462" y="56" text-anchor="start" fill="var(--accent-hover)" font-size="10">ground truth</text><text x="598" y="165" text-anchor="end" fill="var(--important)" font-size="10">prediction</text><text x="525" y="98" text-anchor="middle" fill="var(--success)" font-size="14" font-weight="600">∩</text></svg>
+</div>
+<h3>How it differs from related tasks</h3>
+<table>
+  <tr><th>Task</th><th>Output</th><th>Objects per image</th></tr>
+  <tr><td>Classification</td><td>One label for the whole image: \(\hat y\in\{1,\dots,K\}\)</td><td>Assumes one main object</td></tr>
+  <tr><td>Localisation</td><td>Label + one box \((x,y,w,h)\)</td><td>Exactly one</td></tr>
+  <tr><td>Detection</td><td>A set of \((\text{label},\ x,y,w,h)\) tuples</td><td>Variable (0, 1 or many)</td></tr>
+</table>
+<h3>Output and training loss</h3>
+<p>A box is described by its centre, width and height, \((b_x,b_y,b_w,b_h)\). The network predicts a class distribution and a box for each candidate, and is trained on a combined loss:</p>
+<div class="formula">\[L=L_{\text{cls}}+\lambda\,L_{\text{box}},\qquad L_{\text{cls}}=-\sum_{k}y_k\log\hat y_k,\qquad L_{\text{box}}=\sum_{j\in\{x,y,w,h\}}(b_j-\hat b_j)^2\]</div>
+<h3>Measuring a detection &mdash; IoU</h3>
+<p>A predicted box is judged by how much it overlaps the ground-truth box:</p>
+<div class="formula">\[\mathrm{IoU}=\frac{\text{area}(B_{\text{pred}}\cap B_{\text{gt}})}{\text{area}(B_{\text{pred}}\cup B_{\text{gt}})}\in[0,1]\]</div>
+<p>A detection is usually counted as correct when IoU \(\ge 0.5\). Overlapping duplicate boxes for the same object are removed by <em>non-maximum suppression</em> (keep the highest-scoring box, drop boxes with high IoU with it).</p>
+<h3>Main approaches (details in Q39)</h3>
+<ul>
+  <li><strong>Region-proposal based (two-stage):</strong> R-CNN &rarr; Fast R-CNN &rarr; Faster R-CNN.</li>
+  <li><strong>Single-shot (one-stage):</strong> YOLO, SSD &mdash; predict boxes and classes in one pass; faster.</li>
+</ul>
+<h3>Applications</h3>
+<table>
+  <tr><th>Area</th><th>Use</th></tr>
+  <tr><td>Autonomous driving</td><td>Detecting pedestrians, vehicles, traffic signs and lanes</td></tr>
+  <tr><td>Surveillance &amp; security</td><td>Intruder, face and suspicious-object detection</td></tr>
+  <tr><td>Healthcare</td><td>Locating tumours, lesions or organs in scans</td></tr>
+  <tr><td>Retail &amp; industry</td><td>Shelf monitoring, defect detection, counting items</td></tr>
+  <tr><td>Agriculture</td><td>Detecting crops, weeds and fruit ripeness</td></tr>
+  <tr><td>Robotics &amp; AR</td><td>Object grasping, scene understanding</td></tr>
+</table>
+<div class="source-note">Source: CS7015 Lecture 12 (Khapra) &mdash; object detection. The lecture PDF could not be fetched, so this uses the standard formulation (IoU, NMS, loss) and is consistent with Q39.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q39 -->
+  <div class="tab-content" id="tab-8">
+      <div class="question-block" data-qid="u4-q39">
+              <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u4-q39', 8)" aria-label="Mark as done"></button>
+        <h2 class="q-title">39. Describe the process of object detection in images and videos using deep learning.</h2>
+      </div>
         <div class="answer-body">
 
           <h3>Object Detection vs. Classification</h3>
@@ -349,6 +560,83 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
       </div>
     </div>
 
+  <!-- Q40 -->
+  <div class="tab-content" id="tab-9">
+      <div class="question-block" data-qid="u4-q40">
+              <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u4-q40', 9)" aria-label="Mark as done"></button>
+        <h2 class="q-title">40. How is user history used to generate product or content recommendations? Discuss its applications.</h2>
+      </div>
+        <div class="answer-body">
+
+          <h3>Recommendations Using Deep Learning</h3>
+          <p>Recommendation systems aim to predict a user's preference for items (products, movies, songs, etc.) based on their past interactions. Deep learning enables learning complex, non-linear relationships between users and items from large-scale interaction data.</p>
+
+          <h3>User History as Input</h3>
+          <p>A user's <strong>history</strong> is a sequence of past interactions — items viewed, clicked, purchased, rated, or time spent. This history is fed to the model as input features. Common representations include:</p>
+          <ul>
+            <li><strong>Embeddings:</strong> Each item in the user's history is mapped to a dense vector (similar to word embeddings in Word2Vec). The user's history becomes a sequence of embedding vectors.</li>
+            <li><strong>Aggregated profile:</strong> The item embeddings are averaged or pooled to create a single user-profile vector.</li>
+            <li><strong>Sequential models:</strong> RNNs or Transformers process the ordered history to capture temporal patterns (e.g., what a user is likely to want <em>next</em> based on their recent activity).</li>
+          </ul>
+
+          <div class="svg-wrap">
+<svg viewBox="0 0 660 185" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a66" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--text-muted)"/></marker></defs><text x="60" y="14" text-anchor="middle" fill="var(--text-muted)" font-size="11">user history</text><rect x="14" y="24" width="50" height="26" rx="5" fill="var(--surface2)" stroke="var(--border)"/><text x="39.0" y="41.0" text-anchor="middle" fill="var(--text)" font-size="12">i₁</text><line x1="64" y1="37" x2="96" y2="37" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a66)"/><rect x="96" y="24" width="56" height="26" rx="5" fill="var(--surface2)" stroke="var(--accent)"/><text x="124.0" y="41.0" text-anchor="middle" fill="var(--text)" font-size="11">e(i₁)</text><line x1="152" y1="37" x2="190" y2="88" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a66)"/><rect x="14" y="58" width="50" height="26" rx="5" fill="var(--surface2)" stroke="var(--border)"/><text x="39.0" y="75.0" text-anchor="middle" fill="var(--text)" font-size="12">i₂</text><line x1="64" y1="71" x2="96" y2="71" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a66)"/><rect x="96" y="58" width="56" height="26" rx="5" fill="var(--surface2)" stroke="var(--accent)"/><text x="124.0" y="75.0" text-anchor="middle" fill="var(--text)" font-size="11">e(i₂)</text><line x1="152" y1="71" x2="190" y2="88" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a66)"/><rect x="14" y="92" width="50" height="26" rx="5" fill="var(--surface2)" stroke="var(--border)"/><text x="39.0" y="109.0" text-anchor="middle" fill="var(--text)" font-size="12">i₃</text><line x1="64" y1="105" x2="96" y2="105" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a66)"/><rect x="96" y="92" width="56" height="26" rx="5" fill="var(--surface2)" stroke="var(--accent)"/><text x="124.0" y="109.0" text-anchor="middle" fill="var(--text)" font-size="11">e(i₃)</text><line x1="152" y1="105" x2="190" y2="88" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a66)"/><rect x="14" y="126" width="50" height="26" rx="5" fill="var(--surface2)" stroke="var(--border)"/><text x="39.0" y="143.0" text-anchor="middle" fill="var(--text)" font-size="12">i₄</text><line x1="64" y1="139" x2="96" y2="139" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a66)"/><rect x="96" y="126" width="56" height="26" rx="5" fill="var(--surface2)" stroke="var(--accent)"/><text x="124.0" y="143.0" text-anchor="middle" fill="var(--text)" font-size="11">e(i₄)</text><line x1="152" y1="139" x2="190" y2="88" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a66)"/><rect x="190" y="62" width="84" height="52" rx="6" fill="var(--surface2)" stroke="var(--accent)"/><text x="232" y="84" text-anchor="middle" fill="var(--text)" font-size="11">pool / RNN</text><text x="232" y="100" text-anchor="middle" fill="var(--text-muted)" font-size="10.5">→ user vec</text><text x="232" y="14" text-anchor="middle" fill="var(--text-muted)" font-size="11">summarise</text><rect x="300" y="128" width="70" height="26" rx="5" fill="var(--surface2)" stroke="var(--important)"/><text x="335.0" y="145.0" text-anchor="middle" fill="var(--text)" font-size="11">e(item j)</text><text x="335" y="170" text-anchor="middle" fill="var(--text-muted)" font-size="10.5">candidate item</text><line x1="274" y1="88" x2="318" y2="88" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a66)"/><rect x="318" y="62" width="90" height="52" rx="6" fill="var(--surface2)" stroke="var(--border)"/><text x="363" y="84" text-anchor="middle" fill="var(--text)" font-size="11.5">f(eᵤ, eⱼ)</text><text x="363" y="100" text-anchor="middle" fill="var(--text-muted)" font-size="10.5">dot / MLP</text><line x1="335" y1="128" x2="350" y2="114" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a66)"/><line x1="408" y1="88" x2="448" y2="88" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a66)"/><rect x="448" y="70" width="70" height="36" rx="6" fill="var(--surface2)" stroke="var(--success)"/><text x="483.0" y="92.0" text-anchor="middle" fill="var(--text)" font-size="12">score r̂</text><line x1="518" y1="88" x2="548" y2="88" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a66)"/><rect x="548" y="62" width="92" height="52" rx="6" fill="var(--surface2)" stroke="var(--border)"/><text x="594" y="84" text-anchor="middle" fill="var(--text)" font-size="11">rank all items</text><text x="594" y="100" text-anchor="middle" fill="var(--text-muted)" font-size="10.5">→ top-K shown</text></svg>
+</div>
+          <div class="formula">
+            \[e_u=\frac{1}{|H_u|}\sum_{i\in H_u}e_i\qquad\text{(pooled profile of the items in history }H_u\text{)}\]
+          </div>
+          <div class="formula">
+            \[h_t=\mathrm{RNN}(h_{t-1},e_{i_t}),\qquad P(\text{next}=j)=\mathrm{softmax}(Wh_t+b)_j\qquad\text{(sequential model)}\]
+          </div>
+          <p>The item embeddings can be learned exactly like word embeddings (Q37): treat the items a user interacted with in one session as the "words" of a sentence and train skip-gram, so that items bought or watched together end up close in the embedding space.</p>
+
+          <h3>Collaborative Filtering with Deep Learning</h3>
+          <p>In matrix factorisation approaches, users and items are each represented as latent vectors. The predicted rating is the dot product of the user and item vectors. Deep learning extends this by passing the concatenated user and item embeddings through a feedforward network to capture non-linear interactions:</p>
+          <div class="formula">
+            \[\hat{r}_{ui} = f_\theta(\mathbf{e}_u, \mathbf{e}_i)\]
+          </div>
+          <p>where \(\mathbf{e}_u\) is the user embedding, \(\mathbf{e}_i\) is the item embedding, and \(f_\theta\) is a neural network.</p>
+
+                    <p>The simplest collaborative model is matrix factorisation, \(\hat r_{ui}=\mathbf e_u^{T}\mathbf e_i\); the network \(f_\theta\) above replaces the dot product with learned layers.</p>
+
+          <h3>Training from History</h3>
+          <p><strong>Explicit feedback</strong> (ratings \(r_{ui}\)): minimise squared error over observed pairs \(\mathcal O\) with regularisation:</p>
+          <div class="formula">
+            \[\mathcal L=\sum_{(u,i)\in\mathcal O}\bigl(r_{ui}-\hat r_{ui}\bigr)^2+\lambda\bigl(\|\mathbf e_u\|^2+\|\mathbf e_i\|^2\bigr)\]
+          </div>
+          <p><strong>Implicit feedback</strong> (clicks, purchases, watch time): an interaction is a positive example \(y_{ui}=1\); items the user did not interact with are sampled as negatives (\(y_{ui}=0\)). With \(\hat y_{ui}=\sigma\bigl(f_\theta(\mathbf e_u,\mathbf e_i)\bigr)\):</p>
+          <div class="formula">
+            \[\mathcal L=-\sum_{(u,i)}\Bigl[y_{ui}\log\hat y_{ui}+(1-y_{ui})\log\bigl(1-\hat y_{ui}\bigr)\Bigr]\]
+          </div>
+          <p>Both are trained with backpropagation, and the user/item embeddings are learned together with the network.</p>
+
+          <h3>Content-Based Filtering with Deep Features</h3>
+          <p>CNNs and RNNs can extract features from the content itself — images (CNN features from product photos), text (RNN/Transformer features from reviews or descriptions). These content features are combined with collaborative signals to improve recommendations, especially for new items with no interaction history (cold-start problem).</p>
+
+                    <h3>Generating the Recommendation and Evaluating It</h3>
+          <ul>
+            <li><strong>Candidate generation:</strong> a fast model narrows millions of items to a few hundred using the user vector.</li>
+            <li><strong>Ranking:</strong> a heavier network scores each candidate and the top-\(K\) are shown, excluding items already seen.</li>
+            <li><strong>Metrics:</strong> \(\text{Precision@}K=\dfrac{|\text{relevant}\cap\text{top-}K|}{K}\), \(\ \text{Recall@}K=\dfrac{|\text{relevant}\cap\text{top-}K|}{|\text{relevant}|}\); for ratings, RMSE.</li>
+          </ul>
+          <p><strong>Challenges:</strong> cold start (new users or items with no history), sparse interactions, popularity bias, privacy of the stored history, and feedback loops (the system only learns about what it already shows).</p>
+
+          <h3>Applications</h3>
+          <ul>
+            <li><strong>E-commerce:</strong> Product recommendations based on browsing and purchase history (Amazon, Flipkart).</li>
+            <li><strong>Video/Music streaming:</strong> Netflix uses deep learning to recommend shows based on watch history; Spotify uses it for playlist generation.</li>
+            <li><strong>Social media:</strong> Feed ranking and content recommendation on platforms like YouTube, Instagram — using user engagement history (likes, shares, watch time).</li>
+            <li><strong>Advertising:</strong> Predicting click-through rates (CTR) for ads based on user behaviour history.</li>
+            <li><strong>News:</strong> Personalised news feeds based on reading patterns and topic preferences.</li>
+          </ul>
+
+                <div class="source-note">Source: CS7015 Lecture 10 (Khapra), Module 10.5; general deep learning recommendations.</div>
+
+</div>
+      </div>
+    </div>
+
 </div>
 
 <script>
@@ -360,6 +648,22 @@ function showTab(i) {
     btn.classList.toggle('active', idx === i);
   });
 }
+function toggleDone(qid, tabIdx) {
+  const block = document.querySelector('.question-block[data-qid="' + qid + '"]');
+  const isDone = block.classList.toggle('q-done');
+  const btn = document.querySelectorAll('.tab-btn')[tabIdx];
+  btn.classList.toggle('done', isDone);
+  try { localStorage.setItem('done-' + qid, isDone ? '1' : ''); } catch (e) {}
+}
+document.querySelectorAll('.question-block').forEach((block, idx) => {
+  let saved = false;
+  try { saved = !!localStorage.getItem('done-' + block.dataset.qid); } catch (e) {}
+  if (saved) {
+    block.classList.add('q-done');
+    const btn = document.querySelectorAll('.tab-btn')[idx];
+    if (btn) btn.classList.add('done');
+  }
+});
 showTab(0);
 </script>
 </body>

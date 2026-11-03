@@ -21,40 +21,75 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
 
   <div class="tabs" role="tablist">
     <button class="tab-btn" onclick="showTab(0)">Q11</button>
-    <button class="tab-btn important" onclick="showTab(1)">Q12</button>
+    <button class="tab-btn" onclick="showTab(1)">Q12</button>
     <button class="tab-btn" onclick="showTab(2)">Q13</button>
-    <button class="tab-btn important" onclick="showTab(3)">Q14</button>
-    <button class="tab-btn important" onclick="showTab(4)">Q15</button>
-    <button class="tab-btn important" onclick="showTab(5)">Q16</button>
+    <button class="tab-btn" onclick="showTab(3)">Q14</button>
+    <button class="tab-btn" onclick="showTab(4)">Q15</button>
+    <button class="tab-btn" onclick="showTab(5)">Q16</button>
     <button class="tab-btn" onclick="showTab(6)">Q17</button>
-    <button class="tab-btn important" onclick="showTab(7)">Q18</button>
+    <button class="tab-btn" onclick="showTab(7)">Q18</button>
     <button class="tab-btn" onclick="showTab(8)">Q19</button>
     <button class="tab-btn" onclick="showTab(9)">Q20</button>
   </div>
 
   <!-- Q11 -->
   <div class="tab-content" id="tab-0">
-    <div class="question-block">
-      <span class="q-tag skeleton">Skeleton</span>
-      <h2 class="q-title">11. Explain in detail about the concept of gradient based learning.</h2>
+    <div class="question-block" data-qid="u2-q11">
+      <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u2-q11', 0)" aria-label="Mark as done"></button>
+        <h2 class="q-title">11. Explain in detail about the concept of gradient based learning.</h2>
+      </div>
       <div class="answer-body">
-        <ul>
-          <li>Goal: find θ = [w, b] minimizing loss L(θ). Guesswork doesn't scale beyond a couple parameters — need a principled way to move through the error surface.</li>
-          <li><strong>Taylor series argument:</strong> L(θ+ηu) ≈ L(θ) + η·uᵀ∇L(θ) for small η. The move is favorable only if uᵀ∇L(θ) &lt; 0.</li>
-          <li>uᵀ∇L(θ) = k·cos(β) where β is angle between u and ∇L(θ); this is most negative when β = 180°, i.e. <strong>u points exactly opposite to the gradient</strong>.</li>
-          <li><strong>Update rule:</strong> w_(t+1) = w_t − η∇w_t, b_(t+1) = b_t − η∇b_t — move opposite to the gradient, scaled by learning rate η.</li>
-          <li>Where the curve is steep, gradient is large → big updates. Where curve is gentle (flat), gradient is small → slow progress (motivates momentum-based methods, Q12).</li>
-        </ul>
-        <div class="source-note">Source: CS7015 Lecture 5 (Khapra), Modules 5.1–5.2.</div>
+<p>Training a network means finding \(\theta=[w,b]\) that minimises a loss \(L(\theta)\). Trying values by guesswork does not scale beyond a couple of parameters, so we need a <strong>systematic way of moving through the error surface</strong>. <strong>Gradient-based learning</strong> does this: at every step, use the derivative of \(L\) to decide in which direction to move \(\theta\).</p>
+<h3>Why the negative gradient?</h3>
+<p>Move \(\theta\) by a small step \(\eta\) in a unit direction \(u\). By Taylor's series,</p>
+<div class="formula">\[L(\theta+\eta u)=L(\theta)+\eta\,u^{T}\nabla L(\theta)+\frac{\eta^{2}}{2!}\,u^{T}\nabla^{2}L(\theta)\,u+\cdots\;\approx\;L(\theta)+\eta\,u^{T}\nabla L(\theta)\]</div>
+<p>The move is useful only if \(L(\theta+\eta u)-L(\theta)<0\), i.e. \(u^{T}\nabla L(\theta)<0\). If \(\beta\) is the angle between \(u\) and \(\nabla L(\theta)\), then \(u^{T}\nabla L(\theta)=k\cos\beta\), which is <strong>most negative when \(\beta=180^\circ\)</strong>: \(u\) must point exactly opposite to the gradient.</p>
+<h3>Update rule</h3>
+<div class="formula">\[\theta_{t+1}=\theta_t-\eta\,\nabla L(\theta_t)\quad\Longleftrightarrow\quad w_{t+1}=w_t-\eta\,\nabla w_t,\qquad b_{t+1}=b_t-\eta\,\nabla b_t\]</div>
+<p>where \(\nabla w_t=\partial L(w,b)/\partial w\) evaluated at \(w=w_t,\ b=b_t\), and \(\eta\) is the learning rate.</p>
+<div class="svg-wrap">
+<svg viewBox="0 0 680 232" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a15" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--text-muted)"/></marker></defs><text x="210" y="16" text-anchor="middle" fill="var(--text-muted)" font-size="12">(a) gradient descent on L(w) = (w − 3)²,  η = 0.3</text><line x1="40" y1="190" x2="376" y2="190" stroke="var(--text-dim)" stroke-width="1"/><line x1="40" y1="190" x2="40" y2="25" stroke="var(--text-dim)" stroke-width="1"/><path d="M40.0,37.0 L45.6,47.0 L51.2,56.7 L56.8,66.1 L62.4,75.1 L68.0,83.8 L73.6,92.1 L79.2,100.1 L84.8,107.7 L90.4,115.0 L96.0,122.0 L101.6,128.6 L107.2,134.9 L112.8,140.9 L118.4,146.5 L124.0,151.8 L129.6,156.7 L135.2,161.3 L140.8,165.5 L146.4,169.4 L152.0,173.0 L157.6,176.2 L163.2,179.1 L168.8,181.7 L174.4,183.9 L180.0,185.8 L185.6,187.3 L191.2,188.5 L196.8,189.3 L202.4,189.8 L208.0,190.0 L213.6,189.8 L219.2,189.3 L224.8,188.5 L230.4,187.3 L236.0,185.8 L241.6,183.9 L247.2,181.7 L252.8,179.1 L258.4,176.2 L264.0,173.0 L269.6,169.4 L275.2,165.5 L280.8,161.3 L286.4,156.7 L292.0,151.8 L297.6,146.5 L303.2,140.9 L308.8,134.9 L314.4,128.6 L320.0,122.0 L325.6,115.0 L331.2,107.7 L336.8,100.1 L342.4,92.1 L348.0,83.8 L353.6,75.1 L359.2,66.1 L364.8,56.7 L370.4,47.0 L376.0,37.0" fill="none" stroke="var(--accent)" stroke-width="2.5"/><line x1="62.400000000000006" y1="75.07999999999998" x2="62.400000000000006" y2="190" stroke="var(--text-dim)" stroke-width="1" stroke-dasharray="3 3"/><circle cx="62.400000000000006" cy="75.07999999999998" r="5" fill="var(--important)" stroke="var(--important)" stroke-width="1"/><text x="62.400000000000006" y="204" text-anchor="middle" fill="var(--text-muted)" font-size="10.5">w₀</text><line x1="149.76" y1="171.6128" x2="149.76" y2="190" stroke="var(--text-dim)" stroke-width="1" stroke-dasharray="3 3"/><circle cx="149.76" cy="171.6128" r="5" fill="var(--important)" stroke="var(--important)" stroke-width="1"/><text x="149.76" y="204" text-anchor="middle" fill="var(--text-muted)" font-size="10.5">w₁</text><line x1="184.704" y1="187.058048" x2="184.704" y2="190" stroke="var(--text-dim)" stroke-width="1" stroke-dasharray="3 3"/><circle cx="184.704" cy="187.058048" r="5" fill="var(--important)" stroke="var(--important)" stroke-width="1"/><text x="184.704" y="204" text-anchor="middle" fill="var(--text-muted)" font-size="10.5">w₂</text><line x1="198.6816" y1="189.52928768" x2="198.6816" y2="190" stroke="var(--text-dim)" stroke-width="1" stroke-dasharray="3 3"/><circle cx="198.6816" cy="189.52928768" r="5" fill="var(--important)" stroke="var(--important)" stroke-width="1"/><line x1="204.27264" y1="189.9246860288" x2="204.27264" y2="190" stroke="var(--text-dim)" stroke-width="1" stroke-dasharray="3 3"/><circle cx="204.27264" cy="189.9246860288" r="5" fill="var(--important)" stroke="var(--important)" stroke-width="1"/><text x="66" y="52" text-anchor="start" fill="var(--important)" font-size="10.5">steep: large gradient</text><text x="66" y="66" text-anchor="start" fill="var(--important)" font-size="10.5">→ large step</text><text x="300" y="166" text-anchor="start" fill="var(--text-muted)" font-size="10.5">flat: small gradient</text><text x="300" y="180" text-anchor="start" fill="var(--text-muted)" font-size="10.5">→ small step</text><text x="210" y="220" text-anchor="middle" fill="var(--text-muted)" font-size="11">w</text><text x="520" y="16" text-anchor="middle" fill="var(--text-muted)" font-size="12">(b) best direction u</text><circle cx="520" cy="110" r="4" fill="var(--text)" stroke="var(--text)" stroke-width="1"/><text x="520" y="134" text-anchor="middle" fill="var(--text)" font-size="11">θ</text><line x1="520" y1="110" x2="585" y2="60" stroke="var(--important)" stroke-width="2.2" marker-end="url(#a15)"/><text x="600" y="56" text-anchor="start" fill="var(--important)" font-size="11.5">∇L(θ)</text><line x1="520" y1="110" x2="455" y2="160" stroke="var(--accent)" stroke-width="2.2" marker-end="url(#a15)"/><text x="440" y="174" text-anchor="start" fill="var(--accent-hover)" font-size="11.5">u = −∇L(θ)</text><text x="520" y="200" text-anchor="middle" fill="var(--text-muted)" font-size="10.5">β = 180°  →  uᵀ∇L(θ) = k cos β is most negative</text></svg>
+</div>
+<h3>Algorithm</h3>
+<pre><code>t = 0;  max_iterations = 1000
+initialise w, b
+while t < max_iterations:
+    w = w - η · ∇w        # ∇w, ∇b evaluated at current (w, b)
+    b = b - η · ∇b
+    t = t + 1</code></pre>
+<p><strong>Example (sigmoid neuron, squared error):</strong> for \(L=\tfrac12\sum_i(f(x_i)-y_i)^2\), \(\ \nabla w=\sum_i (f(x_i)-y_i)\,f(x_i)(1-f(x_i))\,x_i\). In a deep network the same gradients are obtained for every layer by backpropagation (Q6).</p>
+<h3>Behaviour of the update</h3>
+<table>
+  <tr><th>Situation</th><th>Effect</th></tr>
+  <tr><td>Steep region (large gradient)</td><td>Large step</td></tr>
+  <tr><td>Gentle / flat region (small gradient)</td><td>Tiny step &mdash; slow progress (motivates momentum, Q12)</td></tr>
+  <tr><td>\(\eta\) too small</td><td>Very slow convergence</td></tr>
+  <tr><td>\(\eta\) too large</td><td>Overshoots the minimum; may oscillate or diverge</td></tr>
+</table>
+<h3>Worked example &mdash; minimise \(L(w)=(w-3)^2\)</h3>
+<p>Here \(\nabla L=2(w-3)\). Take \(\eta=0.1\) and start at \(w_0=0\):</p>
+<table>
+  <tr><th>\(t\)</th><th>\(w_t\)</th><th>\(\nabla L(w_t)\)</th><th>\(w_{t+1}=w_t-0.1\,\nabla L\)</th></tr>
+  <tr><td>0</td><td>0</td><td>&minus;6</td><td>0.6</td></tr>
+  <tr><td>1</td><td>0.6</td><td>&minus;4.8</td><td>1.08</td></tr>
+  <tr><td>2</td><td>1.08</td><td>&minus;3.84</td><td>1.464</td></tr>
+</table>
+<p>The weight moves towards 3, and the steps shrink because the gradient shrinks near the minimum. In general \(w_{t+1}-3=(1-2\eta)(w_t-3)\), so</p>
+<div class="formula">\[w_t-3=(1-2\eta)^{t}\,(w_0-3)\]</div>
+<p>This converges only if \(|1-2\eta|<1\), i.e. \(0<\eta<1\). With \(\eta=1.1\) the factor is \(-1.2\): the iterates overshoot and the error grows each step. This is the "learning rate too large" row of the table above.</p>
+<div class="source-note">Source: CS7015 Lecture 5 (Khapra), Modules 5.1&ndash;5.2; Lecture 3 for the sigmoid-neuron gradient.</div>
       </div>
     </div>
   </div>
 
-  <!-- Q12 IMPORTANT -->
+  <!-- Q12 -->
   <div class="tab-content" id="tab-1">
-    <div class="question-block">
-      <span class="q-tag important">Important — full answer</span>
-      <h2 class="q-title">12. How does Momentum Based Gradient Descent work and how is it different from other optimization algorithms?</h2>
+    <div class="question-block" data-qid="u2-q12">
+            <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u2-q12', 1)" aria-label="Mark as done"></button>
+        <h2 class="q-title">12. How does Momentum Based Gradient Descent work and how is it different from other optimization algorithms?</h2>
+      </div>
       <div class="answer-body">
         <p><strong>Motivation:</strong> vanilla gradient descent is slow in regions of gentle slope, since its update size is directly proportional to the (small) local gradient. Momentum-based gradient descent addresses this by accumulating a running history of past gradients: if the algorithm has been repeatedly instructed to move in a similar direction, it should take progressively larger steps in that direction, analogous to a ball gathering speed as it rolls downhill.</p>
 
@@ -90,6 +125,9 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
           <li><strong>Limitation:</strong> in a valley with steep walls, this same accumulated velocity causes momentum to <strong>overshoot</strong>, producing oscillations ("u-turns") in and out of the minimum before settling. Despite the oscillation, it still converges faster overall — e.g., after 100 iterations momentum can reach a loss on the order of \(10^{-5}\) while vanilla GD remains stuck around 0.36.</li>
         </ul>
 
+        <h3>Nesterov accelerated GD (NAG) — "look before you leap"</h3>
+        <div class="formula">\[w_{\text{lookahead}}=w_t-\gamma\,\text{update}_{t-1},\qquad \text{update}_t=\gamma\,\text{update}_{t-1}+\eta\,\nabla w_{\text{lookahead}},\qquad w_{t+1}=w_t-\text{update}_t\]</div>
+        <p>Momentum evaluates the gradient at the current point and can overshoot. NAG first moves to the look-ahead point and takes the gradient there, so its "u-turns" near the minimum are shorter. The momentum coefficient \(\gamma\) is commonly 0.9&ndash;0.99.</p>
         <h3>Comparison with other optimization algorithms</h3>
         <table>
           <tr><th>Algorithm</th><th>Key idea</th><th>Limitation it addresses</th></tr>
@@ -108,52 +146,81 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
 
   <!-- Q13 -->
   <div class="tab-content" id="tab-2">
-    <div class="question-block">
-      <span class="q-tag skeleton">Skeleton</span>
-      <h2 class="q-title">13. Write a python code for Batch Gradient Descent and Mini Batch Gradient Descent.</h2>
+    <div class="question-block" data-qid="u2-q13">
+      <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u2-q13', 2)" aria-label="Mark as done"></button>
+        <h2 class="q-title">13. Write a python code for Batch Gradient Descent and Mini Batch Gradient Descent.</h2>
+      </div>
       <div class="answer-body">
-        <pre><code>import numpy as np
+<p>Both methods use the same update \(\theta\leftarrow\theta-\eta\,\nabla L\); they differ only in <strong>how many points are used to estimate the gradient</strong>. For a sigmoid neuron with squared error, the gradient on one point is \((f(x)-y)\,f(x)(1-f(x))\,x\).</p>
+<div class="formula">\[\text{Batch: } \theta\leftarrow\theta-\eta\,\frac{1}{N}\sum_{i=1}^{N}\nabla L_i\ \ (1\text{ update/epoch})\qquad \text{Mini-batch: } \theta\leftarrow\theta-\eta\,\frac{1}{B}\sum_{i\in\text{batch}}\nabla L_i\ \ (N/B\text{ updates/epoch})\]</div>
+<pre><code>import numpy as np
 
-def sigmoid(z): return 1/(1+np.exp(-z))
+def sigmoid(z):
+    return 1.0 / (1.0 + np.exp(-z))
 
-def compute_grad(X, y, w, b):
-    y_hat = sigmoid(X.dot(w) + b)
-    error = y_hat - y
-    grad_w = X.T.dot(error) / len(X)
-    grad_b = np.mean(error)
+def loss(X, y, w, b):                         # squared error, averaged
+    return 0.5 * np.mean((sigmoid(X @ w + b) - y) ** 2)
+
+def gradients(X, y, w, b):                    # gradient on the given points
+    y_hat = sigmoid(X @ w + b)                # f(x)
+    delta = (y_hat - y) * y_hat * (1 - y_hat) # (f(x)-y) f(x)(1-f(x))
+    grad_w = X.T @ delta / len(X)
+    grad_b = np.mean(delta)
     return grad_w, grad_b
 
-# ---- Batch (Vanilla) Gradient Descent: uses ALL data each step ----
-def batch_gd(X, y, w, b, lr=0.1, epochs=100):
-    for _ in range(epochs):
-        grad_w, grad_b = compute_grad(X, y, w, b)
+# ---------- Batch gradient descent: ALL N points -&gt; 1 update per epoch ----------
+def batch_gd(X, y, lr=2.0, epochs=5000):
+    w, b = np.zeros(X.shape[1]), 0.0
+    for epoch in range(epochs):
+        grad_w, grad_b = gradients(X, y, w, b)
         w -= lr * grad_w
         b -= lr * grad_b
     return w, b
 
-# ---- Mini-Batch Gradient Descent: uses batches of size B ----
-def minibatch_gd(X, y, w, b, lr=0.1, epochs=100, batch_size=32):
-    n = len(X)
-    for _ in range(epochs):
-        idx = np.random.permutation(n)
-        X, y = X[idx], y[idx]
-        for start in range(0, n, batch_size):
-            end = start + batch_size
-            Xb, yb = X[start:end], y[start:end]
-            grad_w, grad_b = compute_grad(Xb, yb, w, b)
+# ---------- Mini-batch gradient descent: B points -&gt; N/B updates per epoch ----------
+def minibatch_gd(X, y, lr=2.0, epochs=5000, batch_size=2):
+    w, b = np.zeros(X.shape[1]), 0.0
+    N = len(X)
+    for epoch in range(epochs):
+        order = np.random.permutation(N)      # shuffle every epoch
+        for start in range(0, N, batch_size):
+            batch = order[start:start + batch_size]
+            grad_w, grad_b = gradients(X[batch], y[batch], w, b)
             w -= lr * grad_w
             b -= lr * grad_b
-    return w, b</code></pre>
-        <p><strong>Key distinction:</strong> Batch GD makes <strong>1 update per epoch</strong> (uses whole dataset — exact gradient, guaranteed loss decrease, but slow per update on large N). Mini-batch GD makes <strong>N/B updates per epoch</strong> (approximate but much faster and less oscillatory than pure SGD, typical B = 16/32/64).</p>
+    return w, b
+
+# ---------- demo: learn the OR gate ----------
+X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]], dtype=float)
+y = np.array([0, 1, 1, 1], dtype=float)
+
+for name, train in [(&quot;batch&quot;, batch_gd), (&quot;mini-batch&quot;, minibatch_gd)]:
+    w, b = train(X, y)
+    pred = (sigmoid(X @ w + b) &gt;= 0.5).astype(int)
+    print(name, &quot;loss =&quot;, round(loss(X, y, w, b), 4), &quot;predictions =&quot;, pred)</code></pre>
+<h3>Output</h3>
+<pre><code>batch loss = 0.0003 predictions = [0 1 1 1]
+mini-batch loss = 0.0001 predictions = [0 1 1 1]</code></pre>
+<p>(The mini-batch loss differs slightly from run to run because of the random shuffling.)</p>
+<h3>Key points</h3>
+<ul>
+  <li><strong>Batch GD:</strong> exact gradient, every step decreases the loss, but each update needs a full pass over the data &mdash; slow for large \(N\).</li>
+  <li><strong>Mini-batch GD:</strong> approximate gradient, far more updates per epoch, and less noisy than SGD. Typical \(B=16,32,64\).</li>
+  <li>Setting <code>batch_size = N</code> gives batch GD and <code>batch_size = 1</code> gives stochastic GD.</li>
+</ul>
+<div class="source-note">Source: CS7015 Lecture 5 (Khapra), Modules 5.6; sigmoid gradient from Lecture 3.</div>
       </div>
     </div>
   </div>
 
-  <!-- Q14 IMPORTANT -->
+  <!-- Q14 -->
   <div class="tab-content" id="tab-3">
-    <div class="question-block">
-      <span class="q-tag important">Important — full answer</span>
-      <h2 class="q-title">14. How does basis transformation using principal component analysis (PCA) help in reducing the dimensionality of data in deep learning?</h2>
+    <div class="question-block" data-qid="u2-q14">
+            <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u2-q14', 3)" aria-label="Mark as done"></button>
+        <h2 class="q-title">14. How does basis transformation using principal component analysis (PCA) help in reducing the dimensionality of data in deep learning?</h2>
+      </div>
       <div class="answer-body">
         <h3>What a basis is, and why it matters here</h3>
         <p>A <strong>basis</strong> for an \(n\)-dimensional space is a set of \(n\) linearly independent vectors such that every point in that space can be written as a unique linear combination of them. The everyday coordinate axes (\(e_1, e_2, \dots, e_n\)) are one such basis — the "standard basis" — but they are not the only valid one. Any set of \(n\) orthogonal, linearly independent vectors can serve as a basis; changing which basis is used does not change the underlying data, only the coordinates used to describe it.</p>
@@ -175,7 +242,12 @@ def minibatch_gd(X, y, w, b, lr=0.1, epochs=100, batch_size=32):
         </div>
         <p>The orthogonal matrix \(P\) that diagonalizes \(\Sigma\) (i.e. satisfies \(P^\top \Sigma P = D\)) is exactly the matrix whose columns are the <strong>eigenvectors of \(X^\top X\)</strong>, by the Eigenvalue Decomposition theorem. This is why eigenvectors are the right basis to use: eigenvectors of a symmetric matrix are guaranteed to be orthogonal, and (for distinct eigenvalues) linearly independent — exactly the properties a valid, decorrelating basis requires.</p>
 
+        <h3>Geometric picture</h3>
+        <div class="svg-wrap">
+<svg viewBox="0 0 560 230" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a23" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--text-muted)"/></marker></defs><text x="210" y="16" text-anchor="middle" fill="var(--text-muted)" font-size="12">PCA = rotate the axes to the directions of largest variance</text><line x1="20" y1="118" x2="285" y2="118" stroke="var(--text-dim)" stroke-width="1" stroke-dasharray="3 3"/><line x1="150" y1="28" x2="150" y2="215" stroke="var(--text-dim)" stroke-width="1" stroke-dasharray="3 3"/><circle cx="97.5" cy="154.4" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="191.2" cy="85.9" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="89.7" cy="151.8" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="179.2" cy="118.9" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="86.2" cy="133.9" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="185.1" cy="105.4" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="225.9" cy="90.0" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="143.5" cy="117.3" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="263.7" cy="47.7" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="106.7" cy="124.6" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="155.3" cy="117.3" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="134.0" cy="126.2" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="167.1" cy="119.3" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="200.9" cy="92.0" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="74.3" cy="173.0" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="84.9" cy="152.8" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="83.6" cy="156.3" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="116.4" cy="140.8" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="298.3" cy="31.6" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="178.7" cy="80.1" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="141.7" cy="133.5" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="148.4" cy="124.9" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="147.6" cy="103.1" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="169.7" cy="93.5" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="230.8" cy="63.2" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="180.9" cy="100.2" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="188.7" cy="85.9" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="194.1" cy="90.5" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="211.3" cy="92.7" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="150.9" cy="104.9" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="187.9" cy="103.7" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="221.3" cy="70.7" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="178.5" cy="109.7" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="164.2" cy="113.2" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="154.0" cy="106.0" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="101.5" cy="139.6" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="187.2" cy="121.0" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="201.4" cy="105.4" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="189.9" cy="106.3" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="163.7" cy="122.6" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="227.6" cy="67.9" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="132.5" cy="159.8" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="167.8" cy="123.4" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="181.4" cy="81.5" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="272.0" cy="76.3" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="163.2" cy="122.5" r="3.2" fill="var(--text-muted)" stroke="none" stroke-width="1"/><line x1="97.5" y1="154.4" x2="94.9" y2="149.8" stroke="var(--warning)" stroke-width="1" stroke-dasharray="2 2"/><line x1="191.2" y1="85.9" x2="194.8" y2="92.1" stroke="var(--warning)" stroke-width="1" stroke-dasharray="2 2"/><line x1="89.7" y1="151.8" x2="90.2" y2="152.6" stroke="var(--warning)" stroke-width="1" stroke-dasharray="2 2"/><line x1="179.2" y1="118.9" x2="171.5" y2="105.6" stroke="var(--warning)" stroke-width="1" stroke-dasharray="2 2"/><line x1="86.2" y1="133.9" x2="95.2" y2="149.6" stroke="var(--warning)" stroke-width="1" stroke-dasharray="2 2"/><line x1="54.73720558371174" y1="173.0" x2="252.19099764656377" y2="59.00000000000001" stroke="var(--accent)" stroke-width="2.5" marker-end="url(#a23)"/><line x1="126.0" y1="76.43078061834694" x2="177.5" y2="165.63139720814414" stroke="var(--important)" stroke-width="2.5" marker-end="url(#a23)"/><text x="258.1909976465638" y="51.00000000000001" text-anchor="start" fill="var(--accent-hover)" font-size="13" font-weight="600">p₁</text><text x="185.5" y="177.63139720814414" text-anchor="start" fill="var(--important)" font-size="13" font-weight="600">p₂</text><text x="300" y="70" text-anchor="start" fill="var(--accent-hover)" font-size="11">p₁: largest eigenvalue λ₁</text><text x="300" y="86" text-anchor="start" fill="var(--text-muted)" font-size="10.5">variance along p₁ = λ₁/m (large)</text><text x="300" y="100" text-anchor="start" fill="var(--text-muted)" font-size="10.5">→ keep</text><text x="300" y="136" text-anchor="start" fill="var(--important)" font-size="11">p₂: smallest eigenvalue λ₂</text><text x="300" y="152" text-anchor="start" fill="var(--text-muted)" font-size="10.5">variance along p₂ = λ₂/m (small)</text><text x="300" y="166" text-anchor="start" fill="var(--text-muted)" font-size="10.5">→ discard</text><text x="300" y="198" text-anchor="start" fill="var(--warning)" font-size="10.5">dashed yellow = projection onto p₁</text></svg>
+</div>
         <h3>Practical algorithm — steps to actually compute PCA</h3>
+        <p><em>Note:</em> in these practical steps \(n\) is the number of samples, and the sample-covariance factor \(1/(n-1)\) is used. It differs from the \(1/m\) of the derivation only by a constant, so the eigenvectors are unchanged.</p>
         <p>The theory above explains <em>why</em> eigenvectors of the covariance matrix are the right basis. In practice, PCA is carried out as a sequence of concrete steps:</p>
         <ol>
           <li><strong>Find the mean:</strong> \(\bar{x} = \dfrac{1}{n}\sum_{i=1}^n x_i\)</li>
@@ -198,18 +270,30 @@ def minibatch_gd(X, y, w, b, lr=0.1, epochs=100, batch_size=32):
           <li><strong>Variance view:</strong> the variance captured along the \(i\)-th principal eigenvector direction equals \(\lambda_i/m\) — so keeping the top-\(k\) eigenvectors by eigenvalue directly maximizes the variance retained.</li>
         </ul>
 
+        <h3>Choosing \(k\)</h3>
+        <p>Keep the smallest \(k\) whose retained-variance ratio is large enough (commonly 95&ndash;99%):</p>
+        <div class="formula">\[\frac{\sum_{i=1}^{k}\lambda_i}{\sum_{i=1}^{n}\lambda_i}\ \ge\ 0.95,\qquad \hat{x}=\sum_{j=1}^{k}\alpha_j\,p_j,\ \ \alpha_j=x^{T}p_j\]</div>
+        <p>The \(k\) coefficients \(\alpha_j\) are the new, reduced features.</p>
         <h3>Worked example — eigenfaces</h3>
         <p>For \(m\) face images, each \(100\times100\) pixels (10,000-dimensional), \(X \in \mathbb{R}^{m\times10000}\). Rather than storing all 10,000 dimensions per image, only the top \(\approx100\) eigenvectors of \(X^\top X\) ("eigenfaces") are computed once, as a shared basis. Each image is then stored as just \(k\) scalar coefficients \(\alpha_i\) against that basis — a large reduction in storage with minimal loss in reconstruction quality.</p>
+        <h3>Use in deep learning</h3>
+        <ul>
+          <li><strong>Input compression:</strong> fewer input features gives a smaller first-layer weight matrix \(W_1\), fewer parameters and faster training.</li>
+          <li><strong>Decorrelated inputs</strong> make the loss surface better conditioned, so gradient descent converges faster.</li>
+          <li><strong>Link to autoencoders:</strong> a linear autoencoder with squared error learns the same subspace as PCA (Q21).</li>
+        </ul>
         <div class="source-note">Source: CS7015 Lecture 6 (Khapra), Modules 6.4–6.7.</div>
       </div>
     </div>
   </div>
 
-  <!-- Q15 IMPORTANT -->
+  <!-- Q15 -->
   <div class="tab-content" id="tab-4">
-    <div class="question-block">
-      <span class="q-tag important">Important — full answer</span>
-      <h2 class="q-title">15. Explain the Adam optimisation algorithm in detail.</h2>
+    <div class="question-block" data-qid="u2-q15">
+            <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u2-q15', 4)" aria-label="Mark as done"></button>
+        <h2 class="q-title">15. Explain the Adam optimisation algorithm in detail.</h2>
+      </div>
       <div class="answer-body">
         <h3>Lineage — the problem Adam solves</h3>
         <p><strong>AdaGrad's problem:</strong> AdaGrad gives each parameter its own learning rate, scaled down by the cumulative sum of that parameter's squared gradients: \(v_t = v_{t-1} + (\nabla w_t)^2\). Because this sum only ever grows, the effective learning rate \(\eta/\sqrt{v_t+\epsilon}\) shrinks monotonically over training — for parameters that are updated frequently, it can shrink so much that learning effectively stops well before convergence.</p>
@@ -273,11 +357,13 @@ for t in range(1, max_iterations + 1):
     </div>
   </div>
 
-  <!-- Q16 IMPORTANT -->
+  <!-- Q16 -->
   <div class="tab-content" id="tab-5">
-    <div class="question-block">
-      <span class="q-tag important">Important — full answer</span>
-      <h2 class="q-title">16. How do the various optimization algorithms (GD, momentum-based GD, NAG, AdaGrad, RMSProp, Adam) impact the convergence rate?</h2>
+    <div class="question-block" data-qid="u2-q16">
+            <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u2-q16', 5)" aria-label="Mark as done"></button>
+        <h2 class="q-title">16. How do the various optimization algorithms (GD, momentum-based GD, NAG, AdaGrad, RMSProp, Adam) impact the convergence rate?</h2>
+      </div>
       <div class="answer-body">
         <p><strong>Vanilla Gradient Descent:</strong> \(w_{t+1} = w_t - \eta\nabla w_t\). Convergence is slowest among all the methods here, since the update size is directly proportional to the local gradient — on gentle slopes and in narrow ravines, updates become very small and progress stalls badly.</p>
 
@@ -309,29 +395,54 @@ for t in range(1, max_iterations + 1):
 
   <!-- Q17 -->
   <div class="tab-content" id="tab-6">
-    <div class="question-block">
-      <span class="q-tag skeleton">Skeleton</span>
-      <h2 class="q-title">17. Write about RMSprop optimization algorithm in detail.</h2>
+    <div class="question-block" data-qid="u2-q17">
+      <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u2-q17', 6)" aria-label="Mark as done"></button>
+        <h2 class="q-title">17. Write about RMSprop optimization algorithm in detail.</h2>
+      </div>
       <div class="answer-body">
-        <p><strong>Motivation:</strong> AdaGrad decays the learning rate too aggressively — its denominator v_t = v_(t−1) + (∇w_t)² only ever grows, so frequently-updated parameters eventually stop learning almost entirely.</p>
-        <div class="formula">
-          v_t = β·v_(t−1) + (1−β)·(∇w_t)²<br>
-          w_(t+1) = w_t − (η/√(v_t+ε))·∇w_t
-        </div>
-        <ul>
-          <li>Instead of summing all past squared gradients, RMSProp keeps an <strong>exponentially decayed</strong> running average — old gradients "fade out" so the denominator doesn't grow without bound.</li>
-          <li>Result: RMSProp is "less aggressive on the decay" than AdaGrad and can keep making progress even near convergence, where AdaGrad stalls.</li>
-          <li>β is typically 0.9–0.99.</li>
-        </ul>
+<h3>Motivation</h3>
+<p>AdaGrad scales each parameter's step by \(1/\sqrt{v_t}\) with \(v_t=v_{t-1}+(\nabla w_t)^2\). Because \(v_t\) only <em>accumulates</em>, it keeps growing, so the effective learning rate decays too aggressively and learning stalls long before the minimum. <strong>RMSProp</strong> fixes this by replacing the ever-growing sum with an <strong>exponentially decaying average</strong> of squared gradients.</p>
+<h3>Update rule</h3>
+<div class="formula">\[v_t=\beta\,v_{t-1}+(1-\beta)\,(\nabla w_t)^2\]
+\[w_{t+1}=w_t-\frac{\eta}{\sqrt{v_t}+\epsilon}\,\nabla w_t\qquad(\text{same form for }b)\]</div>
+<p>Expanding the recursion, \(v_t=(1-\beta)\sum_{i=1}^{t}\beta^{\,t-i}(\nabla w_i)^2\): old squared gradients fade away geometrically, so \(v_t\) stays bounded. Typical values: \(\beta\approx 0.9\), \(\epsilon\approx10^{-8}\) (avoids division by zero), \(v_0=0\).</p>
+<div class="svg-wrap">
+<svg viewBox="0 0 400 215" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a17" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--text-muted)"/></marker></defs><text x="210" y="16" text-anchor="middle" fill="var(--text-muted)" font-size="12">(a) effective rate η/(√v+ε), constant gradient g = 1</text><line x1="40" y1="185" x2="360.0" y2="185" stroke="var(--text-dim)" stroke-width="1"/><line x1="40" y1="185" x2="40" y2="22" stroke="var(--text-dim)" stroke-width="1"/><path d="M46.4,140.0 L52.8,153.2 L59.2,159.0 L65.6,162.5 L72.0,164.9 L78.4,166.6 L84.8,168.0 L91.2,169.1 L97.6,170.0 L104.0,170.8 L110.4,171.4 L116.8,172.0 L123.2,172.5 L129.6,173.0 L136.0,173.4 L142.4,173.8 L148.8,174.1 L155.2,174.4 L161.6,174.7 L168.0,174.9 L174.4,175.2 L180.8,175.4 L187.2,175.6 L193.6,175.8 L200.0,176.0 L206.4,176.2 L212.8,176.3 L219.2,176.5 L225.6,176.6 L232.0,176.8 L238.4,176.9 L244.8,177.0 L251.2,177.2 L257.6,177.3 L264.0,177.4 L270.4,177.5 L276.8,177.6 L283.2,177.7 L289.6,177.8 L296.0,177.9 L302.4,178.0 L308.8,178.1 L315.2,178.1 L321.6,178.2 L328.0,178.3 L334.4,178.4 L340.8,178.4 L347.2,178.5 L353.6,178.6 L360.0,178.6" fill="none" stroke="var(--important)" stroke-width="2.5"/><path d="M46.4,42.7 L52.8,81.8 L59.2,98.6 L65.6,108.3 L72.0,114.7 L78.4,119.3 L84.8,122.7 L91.2,125.4 L97.6,127.5 L104.0,129.2 L110.4,130.7 L116.8,131.9 L123.2,132.9 L129.6,133.8 L136.0,134.5 L142.4,135.1 L148.8,135.7 L155.2,136.2 L161.6,136.6 L168.0,137.0 L174.4,137.3 L180.8,137.6 L187.2,137.9 L193.6,138.1 L200.0,138.3 L206.4,138.5 L212.8,138.6 L219.2,138.8 L225.6,138.9 L232.0,139.0 L238.4,139.1 L244.8,139.2 L251.2,139.3 L257.6,139.4 L264.0,139.4 L270.4,139.5 L276.8,139.5 L283.2,139.6 L289.6,139.6 L296.0,139.7 L302.4,139.7 L308.8,139.7 L315.2,139.8 L321.6,139.8 L328.0,139.8 L334.4,139.8 L340.8,139.8 L347.2,139.9 L353.6,139.9 L360.0,139.9" fill="none" stroke="var(--accent)" stroke-width="2.5"/><text x="250" y="142" text-anchor="start" fill="var(--important)" font-size="11.5" font-weight="600">AdaGrad: η/√t → 0</text><text x="150" y="62" text-anchor="start" fill="var(--accent-hover)" font-size="11.5" font-weight="600">RMSProp: settles at η/|g|</text><text x="200.0" y="201" text-anchor="middle" fill="var(--text-muted)" font-size="10.5">iteration t</text><text x="32" y="144" text-anchor="end" fill="var(--text-muted)" font-size="10">1</text><line x1="40" y1="140" x2="360.0" y2="140" stroke="var(--text-dim)" stroke-width="1" stroke-dasharray="3 3"/></svg>
+</div>
+<h3>Algorithm</h3>
+<pre><code>initialise w, b, v_w = 0, v_b = 0
+for t = 1, 2, ...:
+    compute ∇w, ∇b
+    v_w = β·v_w + (1-β)·(∇w)²
+    v_b = β·v_b + (1-β)·(∇b)²
+    w = w - η / (√v_w + ε) · ∇w
+    b = b - η / (√v_b + ε) · ∇b</code></pre>
+<h3>Why it helps</h3>
+<ul>
+  <li>The step is divided by the recent RMS of the gradient, so each parameter gets its <strong>own</strong> learning rate: parameters with consistently large gradients take smaller steps, parameters with small or rare gradients take larger steps.</li>
+  <li>Since the denominator no longer grows without bound, learning does not die out near convergence.</li>
+</ul>
+<h3>AdaGrad vs RMSProp</h3>
+<table>
+  <tr><th></th><th>AdaGrad</th><th>RMSProp</th></tr>
+  <tr><td>Accumulator</td><td>\(v_t=v_{t-1}+(\nabla w_t)^2\) (sum)</td><td>\(v_t=\beta v_{t-1}+(1-\beta)(\nabla w_t)^2\) (decaying average)</td></tr>
+  <tr><td>Effective learning rate</td><td>Shrinks monotonically</td><td>Stays roughly constant</td></tr>
+  <tr><td>Behaviour near the end</td><td>May stall early</td><td>Keeps making progress</td></tr>
+</table>
+<p><strong>Limitation:</strong> RMSProp has no momentum and no bias correction (\(v_0=0\) makes early steps too large) &mdash; both are added by Adam (Q15).</p>
+<div class="source-note">Source: CS7015 Lecture 5 (Khapra), Modules 5.8&ndash;5.9.</div>
       </div>
     </div>
   </div>
 
-  <!-- Q18 IMPORTANT -->
+  <!-- Q18 -->
   <div class="tab-content" id="tab-7">
-    <div class="question-block">
-      <span class="q-tag important">Important — full answer</span>
-      <h2 class="q-title">18. Explain the concept of singular value decomposition (SVD) and how it is used in deep learning, with example.</h2>
+    <div class="question-block" data-qid="u2-q18">
+            <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u2-q18', 7)" aria-label="Mark as done"></button>
+        <h2 class="q-title">18. Explain the concept of singular value decomposition (SVD) and how it is used in deep learning, with example.</h2>
+      </div>
       <div class="answer-body">
         <p><strong>Problem SVD solves:</strong> eigenvectors are only defined for square matrices, but most real data matrices \(A \in \mathbb{R}^{m\times n}\) are rectangular. SVD generalizes the eigen-decomposition idea to any matrix, regardless of shape.</p>
 
@@ -346,6 +457,11 @@ for t in range(1, max_iterations + 1):
         <div class="formula">\[ A = \sum_{i=1}^{k} \sigma_i\, u_i v_i^\top \]</div>
         <p><strong>Theorem:</strong> the sum of the top-\(k\) terms (ranked by singular value) gives the <strong>best possible rank-\(k\) approximation</strong> of \(A\) in the Frobenius-norm sense — i.e. \(\min \|A-B\|_F^2\) over all rank-\(k\) matrices \(B\) is achieved exactly by this truncated SVD.</p>
 
+        <h3>Shapes and truncated SVD</h3>
+        <div class="svg-wrap">
+<svg viewBox="0 0 460 272" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a25" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--text-muted)"/></marker></defs><rect x="20" y="20" width="50" height="80" rx="3" fill="var(--surface2)" stroke="var(--accent)"/><text x="45.0" y="116" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">A</text><text x="45.0" y="130" text-anchor="middle" fill="var(--text-muted)" font-size="10">m × n</text><text x="80" y="64" text-anchor="middle" fill="var(--text)" font-size="16">=</text><rect x="92" y="20" width="80" height="80" rx="3" fill="var(--surface2)" stroke="var(--border)"/><text x="132.0" y="116" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">U</text><text x="132.0" y="130" text-anchor="middle" fill="var(--text-muted)" font-size="10">m × m</text><text x="180" y="64" text-anchor="middle" fill="var(--text)" font-size="15">×</text><rect x="192" y="20" width="50" height="80" rx="3" fill="var(--surface2)" stroke="var(--accent)"/><line x1="192" y1="20" x2="242" y2="70" stroke="var(--important)" stroke-width="1.5"/><text x="217.0" y="116" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">Σ</text><text x="217.0" y="130" text-anchor="middle" fill="var(--text-muted)" font-size="10">m × n</text><text x="250" y="64" text-anchor="middle" fill="var(--text)" font-size="15">×</text><rect x="262" y="20" width="50" height="50" rx="3" fill="var(--surface2)" stroke="var(--border)"/><text x="287.0" y="86" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">Vᵀ</text><text x="287.0" y="100" text-anchor="middle" fill="var(--text-muted)" font-size="10">n × n</text><rect x="20" y="150" width="50" height="80" rx="3" fill="var(--surface2)" stroke="var(--accent)"/><text x="45.0" y="246" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">Aₖ</text><text x="45.0" y="260" text-anchor="middle" fill="var(--text-muted)" font-size="10">m × n</text><text x="80" y="194" text-anchor="middle" fill="var(--text)" font-size="16">≈</text><rect x="92" y="150" width="25" height="80" rx="3" fill="var(--surface2)" stroke="var(--border)"/><text x="104.5" y="246" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">Uₖ</text><text x="104.5" y="260" text-anchor="middle" fill="var(--text-muted)" font-size="10">m × k</text><text x="125" y="194" text-anchor="middle" fill="var(--text)" font-size="15">×</text><rect x="137" y="150" width="25" height="25" rx="3" fill="var(--surface2)" stroke="var(--accent)"/><line x1="137" y1="150" x2="162" y2="175" stroke="var(--important)" stroke-width="1.5"/><text x="149.5" y="191" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">Σₖ</text><text x="149.5" y="205" text-anchor="middle" fill="var(--text-muted)" font-size="10">k × k</text><text x="170" y="194" text-anchor="middle" fill="var(--text)" font-size="15">×</text><rect x="182" y="150" width="50" height="25" rx="3" fill="var(--surface2)" stroke="var(--border)"/><text x="207.0" y="191" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">Vₖᵀ</text><text x="207.0" y="205" text-anchor="middle" fill="var(--text-muted)" font-size="10">k × n</text><text x="340" y="50" text-anchor="start" fill="var(--text-muted)" font-size="11">full SVD:</text><text x="340" y="66" text-anchor="start" fill="var(--text-muted)" font-size="10.5">all singular values</text><text x="255" y="180" text-anchor="start" fill="var(--text-muted)" font-size="11">truncated: keep the top k</text><text x="255" y="196" text-anchor="start" fill="var(--text-muted)" font-size="10.5">singular values only</text></svg>
+</div>
+        <div class="formula">\[A_k=\sum_{i=1}^{k}\sigma_i u_i v_i^{\top}=U_k\Sigma_kV_k^{\top},\qquad \text{storage: }mn\ \longrightarrow\ k(m+n+1)\]</div>
         <h3>Solved numerical example</h3>
         <p>SVD decomposes a matrix into three factors, \(A = U\Sigma V^\top\) — a left singular matrix (orthogonal, columns are left singular vectors of \(A\)), a diagonal matrix of singular values (sorted in descending order), and the transpose of a right singular matrix (orthogonal, columns are right singular vectors of \(A\)).</p>
 
@@ -403,38 +519,79 @@ for t in range(1, max_iterations + 1):
 
   <!-- Q19 -->
   <div class="tab-content" id="tab-8">
-    <div class="question-block">
-      <span class="q-tag skeleton">Skeleton</span>
-      <h2 class="q-title">19. What is the difference between Stochastic Gradient Descent, Batch Gradient Descent and Mini Batch Gradient Descent?</h2>
+    <div class="question-block" data-qid="u2-q19">
+      <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u2-q19', 8)" aria-label="Mark as done"></button>
+        <h2 class="q-title">19. What is the difference between Stochastic Gradient Descent, Batch Gradient Descent and Mini Batch Gradient Descent?</h2>
+      </div>
       <div class="answer-body">
-        <table>
-          <tr><th></th><th>Batch GD</th><th>SGD</th><th>Mini-batch GD</th></tr>
-          <tr><td>Data used per update</td><td>Entire dataset (N points)</td><td>1 point</td><td>B points (e.g. 16/32/64)</td></tr>
-          <tr><td>Updates per epoch</td><td>1</td><td>N</td><td>N/B</td></tr>
-          <tr><td>Gradient accuracy</td><td>Exact (true gradient)</td><td>Noisy/approximate — "tossing a coin once to estimate P(heads)"</td><td>Better estimate than SGD — "tossing the coin B times"</td></tr>
-          <tr><td>Convergence guarantee</td><td>Each step guaranteed to decrease loss</td><td>No guarantee each step decreases loss (oscillates — greedy, points compete)</td><td>Oscillates less than SGD; higher B → more accurate estimate</td></tr>
-          <tr><td>Speed per update</td><td>Slow for large N</td><td>Fast per update, but many updates needed</td><td>Good middle ground — most commonly used in practice</td></tr>
-        </table>
-        <div class="source-note">Source: CS7015 Lecture 5 (Khapra), Module 5.6.</div>
+<p>All three minimise the same loss with \(\theta\leftarrow\theta-\eta\,g\); they differ in <strong>how much data is used to compute the gradient \(g\)</strong>. One <em>epoch</em> is one pass over all \(N\) training points.</p>
+<div class="formula">\[\text{Batch: } g=\frac{1}{N}\sum_{i=1}^{N}\nabla L_i\qquad \text{SGD: } g=\nabla L_i\ \ (\text{one point})\qquad \text{Mini-batch: } g=\frac{1}{B}\sum_{i\in\text{batch}}\nabla L_i\]</div>
+<table>
+  <tr><th></th><th>Batch GD</th><th>Stochastic GD</th><th>Mini-batch GD</th></tr>
+  <tr><td>Data per update</td><td>All \(N\) points</td><td>1 point</td><td>\(B\) points (16 / 32 / 64)</td></tr>
+  <tr><td>Updates per epoch</td><td>1</td><td>\(N\)</td><td>\(N/B\)</td></tr>
+  <tr><td>Gradient estimate</td><td>Exact (true gradient)</td><td>Noisy &mdash; like tossing a coin once to estimate \(P(\text{heads})\)</td><td>Better than SGD &mdash; like tossing it \(B\) times</td></tr>
+  <tr><td>Loss per step</td><td>Guaranteed to decrease</td><td>No guarantee; oscillates</td><td>Oscillates less than SGD; larger \(B\) &rarr; more accurate</td></tr>
+  <tr><td>Speed</td><td>Slow per update for large \(N\)</td><td>Fast per update, but many needed</td><td>Good middle ground; most used in practice</td></tr>
+</table>
+<div class="svg-wrap">
+<svg viewBox="0 0 400 215" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a19" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--text-muted)"/></marker></defs><text x="210" y="16" text-anchor="middle" fill="var(--text-muted)" font-size="12">(a) typical loss vs number of updates (illustrative)</text><line x1="40" y1="185" x2="400.0" y2="185" stroke="var(--text-dim)" stroke-width="1"/><line x1="40" y1="185" x2="40" y2="25" stroke="var(--text-dim)" stroke-width="1"/><path d="M40.0,40.8 L46.0,50.0 L52.0,58.5 L58.0,66.5 L64.0,73.9 L70.0,80.7 L76.0,87.2 L82.0,93.1 L88.0,98.7 L94.0,103.9 L100.0,108.7 L106.0,113.2 L112.0,117.4 L118.0,121.2 L124.0,124.9 L130.0,128.2 L136.0,131.4 L142.0,134.3 L148.0,137.0 L154.0,139.6 L160.0,141.9 L166.0,144.1 L172.0,146.2 L178.0,148.1 L184.0,149.8 L190.0,151.5 L196.0,153.0 L202.0,154.5 L208.0,155.8 L214.0,157.0 L220.0,158.2 L226.0,159.3 L232.0,160.3 L238.0,161.2 L244.0,162.1 L250.0,162.9 L256.0,163.6 L262.0,164.3 L268.0,165.0 L274.0,165.6 L280.0,166.2 L286.0,166.7 L292.0,167.2 L298.0,167.6 L304.0,168.1 L310.0,168.5 L316.0,168.8 L322.0,169.2 L328.0,169.5 L334.0,169.8 L340.0,170.1 L346.0,170.3 L352.0,170.6 L358.0,170.8 L364.0,171.0 L370.0,171.2 L376.0,171.4 L382.0,171.5 L388.0,171.7 L394.0,171.8 L400.0,172.0" fill="none" stroke="var(--accent)" stroke-width="2.5"/><path d="M40.0,38.0 L46.0,63.0 L52.0,51.2 L58.0,69.6 L64.0,72.1 L70.0,91.0 L76.0,96.0 L82.0,99.0 L88.0,90.8 L94.0,108.8 L100.0,104.8 L106.0,107.0 L112.0,111.4 L118.0,123.2 L124.0,126.6 L130.0,128.0 L136.0,128.4 L142.0,138.3 L148.0,134.6 L154.0,136.9 L160.0,138.8 L166.0,147.9 L172.0,142.7 L178.0,151.1 L184.0,151.0 L190.0,150.8 L196.0,150.4 L202.0,155.4 L208.0,153.3 L214.0,156.8 L220.0,159.2 L226.0,160.2 L232.0,161.9 L238.0,163.2 L244.0,163.7 L250.0,162.0 L256.0,161.5 L262.0,165.7 L268.0,166.8 L274.0,163.7 L280.0,166.0 L286.0,167.0 L292.0,168.1 L298.0,167.3 L304.0,167.0 L310.0,168.6 L316.0,169.1 L322.0,170.6 L328.0,168.2 L334.0,171.2 L340.0,170.1 L346.0,169.3 L352.0,171.6 L358.0,170.1 L364.0,169.7 L370.0,170.8 L376.0,170.6 L382.0,172.6 L388.0,171.9 L394.0,172.8 L400.0,171.1" fill="none" stroke="var(--warning)" stroke-width="1.8"/><path d="M40.0,61.5 L46.0,54.4 L52.0,38.0 L58.0,38.0 L64.0,38.0 L70.0,84.1 L76.0,88.0 L82.0,78.4 L88.0,100.0 L94.0,115.7 L100.0,113.8 L106.0,131.0 L112.0,123.2 L118.0,99.5 L124.0,105.5 L130.0,123.2 L136.0,131.4 L142.0,140.0 L148.0,150.8 L154.0,146.8 L160.0,133.4 L166.0,133.6 L172.0,149.9 L178.0,140.7 L184.0,143.1 L190.0,146.9 L196.0,149.4 L202.0,148.9 L208.0,158.6 L214.0,153.0 L220.0,162.3 L226.0,159.5 L232.0,155.6 L238.0,158.0 L244.0,165.4 L250.0,156.0 L256.0,161.4 L262.0,163.2 L268.0,171.8 L274.0,165.0 L280.0,169.4 L286.0,164.5 L292.0,167.6 L298.0,163.8 L304.0,166.3 L310.0,165.0 L316.0,170.5 L322.0,167.6 L328.0,166.9 L334.0,166.3 L340.0,171.6 L346.0,166.8 L352.0,166.8 L358.0,168.9 L364.0,166.3 L370.0,166.8 L376.0,171.2 L382.0,171.3 L388.0,174.8 L394.0,168.7 L400.0,168.0" fill="none" stroke="var(--important)" stroke-width="1.4"/><text x="150" y="60" text-anchor="start" fill="var(--accent-hover)" font-size="11" font-weight="600">Batch GD: smooth</text><text x="150" y="76" text-anchor="start" fill="var(--warning)" font-size="11" font-weight="600">Mini-batch: slight noise</text><text x="150" y="92" text-anchor="start" fill="var(--important)" font-size="11" font-weight="600">SGD: noisy, oscillates</text><text x="220.0" y="201" text-anchor="middle" fill="var(--text-muted)" font-size="10.5">updates</text></svg>
+</div>
+<p>Setting \(B=N\) in mini-batch GD gives batch GD, and \(B=1\) gives SGD. In practice mini-batches are preferred because they give a good gradient estimate while using vectorised hardware efficiently.</p>
+<h3>Worked example &mdash; counting updates</h3>
+<p>Take \(N=1000\) training points and \(B=50\), trained for 10 epochs.</p>
+<table>
+  <tr><th></th><th>Updates / epoch</th><th>Updates in 10 epochs</th></tr>
+  <tr><td>Batch GD</td><td>1</td><td>10</td></tr>
+  <tr><td>Stochastic GD</td><td>1000</td><td>10 000</td></tr>
+  <tr><td>Mini-batch GD (\(B=50\))</td><td>\(1000/50=20\)</td><td>200</td></tr>
+</table>
+<h3>Why the noise shrinks with batch size</h3>
+<p>If each per-example gradient has variance \(\sigma^2\), the average over a batch of \(B\) independent examples has variance</p>
+<div class="formula">\[\mathrm{Var}(g)=\frac{\sigma^{2}}{B}\]</div>
+<p>so the noise falls as \(1/B\) but the cost per update grows as \(B\). SGD is noisy but cheap; batch GD is exact but expensive. Mini-batches sit in between, and because the \(B\) gradients are computed together as one matrix operation on a GPU, a batch of 32 costs far less than 32 separate updates. The noise of SGD is also useful: it can push the parameters out of shallow local minima and flat regions.</p>
+<div class="source-note">Source: CS7015 Lecture 5 (Khapra), Module 5.6.</div>
       </div>
     </div>
   </div>
 
   <!-- Q20 -->
   <div class="tab-content" id="tab-9">
-    <div class="question-block">
-      <span class="q-tag skeleton">Skeleton</span>
-      <h2 class="q-title">20. Discuss how PCA and SVD contribute to feature extraction and computational efficiency in deep learning. Compare their advantages with suitable examples.</h2>
+    <div class="question-block" data-qid="u2-q20">
+      <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u2-q20', 9)" aria-label="Mark as done"></button>
+        <h2 class="q-title">20. Discuss how Principal Component Analysis (PCA) and Singular Value Decomposition (SVD) contribute to feature extraction and computational efficiency in deep learning. Compare their advantages with suitable examples.</h2>
+      </div>
       <div class="answer-body">
-        <ul>
-          <li><strong>Feature extraction:</strong> both find a new basis that concentrates the "information" (variance) of the data into a small number of dimensions, discarding redundant/noisy ones — the retained dimensions act as extracted features (e.g. eigenfaces from PCA on face images).</li>
-          <li><strong>PCA</strong> works specifically on the covariance structure of (typically square, symmetric) XᵀX — requires computing/eigendecomposing an n×n matrix.</li>
-          <li><strong>SVD</strong> works directly on the original (possibly non-square, non-symmetric) data matrix A — more general, numerically more stable, and doesn't require explicitly forming XᵀX (which can be numerically unstable — squaring can amplify floating-point error).</li>
-          <li><strong>Computational efficiency:</strong> both let you replace a high-dimensional dataset with a low-rank approximation (top-k components) — this shrinks storage (store k basis vectors + k coefficients per sample, instead of n raw features) and speeds downstream training since fewer input dimensions means fewer parameters in the first layer of a network.</li>
-          <li><strong>Relationship:</strong> for zero-mean data, PCA's principal components are literally the right singular vectors of SVD applied to the data matrix — SVD is often used as the actual algorithm to compute PCA in practice.</li>
-          <li><strong>Example:</strong> compressing m face images of 10,000 pixels each down to k≈100 dimensions via PCA/SVD before feeding into a classifier — retains nearly all discriminative variance while cutting compute drastically.</li>
-        </ul>
-        <div class="source-note">Synthesized from CS7015 Lecture 6 (Khapra), Modules 6.4–6.8.</div>
+<p>Both PCA and SVD find a new orthonormal basis in which most of the data's variance sits in a few directions. Keeping only those directions gives a smaller, less redundant representation of the data.</p>
+<div class="formula">\[\text{PCA: } C=\tfrac{1}{m}X^{T}X=P\Lambda P^{T},\quad Z=XP_k\qquad\qquad \text{SVD: } X=U\Sigma V^{T},\quad Z=XV_k=U_k\Sigma_k\]</div>
+<div class="formula">\[X^{T}X=V\Sigma^{2}V^{T}\ \Rightarrow\ P=V,\ \ \lambda_i=\sigma_i^{2};\qquad \text{variance retained}=\frac{\sum_{i=1}^{k}\sigma_i^{2}}{\sum_{i=1}^{n}\sigma_i^{2}}\]</div>
+<p>So PCA is exactly the SVD of the mean-centred data matrix.</p>
+<div class="svg-wrap">
+<svg viewBox="0 0 660 100" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a21" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--text-muted)"/></marker></defs><rect x="12" y="28" width="88" height="52" rx="8" fill="var(--surface2)" stroke="var(--border)"/><text x="56.0" y="50" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">X</text><text x="56.0" y="68" text-anchor="middle" fill="var(--text-muted)" font-size="10">m × n data</text><rect x="118" y="28" width="88" height="52" rx="8" fill="var(--surface2)" stroke="var(--border)"/><text x="162.0" y="50" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">centre</text><text x="162.0" y="68" text-anchor="middle" fill="var(--text-muted)" font-size="10">subtract mean</text><line x1="100" y1="54" x2="118" y2="54" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a21)"/><rect x="224" y="28" width="88" height="52" rx="8" fill="var(--surface2)" stroke="var(--accent)"/><text x="268.0" y="50" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">SVD</text><text x="268.0" y="68" text-anchor="middle" fill="var(--text-muted)" font-size="10">X = UΣVᵀ</text><line x1="206" y1="54" x2="224" y2="54" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a21)"/><rect x="330" y="28" width="88" height="52" rx="8" fill="var(--surface2)" stroke="var(--border)"/><text x="374.0" y="50" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">keep top k</text><text x="374.0" y="68" text-anchor="middle" fill="var(--text-muted)" font-size="10">Vₖ, σ₁…σₖ</text><line x1="312" y1="54" x2="330" y2="54" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a21)"/><rect x="436" y="28" width="88" height="52" rx="8" fill="var(--surface2)" stroke="var(--accent)"/><text x="480.0" y="50" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">Z = XVₖ</text><text x="480.0" y="68" text-anchor="middle" fill="var(--text-muted)" font-size="10">m × k features</text><line x1="418" y1="54" x2="436" y2="54" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a21)"/><rect x="542" y="28" width="88" height="52" rx="8" fill="var(--surface2)" stroke="var(--border)"/><text x="586.0" y="50" text-anchor="middle" fill="var(--text)" font-size="12" font-weight="600">network</text><text x="586.0" y="68" text-anchor="middle" fill="var(--text-muted)" font-size="10">fewer inputs</text><line x1="524" y1="54" x2="542" y2="54" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a21)"/></svg>
+</div>
+<h3>Feature extraction</h3>
+<p>The retained coordinates \(Z\) are the extracted features: uncorrelated, ordered by variance, with noisy low-variance directions discarded. <strong>Example (PCA):</strong> \(100\times100\) face images (\(n=10{,}000\)) reduce to \(k\approx100\) coefficients over a shared basis of "eigenfaces".</p>
+<h3>Computational efficiency</h3>
+<ul>
+  <li><strong>Storage:</strong> a rank-\(k\) approximation stores \(k(m+n+1)\) numbers instead of \(mn\).</li>
+  <li><strong>Fewer parameters:</strong> a first layer on \(n=10{,}000\) inputs with \(h=500\) units has \(5\times10^{6}\) weights; with \(k=100\) PCA inputs it has \(5\times10^{4}\) &mdash; a 100&times; reduction, so training is faster and less prone to overfitting.</li>
+  <li><strong>Compressing trained layers (SVD):</strong> replace a \(1000\times1000\) weight matrix \(W\) by \(U_k\Sigma_kV_k^{T}\) with \(k=50\): \(10^6\) parameters become \(k(m+n)=10^5\).</li>
+</ul>
+<div class="svg-wrap">
+<svg viewBox="0 0 420 215" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a22" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--text-muted)"/></marker></defs><text x="210" y="16" text-anchor="middle" fill="var(--text-muted)" font-size="12">(b) variance per component and cumulative (illustrative)</text><line x1="50" y1="180" x2="380" y2="180" stroke="var(--text-dim)" stroke-width="1"/><line x1="50" y1="180" x2="50" y2="30" stroke="var(--text-dim)" stroke-width="1"/><rect x="60" y="62.4" width="30" height="117.6" fill="var(--accent)" opacity="0.75"/><text x="75.0" y="194" text-anchor="middle" fill="var(--text-muted)" font-size="10.5">1</text><rect x="100" y="115.6" width="30" height="64.4" fill="var(--accent)" opacity="0.75"/><text x="115.0" y="194" text-anchor="middle" fill="var(--text-muted)" font-size="10.5">2</text><rect x="140" y="143.6" width="30" height="36.4" fill="var(--accent)" opacity="0.75"/><text x="155.0" y="194" text-anchor="middle" fill="var(--text-muted)" font-size="10.5">3</text><rect x="180" y="157.6" width="30" height="22.4" fill="var(--accent)" opacity="0.75"/><text x="195.0" y="194" text-anchor="middle" fill="var(--text-muted)" font-size="10.5">4</text><rect x="220" y="166.0" width="30" height="14.0" fill="var(--accent)" opacity="0.75"/><text x="235.0" y="194" text-anchor="middle" fill="var(--text-muted)" font-size="10.5">5</text><rect x="260" y="168.8" width="30" height="11.2" fill="var(--accent)" opacity="0.75"/><text x="275.0" y="194" text-anchor="middle" fill="var(--text-muted)" font-size="10.5">6</text><rect x="300" y="171.6" width="30" height="8.4" fill="var(--accent)" opacity="0.75"/><text x="315.0" y="194" text-anchor="middle" fill="var(--text-muted)" font-size="10.5">7</text><rect x="340" y="174.4" width="30" height="5.6" fill="var(--accent)" opacity="0.75"/><text x="355.0" y="194" text-anchor="middle" fill="var(--text-muted)" font-size="10.5">8</text><path d="M75.0,121.2 L115.0,89.0 L155.0,70.8 L195.0,59.6 L235.0,52.6 L275.0,47.0 L315.0,42.8 L355.0,40.0" fill="none" stroke="var(--important)" stroke-width="2"/><circle cx="75.0" cy="121.2" r="3.5" fill="var(--important)" stroke="var(--important)" stroke-width="1"/><circle cx="115.0" cy="89.0" r="3.5" fill="var(--important)" stroke="var(--important)" stroke-width="1"/><circle cx="155.0" cy="70.8" r="3.5" fill="var(--important)" stroke="var(--important)" stroke-width="1"/><circle cx="195.0" cy="59.60000000000001" r="3.5" fill="var(--important)" stroke="var(--important)" stroke-width="1"/><circle cx="235.0" cy="52.599999999999994" r="3.5" fill="var(--important)" stroke="var(--important)" stroke-width="1"/><circle cx="275.0" cy="47.0" r="3.5" fill="var(--important)" stroke="var(--important)" stroke-width="1"/><circle cx="315.0" cy="42.79999999999998" r="3.5" fill="var(--important)" stroke="var(--important)" stroke-width="1"/><circle cx="355.0" cy="40.0" r="3.5" fill="var(--important)" stroke="var(--important)" stroke-width="1"/><line x1="50" y1="47.0" x2="380" y2="47.0" stroke="var(--text-muted)" stroke-width="1" stroke-dasharray="4 3"/><text x="386" y="51.0" text-anchor="start" fill="var(--text-muted)" font-size="10.5">95%</text><text x="220" y="210" text-anchor="middle" fill="var(--text-muted)" font-size="10.5">principal component i</text><text x="240" y="31.0" text-anchor="middle" fill="var(--important)" font-size="10.5">cumulative variance reaches 95% at k = 6</text></svg>
+</div>
+<h3>PCA vs SVD</h3>
+<table>
+  <tr><th></th><th>PCA</th><th>SVD</th></tr>
+  <tr><td>Acts on</td><td>Covariance matrix \(X^{T}X\) (\(n\times n\), symmetric); data must be mean-centred</td><td>The data matrix itself &mdash; any \(m\times n\) shape</td></tr>
+  <tr><td>Gives</td><td>Eigenvectors \(P\) and variances \(\lambda_i\)</td><td>\(U,\Sigma,V\); \(\sigma_i=\sqrt{\lambda_i}\)</td></tr>
+  <tr><td>Numerical behaviour</td><td>Forming \(X^{T}X\) squares the condition number, which amplifies round-off error</td><td>Works on \(X\) directly &mdash; more stable</td></tr>
+  <tr><td>Beyond feature extraction</td><td>Whitening, visualisation</td><td>Weight compression, latent semantic analysis, recommender systems (low-rank \(\sigma_i u_i v_i^{T}\))</td></tr>
+</table>
+<p>In practice PCA is computed <em>using</em> SVD, so the two give the same principal directions. Both also underlie the link between linear autoencoders and PCA (Q21).</p>
+<div class="source-note">Source: CS7015 Lecture 6 (Khapra), Modules 6.4&ndash;6.8.</div>
       </div>
     </div>
   </div>
@@ -450,6 +607,22 @@ function showTab(i) {
     btn.classList.toggle('active', idx === i);
   });
 }
+function toggleDone(qid, tabIdx) {
+  const block = document.querySelector('.question-block[data-qid="' + qid + '"]');
+  const isDone = block.classList.toggle('q-done');
+  const btn = document.querySelectorAll('.tab-btn')[tabIdx];
+  btn.classList.toggle('done', isDone);
+  try { localStorage.setItem('done-' + qid, isDone ? '1' : ''); } catch (e) {}
+}
+document.querySelectorAll('.question-block').forEach((block, idx) => {
+  let saved = false;
+  try { saved = !!localStorage.getItem('done-' + block.dataset.qid); } catch (e) {}
+  if (saved) {
+    block.classList.add('q-done');
+    const btn = document.querySelectorAll('.tab-btn')[idx];
+    if (btn) btn.classList.add('done');
+  }
+});
 showTab(0);
 </script>
 </body>

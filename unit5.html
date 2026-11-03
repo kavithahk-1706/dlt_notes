@@ -20,18 +20,25 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
   </nav>
 
   <div class="tabs" role="tablist">
-      <button class="tab-btn active" onclick="showTab(0)">Q33</button>
-      <button class="tab-btn" onclick="showTab(1)">Q34</button>
-      <button class="tab-btn" onclick="showTab(2)">Q35</button>
-      <button class="tab-btn" onclick="showTab(3)">Q36</button>
-      <button class="tab-btn" onclick="showTab(4)">Q37</button>
+    <button class="tab-btn" onclick="showTab(0)">Q41</button>
+    <button class="tab-btn" onclick="showTab(1)">Q42</button>
+    <button class="tab-btn" onclick="showTab(2)">Q43</button>
+    <button class="tab-btn" onclick="showTab(3)">Q44</button>
+    <button class="tab-btn" onclick="showTab(4)">Q45</button>
+    <button class="tab-btn" onclick="showTab(5)">Q46</button>
+    <button class="tab-btn" onclick="showTab(6)">Q47</button>
+    <button class="tab-btn" onclick="showTab(7)">Q48</button>
+    <button class="tab-btn" onclick="showTab(8)">Q49</button>
+    <button class="tab-btn" onclick="showTab(9)">Q50</button>
   </div>
 
-    <!-- ==================== Q33 ==================== -->
-    <div class="tab-content active" id="tab-0">
-      <div class="question-block">
-        <span class="q-tag important">Important — full answer</span>
-        <h2 class="q-title">33. Explain the general architecture of a Convolutional Neural Network (CNN). Describe the function of each layer with a neat diagram.</h2>
+  <!-- Q41 -->
+  <div class="tab-content" id="tab-0">
+      <div class="question-block" data-qid="u5-q41">
+              <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u5-q41', 0)" aria-label="Mark as done"></button>
+        <h2 class="q-title">41. Explain the general architecture of a Convolutional Neural Network (CNN). Describe the function of each layer with a neat diagram.</h2>
+      </div>
         <div class="answer-body">
 
           <p>A <strong>Convolutional Neural Network (CNN)</strong> is a specialised feedforward network designed to process data with a grid-like topology (e.g., images). It exploits spatial locality and parameter sharing to dramatically reduce the number of parameters compared to fully connected networks.</p>
@@ -100,11 +107,51 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
 
 </div>
       </div>
-    </div><!-- ==================== Q34 ==================== -->
-    <div class="tab-content" id="tab-1">
-      <div class="question-block">
-        <span class="q-tag important">Important — full answer</span>
-        <h2 class="q-title">34. Explain the concept of Guided Backpropagation. Discuss its role in visualizing Convolutional Neural Networks.</h2>
+    </div>
+
+  <!-- Q42 -->
+  <div class="tab-content" id="tab-1">
+    <div class="question-block" data-qid="u5-q42">
+      <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u5-q42', 1)" aria-label="Mark as done"></button>
+        <h2 class="q-title">42. Explain the different types of pooling operations in CNNs. Discuss their roles in feature extraction and dimensionality reduction.</h2>
+      </div>
+      <div class="answer-body">
+<p>A <strong>pooling layer</strong> slides a small window (filter) over each feature map and replaces every window by a single summary value. It has <strong>no learnable weights</strong>; it only down-samples. It is usually placed after a convolution + ReLU block (Q41).</p>
+<div class="svg-wrap">
+<svg viewBox="0 0 620 200" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a61" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--text-muted)"/></marker></defs><text x="100" y="16" text-anchor="middle" fill="var(--text-muted)" font-size="12">input 4×4</text><rect x="20" y="28" width="40" height="40" rx="0" fill="none" stroke="var(--border)"/><text x="40" y="53" text-anchor="middle" fill="var(--text)" font-size="13">1</text><rect x="60" y="28" width="40" height="40" rx="0" fill="none" stroke="var(--border)"/><text x="80" y="53" text-anchor="middle" fill="var(--text)" font-size="13">3</text><rect x="100" y="28" width="40" height="40" rx="0" fill="none" stroke="var(--border)"/><text x="120" y="53" text-anchor="middle" fill="var(--text)" font-size="13">2</text><rect x="140" y="28" width="40" height="40" rx="0" fill="none" stroke="var(--border)"/><text x="160" y="53" text-anchor="middle" fill="var(--text)" font-size="13">4</text><rect x="20" y="68" width="40" height="40" rx="0" fill="none" stroke="var(--border)"/><text x="40" y="93" text-anchor="middle" fill="var(--text)" font-size="13">5</text><rect x="60" y="68" width="40" height="40" rx="0" fill="none" stroke="var(--border)"/><text x="80" y="93" text-anchor="middle" fill="var(--text)" font-size="13">6</text><rect x="100" y="68" width="40" height="40" rx="0" fill="none" stroke="var(--border)"/><text x="120" y="93" text-anchor="middle" fill="var(--text)" font-size="13">1</text><rect x="140" y="68" width="40" height="40" rx="0" fill="none" stroke="var(--border)"/><text x="160" y="93" text-anchor="middle" fill="var(--text)" font-size="13">2</text><rect x="20" y="108" width="40" height="40" rx="0" fill="none" stroke="var(--border)"/><text x="40" y="133" text-anchor="middle" fill="var(--text)" font-size="13">7</text><rect x="60" y="108" width="40" height="40" rx="0" fill="none" stroke="var(--border)"/><text x="80" y="133" text-anchor="middle" fill="var(--text)" font-size="13">2</text><rect x="100" y="108" width="40" height="40" rx="0" fill="none" stroke="var(--border)"/><text x="120" y="133" text-anchor="middle" fill="var(--text)" font-size="13">9</text><rect x="140" y="108" width="40" height="40" rx="0" fill="none" stroke="var(--border)"/><text x="160" y="133" text-anchor="middle" fill="var(--text)" font-size="13">3</text><rect x="20" y="148" width="40" height="40" rx="0" fill="none" stroke="var(--border)"/><text x="40" y="173" text-anchor="middle" fill="var(--text)" font-size="13">1</text><rect x="60" y="148" width="40" height="40" rx="0" fill="none" stroke="var(--border)"/><text x="80" y="173" text-anchor="middle" fill="var(--text)" font-size="13">8</text><rect x="100" y="148" width="40" height="40" rx="0" fill="none" stroke="var(--border)"/><text x="120" y="173" text-anchor="middle" fill="var(--text)" font-size="13">4</text><rect x="140" y="148" width="40" height="40" rx="0" fill="none" stroke="var(--border)"/><text x="160" y="173" text-anchor="middle" fill="var(--text)" font-size="13">6</text><rect x="20" y="28" width="80" height="80" fill="none" stroke="var(--accent)" stroke-width="2.5"/><rect x="100" y="28" width="80" height="80" fill="none" stroke="var(--important)" stroke-width="2.5"/><rect x="20" y="108" width="80" height="80" fill="none" stroke="var(--success)" stroke-width="2.5"/><rect x="100" y="108" width="80" height="80" fill="none" stroke="var(--warning)" stroke-width="2.5"/><text x="290" y="100" text-anchor="middle" fill="var(--text-muted)" font-size="11">2×2 filter,</text><text x="290" y="115" text-anchor="middle" fill="var(--text-muted)" font-size="11">stride 2</text><line x1="240" y1="128" x2="340" y2="128" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a61)"/><text x="400" y="16" text-anchor="middle" fill="var(--text-muted)" font-size="12">max pool</text><rect x="360" y="28" width="40" height="40" rx="0" fill="none" stroke="var(--accent)"/><text x="380" y="53" text-anchor="middle" fill="var(--text)" font-size="13" font-weight="600">6</text><rect x="400" y="28" width="40" height="40" rx="0" fill="none" stroke="var(--important)"/><text x="420" y="53" text-anchor="middle" fill="var(--text)" font-size="13" font-weight="600">4</text><rect x="360" y="68" width="40" height="40" rx="0" fill="none" stroke="var(--success)"/><text x="380" y="93" text-anchor="middle" fill="var(--text)" font-size="13" font-weight="600">8</text><rect x="400" y="68" width="40" height="40" rx="0" fill="none" stroke="var(--warning)"/><text x="420" y="93" text-anchor="middle" fill="var(--text)" font-size="13" font-weight="600">9</text><text x="540" y="16" text-anchor="middle" fill="var(--text-muted)" font-size="12">average pool</text><rect x="500" y="28" width="40" height="40" rx="0" fill="none" stroke="var(--accent)"/><text x="520" y="53" text-anchor="middle" fill="var(--text)" font-size="13" font-weight="600">3.75</text><rect x="540" y="28" width="40" height="40" rx="0" fill="none" stroke="var(--important)"/><text x="560" y="53" text-anchor="middle" fill="var(--text)" font-size="13" font-weight="600">2.25</text><rect x="500" y="68" width="40" height="40" rx="0" fill="none" stroke="var(--success)"/><text x="520" y="93" text-anchor="middle" fill="var(--text)" font-size="13" font-weight="600">4.5</text><rect x="540" y="68" width="40" height="40" rx="0" fill="none" stroke="var(--warning)"/><text x="560" y="93" text-anchor="middle" fill="var(--text)" font-size="13" font-weight="600">5.5</text></svg>
+</div>
+<h3>Output size</h3>
+<p>For an input of width \(W_1\), pooling filter size \(F\) and stride \(S\), the output width is the same formula as for convolution (no padding):</p>
+<div class="formula">\[W_2=\frac{W_1-F}{S}+1,\qquad H_2=\frac{H_1-F}{S}+1,\qquad D_2=D_1\]</div>
+<p>Pooling acts on each depth slice independently, so the number of feature maps does not change. Above: \(W_2=\frac{4-2}{2}+1=2\).</p>
+<h3>Types of pooling</h3>
+<table>
+  <tr><th>Type</th><th>Operation on a window \(\mathcal R\)</th><th>Notes</th></tr>
+  <tr><td><strong>Max pooling</strong></td><td>\(y=\max_{(i,j)\in\mathcal R}x_{ij}\)</td><td>Keeps the strongest activation (is the feature present?). Most common, usually \(F=2,S=2\) (or \(F=3,S=2\)).</td></tr>
+  <tr><td><strong>Average pooling</strong></td><td>\(y=\frac{1}{|\mathcal R|}\sum_{(i,j)\in\mathcal R}x_{ij}\)</td><td>Smooths the map; keeps the overall presence of a feature in the window.</td></tr>
+  <tr><td><strong>Global average pooling</strong></td><td>\(y_k=\frac{1}{H W}\sum_{i,j}x^{(k)}_{ij}\)</td><td>One number per feature map; replaces the large fully connected layers (e.g. in GoogLeNet, Q48).</td></tr>
+</table>
+<p>Gradient flow in max pooling: the gradient passes only to the position that held the maximum; the other inputs in the window get 0.</p>
+<h3>Roles of pooling</h3>
+<ul>
+  <li><strong>Dimensionality reduction:</strong> halves the height and width (4&times; fewer values with a 2&times;2 filter), so less computation and memory.</li>
+  <li><strong>Fewer parameters in later layers</strong>, hence lower risk of overfitting.</li>
+  <li><strong>Translation invariance:</strong> a small shift of a feature inside the window leaves the output unchanged.</li>
+  <li><strong>Larger receptive field:</strong> each later neuron looks at a bigger part of the image.</li>
+</ul>
+<div class="source-note">Source: CS7015 Lecture 11 (Khapra) &mdash; convolution/pooling and the output-size formula. The lecture PDF could not be fetched during writing; the output-size formula is the one used in Q41.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q43 -->
+  <div class="tab-content" id="tab-2">
+      <div class="question-block" data-qid="u5-q43">
+              <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u5-q43', 2)" aria-label="Mark as done"></button>
+        <h2 class="q-title">43. Explain the concept of Guided Backpropagation. Discuss its role in visualizing Convolutional Neural Networks.</h2>
+      </div>
         <div class="answer-body">
 
           <h3>Why Visualize CNNs?</h3>
@@ -168,11 +215,130 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
 
 </div>
       </div>
-    </div><!-- ==================== Q35 ==================== -->
-    <div class="tab-content" id="tab-2">
-      <div class="question-block">
-        <span class="q-tag important">Important — full answer</span>
-        <h2 class="q-title">35. Explain the concept of Recurrent Neural Networks (RNNs). Discuss the role of Backpropagation Through Time (BPTT) in training RNNs.</h2>
+    </div>
+
+  <!-- Q44 -->
+  <div class="tab-content" id="tab-3">
+    <div class="question-block" data-qid="u5-q44">
+      <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u5-q44', 3)" aria-label="Mark as done"></button>
+        <h2 class="q-title">44. Explain Long Short-Term Memory (LSTM) and Gated Recurrent Unit (GRU). How do they overcome the limitations of traditional RNNs?</h2>
+      </div>
+      <div class="answer-body">
+<h3>Limitation of a plain RNN</h3>
+<p>An RNN updates its state as \(s_t=\sigma(Ws_{t-1}+Ux_t+b)\). To learn a long-range dependency, the loss at step \(t\) must send gradient back to an early state \(s_k\):</p>
+<div class="formula">\[\frac{\partial s_t}{\partial s_k}=\prod_{j=k+1}^{t}\frac{\partial s_j}{\partial s_{j-1}}\]</div>
+<p>Each factor is bounded by some \(\gamma\lambda\) (the activation's derivative bound times the largest singular value of \(W\)). So the product behaves like \((\gamma\lambda)^{t-k}\): it <strong>vanishes</strong> if \(\gamma\lambda<1\) and <strong>explodes</strong> if \(\gamma\lambda>1\). The RNN therefore cannot learn dependencies over many steps. Also, the state is overwritten in full at every step &mdash; there is no control over what to keep.</p>
+<h3>Idea behind gated units</h3>
+<p>Treat the state as a fixed-size "whiteboard" and let the network learn to <strong>selectively write, read and forget</strong>, using gates that take values in \([0,1]\) and multiply (\(\odot\)) the signal.</p>
+<h3>LSTM</h3>
+<p>Three gates, all computed from \(h_{t-1}\) and \(x_t\):</p>
+<div class="formula">\[o_t=\sigma(W_oh_{t-1}+U_ox_t+b_o)\qquad i_t=\sigma(W_ih_{t-1}+U_ix_t+b_i)\qquad f_t=\sigma(W_fh_{t-1}+U_fx_t+b_f)\]</div>
+<div class="formula">\[\tilde s_t=\tanh(Wh_{t-1}+Ux_t+b),\qquad s_t=f_t\odot s_{t-1}+i_t\odot\tilde s_t,\qquad h_t=o_t\odot\tanh(s_t)\]</div>
+<div class="svg-wrap">
+<svg viewBox="0 0 660 200" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a62" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--text-muted)"/></marker></defs><text x="320" y="14" text-anchor="middle" fill="var(--text-muted)" font-size="12">LSTM cell (every gate reads hₜ₋₁ and xₜ)</text><line x1="20" y1="50" x2="610" y2="50" stroke="var(--accent)" stroke-width="2.5" marker-end="url(#a62)"/><text x="20" y="38" text-anchor="start" fill="var(--text)" font-size="11">sₜ₋₁</text><text x="600" y="38" text-anchor="end" fill="var(--text)" font-size="11">sₜ</text><circle cx="150" cy="50" r="12" fill="var(--surface2)" stroke="var(--accent)" stroke-width="1"/><text x="150" y="54" text-anchor="middle" fill="var(--text)" font-size="12">⊙</text><circle cx="280" cy="50" r="12" fill="var(--surface2)" stroke="var(--accent)" stroke-width="1"/><text x="280" y="54" text-anchor="middle" fill="var(--text)" font-size="12">+</text><circle cx="280" cy="100" r="12" fill="var(--surface2)" stroke="var(--border)" stroke-width="1"/><text x="280" y="104" text-anchor="middle" fill="var(--text)" font-size="12">⊙</text><rect x="120" y="140" width="60" height="28" rx="5" fill="var(--surface2)" stroke="var(--border)"/><text x="150.0" y="158.0" text-anchor="middle" fill="var(--text)" font-size="12">fₜ</text><line x1="150" y1="140" x2="150" y2="62" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a62)"/><rect x="215" y="140" width="60" height="28" rx="5" fill="var(--surface2)" stroke="var(--border)"/><text x="245.0" y="158.0" text-anchor="middle" fill="var(--text)" font-size="12">s̃ₜ</text><line x1="245" y1="140" x2="270" y2="110" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a62)"/><rect x="290" y="140" width="60" height="28" rx="5" fill="var(--surface2)" stroke="var(--border)"/><text x="320.0" y="158.0" text-anchor="middle" fill="var(--text)" font-size="12">iₜ</text><line x1="320" y1="140" x2="291" y2="108" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a62)"/><line x1="280" y1="88" x2="280" y2="62" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a62)"/><line x1="400" y1="50" x2="400" y2="100" stroke="var(--accent)" stroke-width="1.5"/><rect x="412" y="86" width="52" height="28" rx="5" fill="var(--surface2)" stroke="var(--border)"/><text x="438.0" y="104.0" text-anchor="middle" fill="var(--text)" font-size="11">tanh</text><line x1="400" y1="100" x2="412" y2="100" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a62)"/><circle cx="520" cy="100" r="12" fill="var(--surface2)" stroke="var(--border)" stroke-width="1"/><text x="520" y="104" text-anchor="middle" fill="var(--text)" font-size="12">⊙</text><line x1="464" y1="100" x2="508" y2="100" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a62)"/><rect x="490" y="140" width="60" height="28" rx="5" fill="var(--surface2)" stroke="var(--border)"/><text x="520.0" y="158.0" text-anchor="middle" fill="var(--text)" font-size="12">oₜ</text><line x1="520" y1="140" x2="520" y2="112" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a62)"/><line x1="532" y1="100" x2="590" y2="100" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a62)"/><text x="600" y="104" text-anchor="start" fill="var(--text)" font-size="12" font-weight="600">hₜ</text><text x="150" y="190" text-anchor="middle" fill="var(--text-muted)" font-size="10.5">forget</text><text x="245" y="190" text-anchor="middle" fill="var(--text-muted)" font-size="10.5">candidate</text><text x="320" y="190" text-anchor="middle" fill="var(--text-muted)" font-size="10.5">write</text><text x="520" y="190" text-anchor="middle" fill="var(--text-muted)" font-size="10.5">read / output</text></svg>
+</div>
+<ul>
+  <li>\(f_t\): how much of the old state to <strong>keep</strong> (selective forget). \(i_t\): how much of the new candidate to <strong>write</strong>. \(o_t\): how much of the state to <strong>expose</strong> as \(h_t\).</li>
+  <li><strong>Why gradients survive:</strong> the state update is additive, so \(\partial s_t/\partial s_{t-1}\approx f_t\). When the network sets \(f_t\approx1\), the gradient passes through many steps almost unchanged instead of being repeatedly squashed.</li>
+</ul>
+<h3>GRU</h3>
+<p>A simplified gated unit with only two gates and no separate cell/hidden pair:</p>
+<div class="formula">\[o_t=\sigma(W_os_{t-1}+U_ox_t+b_o),\qquad i_t=\sigma(W_is_{t-1}+U_ix_t+b_i)\]</div>
+<div class="formula">\[\tilde s_t=\tanh\bigl(W(o_t\odot s_{t-1})+Ux_t+b\bigr),\qquad s_t=(1-i_t)\odot s_{t-1}+i_t\odot\tilde s_t\]</div>
+<h3>Comparison</h3>
+<table>
+  <tr><th></th><th>RNN</th><th>LSTM</th><th>GRU</th></tr>
+  <tr><td>Gates</td><td>none</td><td>3 (\(i,f,o\))</td><td>2 (\(i,o\)); \(1-i_t\) plays the forget role</td></tr>
+  <tr><td>State update</td><td>overwritten</td><td>\(f_t\odot s_{t-1}+i_t\odot\tilde s_t\)</td><td>\((1-i_t)\odot s_{t-1}+i_t\odot\tilde s_t\)</td></tr>
+  <tr><td>Long-range dependencies</td><td>fails (vanishing gradient)</td><td>handles well</td><td>handles well</td></tr>
+  <tr><td>Parameters / speed</td><td>fewest</td><td>most (3 gates + candidate)</td><td>fewer than LSTM, faster</td></tr>
+</table>
+<div class="source-note">Source: CS7015 Lectures 14&ndash;15 (Khapra) &mdash; vanishing gradient bound; LSTM and GRU equations. The slides write the generic non-linearity as \(\sigma\); here the candidate/output use tanh as in standard LSTM/GRU. In the GRU, \(o_t\) (the slides' name) is what other texts call the reset gate and \(i_t\) the update gate.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q45 -->
+  <div class="tab-content" id="tab-4">
+    <div class="question-block" data-qid="u5-q45">
+      <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u5-q45', 4)" aria-label="Mark as done"></button>
+        <h2 class="q-title">45. How can you perform image classification using Keras? Describe the basic steps involved.</h2>
+      </div>
+      <div class="answer-body">
+<p>Image classification means assigning an image one label out of \(K\) classes. With Keras (TensorFlow) a CNN classifier is built in six steps. Example: MNIST digits (28&times;28 grey-scale, \(K=10\)).</p>
+<div class="svg-wrap">
+<svg viewBox="0 0 650 70" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a63" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--text-muted)"/></marker></defs><rect x="8" y="20" width="92" height="36" rx="6" fill="var(--surface2)" stroke="var(--border)"/><text x="54.0" y="42.0" text-anchor="middle" fill="var(--text)" font-size="11">Load data</text><rect x="113" y="20" width="92" height="36" rx="6" fill="var(--surface2)" stroke="var(--border)"/><text x="159.0" y="42.0" text-anchor="middle" fill="var(--text)" font-size="11">Pre-process</text><line x1="100" y1="38" x2="113" y2="38" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a63)"/><rect x="218" y="20" width="92" height="36" rx="6" fill="var(--surface2)" stroke="var(--accent)"/><text x="264.0" y="42.0" text-anchor="middle" fill="var(--text)" font-size="11">Build model</text><line x1="205" y1="38" x2="218" y2="38" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a63)"/><rect x="323" y="20" width="92" height="36" rx="6" fill="var(--surface2)" stroke="var(--border)"/><text x="369.0" y="42.0" text-anchor="middle" fill="var(--text)" font-size="11">Compile</text><line x1="310" y1="38" x2="323" y2="38" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a63)"/><rect x="428" y="20" width="92" height="36" rx="6" fill="var(--surface2)" stroke="var(--accent)"/><text x="474.0" y="42.0" text-anchor="middle" fill="var(--text)" font-size="11">Train</text><line x1="415" y1="38" x2="428" y2="38" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a63)"/><rect x="533" y="20" width="92" height="36" rx="6" fill="var(--surface2)" stroke="var(--border)"/><text x="579.0" y="42.0" text-anchor="middle" fill="var(--text)" font-size="11">Evaluate / predict</text><line x1="520" y1="38" x2="533" y2="38" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a63)"/></svg>
+</div>
+<h3>Steps</h3>
+<ol>
+  <li><strong>Load the data</strong> and split into train and test sets.</li>
+  <li><strong>Pre-process:</strong> scale pixels to \([0,1]\) (divide by 255), add the channel axis, and keep labels as integers (or one-hot).</li>
+  <li><strong>Build the model:</strong> Conv2D + ReLU, MaxPooling blocks to extract features, then Flatten, Dense, and a softmax output with \(K\) units (Q41).</li>
+  <li><strong>Compile:</strong> choose the optimiser, the loss and the metrics.</li>
+  <li><strong>Train</strong> with <code>fit</code> (epochs, batch size, validation split).</li>
+  <li><strong>Evaluate</strong> on the unseen test set and <strong>predict</strong> on new images.</li>
+</ol>
+<h3>Code</h3>
+<pre><code>from tensorflow import keras
+from tensorflow.keras import layers
+
+# 1-2. load and pre-process
+(x_train, y_train), (x_test, y_test) = keras.datasets.mnist.load_data()
+x_train = x_train.reshape(-1, 28, 28, 1) / 255.0
+x_test  = x_test.reshape(-1, 28, 28, 1) / 255.0
+
+# 3. build the CNN
+model = keras.Sequential([
+    layers.Conv2D(32, (3, 3), activation="relu", input_shape=(28, 28, 1)),
+    layers.MaxPooling2D((2, 2)),
+    layers.Conv2D(64, (3, 3), activation="relu"),
+    layers.MaxPooling2D((2, 2)),
+    layers.Flatten(),
+    layers.Dense(128, activation="relu"),
+    layers.Dense(10, activation="softmax"),
+])
+
+# 4. compile
+model.compile(optimizer="adam",
+              loss="sparse_categorical_crossentropy",
+              metrics=["accuracy"])
+
+# 5. train
+model.fit(x_train, y_train, epochs=5, batch_size=64, validation_split=0.1)
+
+# 6. evaluate and predict
+test_loss, test_acc = model.evaluate(x_test, y_test)
+pred = model.predict(x_test[:1]).argmax(axis=1)</code></pre>
+<h3>Shapes through the network</h3>
+<p>With no padding and stride 1 the convolution output size is \(W_2=W_1-F+1\); pooling uses \(W_2=\frac{W_1-F}{S}+1\) (Q42).</p>
+<table>
+  <tr><th>Layer</th><th>Output shape</th></tr>
+  <tr><td>Input</td><td>28 &times; 28 &times; 1</td></tr>
+  <tr><td>Conv2D 32 filters 3&times;3</td><td>26 &times; 26 &times; 32</td></tr>
+  <tr><td>MaxPool 2&times;2</td><td>13 &times; 13 &times; 32</td></tr>
+  <tr><td>Conv2D 64 filters 3&times;3</td><td>11 &times; 11 &times; 64</td></tr>
+  <tr><td>MaxPool 2&times;2</td><td>5 &times; 5 &times; 64</td></tr>
+  <tr><td>Flatten</td><td>1600</td></tr>
+  <tr><td>Dense 128 / Dense 10</td><td>128 / 10</td></tr>
+</table>
+<h3>What compile chooses</h3>
+<p>The softmax output gives \(\hat y_k=\dfrac{e^{a_k}}{\sum_{j}e^{a_j}}\), and the loss for a true class \(\ell\) is the cross-entropy</p>
+<div class="formula">\[\mathcal L=-\log \hat y_{\ell}\]</div>
+<p><code>sparse_categorical_crossentropy</code> is exactly this loss with integer labels (use <code>categorical_crossentropy</code> with one-hot labels). Adam is the optimiser from Q17.</p>
+<div class="source-note">Standard Keras workflow (this question is not covered in the Khapra slides); loss and layer shapes follow CS7015 Lectures 4 and 11.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q46 -->
+  <div class="tab-content" id="tab-5">
+      <div class="question-block" data-qid="u5-q46">
+              <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u5-q46', 5)" aria-label="Mark as done"></button>
+        <h2 class="q-title">46. Explain the concept of Recurrent Neural Networks (RNNs). Discuss the role of Backpropagation Through Time (BPTT) in training RNNs.</h2>
+      </div>
         <div class="answer-body">
 
           <h3>Sequence Learning Problems</h3>
@@ -254,11 +420,49 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
 
 </div>
       </div>
-    </div><!-- ==================== Q36 ==================== -->
-    <div class="tab-content" id="tab-3">
-      <div class="question-block">
-        <span class="q-tag important">Important — full answer</span>
-        <h2 class="q-title">36. Explore the GoogLeNet architecture and elucidate some of its significant contributions to the field of deep learning.</h2>
+    </div>
+
+  <!-- Q47 -->
+  <div class="tab-content" id="tab-6">
+    <div class="question-block" data-qid="u5-q47">
+      <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u5-q47', 6)" aria-label="Mark as done"></button>
+        <h2 class="q-title">47. Describe the attention mechanism in deep learning. How does it enhance the performance of sequence-to-sequence models on long sequences?</h2>
+      </div>
+      <div class="answer-body">
+<h3>Plain sequence-to-sequence (encoder&ndash;decoder)</h3>
+<p>The encoder reads \(x_1,\dots,x_T\) with \(h_t=\mathrm{RNN}(h_{t-1},x_t)\). The final state \(h_T\) initialises the decoder, \(s_0=h_T\), and the decoder produces the output one word at a time, \(s_t=\mathrm{RNN}(s_{t-1},e(\hat y_{t-1}))\).</p>
+<p><strong>Problem on long sequences:</strong> the entire input must be compressed into <em>one fixed-size vector</em>. For long inputs this bottleneck forgets early words, and the decoder is also fed the same summary at every step, including parts that are irrelevant for the word it is currently producing. Quality therefore drops as the input length grows. (A human translator, in contrast, looks at a few relevant source words for each target word.)</p>
+<h3>Attention mechanism</h3>
+<p>Instead of one summary, keep <strong>all</strong> encoder states \(h_1,\dots,h_T\) and let the decoder pick a <em>weighted combination</em> of them at every output step \(t\):</p>
+<div class="formula">\[e_{jt}=V_{att}^{T}\tanh\bigl(U_{att}\,s_{t-1}+W_{att}\,h_j\bigr)\qquad\text{(score of input position }j\text{ for output step }t)\]</div>
+<div class="formula">\[\alpha_{jt}=\frac{\exp(e_{jt})}{\sum_{k=1}^{T}\exp(e_{kt})},\qquad c_t=\sum_{j=1}^{T}\alpha_{jt}\,h_j\]</div>
+<div class="formula">\[s_t=\mathrm{RNN}\bigl(s_{t-1},\,[\,e(\hat y_{t-1}),\,c_t\,]\bigr),\qquad \ell_t=\mathrm{softmax}(Vs_t+b)\]</div>
+<p>\(\alpha_{jt}\) is the weight given to the \(j\)-th input word while producing the \(t\)-th output word; the \(\alpha_{jt}\) sum to 1 over \(j\). \(V_{att},U_{att},W_{att}\) are learned together with the rest of the network from the usual output loss &mdash; no alignment labels are needed.</p>
+<div class="svg-wrap">
+<svg viewBox="0 0 640 200" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a64" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--text-muted)"/></marker></defs><text x="160" y="14" text-anchor="middle" fill="var(--text-muted)" font-size="12">(a) plain encoder–decoder</text><rect x="14" y="110" width="40" height="28" rx="5" fill="var(--surface2)" stroke="var(--border)"/><text x="34.0" y="128.0" text-anchor="middle" fill="var(--text)" font-size="12">h₁</text><text x="34" y="160" text-anchor="middle" fill="var(--text-muted)" font-size="11">x₁</text><line x1="34" y1="154" x2="34" y2="138" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a64)"/><rect x="64" y="110" width="40" height="28" rx="5" fill="var(--surface2)" stroke="var(--border)"/><text x="84.0" y="128.0" text-anchor="middle" fill="var(--text)" font-size="12">h₂</text><text x="84" y="160" text-anchor="middle" fill="var(--text-muted)" font-size="11">x₂</text><line x1="84" y1="154" x2="84" y2="138" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a64)"/><rect x="114" y="110" width="40" height="28" rx="5" fill="var(--surface2)" stroke="var(--border)"/><text x="134.0" y="128.0" text-anchor="middle" fill="var(--text)" font-size="12">h₃</text><text x="134" y="160" text-anchor="middle" fill="var(--text-muted)" font-size="11">x₃</text><line x1="134" y1="154" x2="134" y2="138" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a64)"/><rect x="164" y="110" width="40" height="28" rx="5" fill="var(--surface2)" stroke="var(--border)"/><text x="184.0" y="128.0" text-anchor="middle" fill="var(--text)" font-size="12">h₄</text><text x="184" y="160" text-anchor="middle" fill="var(--text-muted)" font-size="11">x₄</text><line x1="184" y1="154" x2="184" y2="138" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a64)"/><line x1="54" y1="124" x2="64" y2="124" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a64)"/><line x1="104" y1="124" x2="114" y2="124" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a64)"/><line x1="154" y1="124" x2="164" y2="124" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a64)"/><line x1="174" y1="124" x2="214" y2="124" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a64)"/><rect x="214" y="40" width="90" height="28" rx="5" fill="var(--surface2)" stroke="var(--important)"/><text x="259.0" y="58.0" text-anchor="middle" fill="var(--text)" font-size="11">single vector</text><line x1="214" y1="124" x2="259" y2="68" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a64)"/><rect x="214" y="92" width="90" height="28" rx="5" fill="var(--surface2)" stroke="var(--border)"/><text x="259.0" y="110.0" text-anchor="middle" fill="var(--text)" font-size="11">s₀ → s₁ → s₂</text><line x1="259" y1="68" x2="259" y2="92" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a64)"/><text x="160" y="190" text-anchor="middle" fill="var(--important)" font-size="11">whole input squeezed into h₄</text><text x="510" y="14" text-anchor="middle" fill="var(--text-muted)" font-size="12">(b) with attention</text><rect x="354" y="130" width="40" height="28" rx="5" fill="var(--surface2)" stroke="var(--border)"/><text x="374.0" y="148.0" text-anchor="middle" fill="var(--text)" font-size="12">h₁</text><rect x="404" y="130" width="40" height="28" rx="5" fill="var(--surface2)" stroke="var(--border)"/><text x="424.0" y="148.0" text-anchor="middle" fill="var(--text)" font-size="12">h₂</text><rect x="454" y="130" width="40" height="28" rx="5" fill="var(--surface2)" stroke="var(--border)"/><text x="474.0" y="148.0" text-anchor="middle" fill="var(--text)" font-size="12">h₃</text><rect x="504" y="130" width="40" height="28" rx="5" fill="var(--surface2)" stroke="var(--border)"/><text x="524.0" y="148.0" text-anchor="middle" fill="var(--text)" font-size="12">h₄</text><circle cx="450" cy="70" r="14" fill="var(--surface2)" stroke="var(--accent)" stroke-width="1"/><text x="450" y="74" text-anchor="middle" fill="var(--text)" font-size="12">Σ</text><line x1="374" y1="130" x2="450" y2="84" stroke="var(--accent)" stroke-width="1.0" marker-end="url(#a64)"/><text x="362" y="112" text-anchor="middle" fill="var(--accent-hover)" font-size="10">α₁</text><line x1="424" y1="130" x2="450" y2="84" stroke="var(--accent)" stroke-width="3.0" marker-end="url(#a64)"/><text x="412" y="112" text-anchor="middle" fill="var(--accent-hover)" font-size="10">α₂</text><line x1="474" y1="130" x2="450" y2="84" stroke="var(--accent)" stroke-width="1.4" marker-end="url(#a64)"/><text x="486" y="112" text-anchor="middle" fill="var(--accent-hover)" font-size="10">α₃</text><line x1="524" y1="130" x2="450" y2="84" stroke="var(--accent)" stroke-width="1.0" marker-end="url(#a64)"/><text x="536" y="112" text-anchor="middle" fill="var(--accent-hover)" font-size="10">α₄</text><line x1="464" y1="70" x2="530" y2="70" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a64)"/><rect x="530" y="56" width="60" height="28" rx="5" fill="var(--surface2)" stroke="var(--border)"/><text x="560.0" y="74.0" text-anchor="middle" fill="var(--text)" font-size="12">sₜ</text><text x="497" y="60" text-anchor="middle" fill="var(--accent-hover)" font-size="11">cₜ</text><text x="510" y="190" text-anchor="middle" fill="var(--text-muted)" font-size="10.5">a new cₜ is built at every output step</text></svg>
+</div>
+<h3>Comparison</h3>
+<table>
+  <tr><th></th><th>Plain seq2seq</th><th>With attention</th></tr>
+  <tr><td>Information passed to decoder</td><td>One fixed vector \(h_T\)</td><td>A new context \(c_t\) at every step, built from all \(h_j\)</td></tr>
+  <tr><td>Long sequences</td><td>Bottleneck; quality falls with length</td><td>Quality largely maintained; any input position is reachable directly</td></tr>
+  <tr><td>Gradient path to early words</td><td>Through many RNN steps (vanishing)</td><td>Short path through \(\alpha_{jt}h_j\)</td></tr>
+  <tr><td>Alignment</td><td>Hidden</td><td>\(\alpha_{jt}\) can be visualised as source&ndash;target alignment</td></tr>
+  <tr><td>Cost</td><td>\(O(T)\)</td><td>\(O(T\cdot T')\) scores for \(T'\) output steps</td></tr>
+</table>
+<div class="source-note">Source: CS7015 Lecture 16 (Khapra) &mdash; attention equations \(e_{jt},\alpha_{jt},c_t\). The slides motivate attention by focusing on relevant words and avoiding overloading the decoder; the long-sequence/bottleneck argument is the standard consequence of this.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q48 -->
+  <div class="tab-content" id="tab-7">
+      <div class="question-block" data-qid="u5-q48">
+              <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u5-q48', 7)" aria-label="Mark as done"></button>
+        <h2 class="q-title">48. Explore the GoogLeNet architecture and elucidate some of its significant contributions to the field of deep learning.</h2>
+      </div>
         <div class="answer-body">
 
           <h3>Overview</h3>
@@ -338,11 +542,15 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
 
 </div>
       </div>
-    </div><!-- ==================== Q37 ==================== -->
-    <div class="tab-content" id="tab-4">
-      <div class="question-block">
-        <span class="q-tag important">Important — full answer</span>
-        <h2 class="q-title">37. Explain the Transformer architecture and Large Language Models (LLMs). Discuss their applications in deep learning.</h2>
+    </div>
+
+  <!-- Q49 -->
+  <div class="tab-content" id="tab-8">
+      <div class="question-block" data-qid="u5-q49">
+              <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u5-q49', 8)" aria-label="Mark as done"></button>
+        <h2 class="q-title">49. Explain the Transformer architecture and Large Language Models (LLMs). Discuss their applications in deep learning.</h2>
+      </div>
         <div class="answer-body">
 
           <h3>Motivation: Limitations of RNNs</h3>
@@ -398,6 +606,44 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
       </div>
     </div>
 
+  <!-- Q50 -->
+  <div class="tab-content" id="tab-9">
+    <div class="question-block" data-qid="u5-q50">
+      <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u5-q50', 9)" aria-label="Mark as done"></button>
+        <h2 class="q-title">50. Discuss how deep learning pipelines can be deployed in an enterprise setting. What are the key steps involved?</h2>
+      </div>
+      <div class="answer-body">
+<p>Deploying a deep-learning model in an enterprise is not just "train and ship": the model is one component of a <strong>pipeline</strong> that must be reproducible, scalable, secure and monitored. The practice of automating this is called <strong>MLOps</strong>.</p>
+<div class="svg-wrap">
+<svg viewBox="0 0 640 208" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a65" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--text-muted)"/></marker></defs><rect x="12" y="20" width="132" height="50" rx="6" fill="var(--surface2)" stroke="var(--border)"/><text x="78" y="42" text-anchor="middle" fill="var(--text)" font-size="11">Define problem</text><text x="78" y="58" text-anchor="middle" fill="var(--text)" font-size="11">& collect data</text><line x1="144" y1="45" x2="167" y2="45" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a65)"/><rect x="167" y="20" width="132" height="50" rx="6" fill="var(--surface2)" stroke="var(--border)"/><text x="233" y="42" text-anchor="middle" fill="var(--text)" font-size="11">Prepare &</text><text x="233" y="58" text-anchor="middle" fill="var(--text)" font-size="11">version data</text><line x1="299" y1="45" x2="322" y2="45" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a65)"/><rect x="322" y="20" width="132" height="50" rx="6" fill="var(--surface2)" stroke="var(--border)"/><text x="388" y="42" text-anchor="middle" fill="var(--text)" font-size="11">Train &</text><text x="388" y="58" text-anchor="middle" fill="var(--text)" font-size="11">track experiments</text><line x1="454" y1="45" x2="477" y2="45" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a65)"/><rect x="477" y="20" width="132" height="50" rx="6" fill="var(--surface2)" stroke="var(--border)"/><text x="543" y="42" text-anchor="middle" fill="var(--text)" font-size="11">Validate</text><text x="543" y="58" text-anchor="middle" fill="var(--text)" font-size="11">& test</text><rect x="12" y="110" width="132" height="50" rx="6" fill="var(--surface2)" stroke="var(--border)"/><text x="78" y="132" text-anchor="middle" fill="var(--text)" font-size="11">Package</text><text x="78" y="148" text-anchor="middle" fill="var(--text)" font-size="11">(container)</text><line x1="144" y1="135" x2="167" y2="135" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a65)"/><rect x="167" y="110" width="132" height="50" rx="6" fill="var(--surface2)" stroke="var(--accent)"/><text x="233" y="132" text-anchor="middle" fill="var(--text)" font-size="11">Deploy</text><text x="233" y="148" text-anchor="middle" fill="var(--text)" font-size="11">(serve)</text><line x1="299" y1="135" x2="322" y2="135" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a65)"/><rect x="322" y="110" width="132" height="50" rx="6" fill="var(--surface2)" stroke="var(--accent)"/><text x="388" y="132" text-anchor="middle" fill="var(--text)" font-size="11">Monitor</text><text x="388" y="148" text-anchor="middle" fill="var(--text)" font-size="11">(drift, latency)</text><line x1="454" y1="135" x2="477" y2="135" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a65)"/><rect x="477" y="110" width="132" height="50" rx="6" fill="var(--surface2)" stroke="var(--border)"/><text x="543" y="132" text-anchor="middle" fill="var(--text)" font-size="11">Retrain</text><text x="543" y="148" text-anchor="middle" fill="var(--text)" font-size="11">& redeploy</text><path d="M543,70 L543,90 L78,90 L78,108" fill="none" stroke="var(--text-muted)" stroke-width="1"/><line x1="78" y1="100" x2="78" y2="110" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a65)"/><path d="M543,160 L543,180 L4,180 L4,45 L10,45" fill="none" stroke="var(--accent)" stroke-width="1.2" stroke-dasharray="4 3"/><line x1="4" y1="45" x2="12" y2="45" stroke="var(--text-muted)" stroke-width="1" marker-end="url(#a65)"/><text x="320" y="198" text-anchor="middle" fill="var(--accent-hover)" font-size="10.5">drift or new data detected: loop back to data and retraining</text></svg>
+</div>
+<h3>Steps</h3>
+<table>
+  <tr><th>Stage</th><th>What is done</th></tr>
+  <tr><td>1. Problem &amp; data</td><td>Define the business goal and a success metric; collect data from databases, logs, sensors; check quality, privacy and consent.</td></tr>
+  <tr><td>2. Data preparation</td><td>Clean, label, split into train/validation/test; build repeatable feature pipelines; <strong>version</strong> datasets.</td></tr>
+  <tr><td>3. Training &amp; experiment tracking</td><td>Train on GPUs/TPUs (distributed if needed); record code, data version, hyper-parameters and metrics so every run is reproducible.</td></tr>
+  <tr><td>4. Validation &amp; testing</td><td>Evaluate on held-out data with the agreed metrics; test robustness, bias/fairness, latency and memory against requirements.</td></tr>
+  <tr><td>5. Packaging</td><td>Save the model in a portable format (SavedModel, ONNX, TorchScript), optimise it (quantisation, pruning), and put it in a container (Docker) with its dependencies.</td></tr>
+  <tr><td>6. Deployment / serving</td><td>Expose it as a REST/gRPC API, a batch job, a stream processor or an edge/mobile model; scale with Kubernetes and load balancers; roll out gradually (canary / A-B) with rollback.</td></tr>
+  <tr><td>7. Monitoring</td><td>Track latency, throughput, errors, resource use, prediction quality and <em>data drift</em> (input distribution changing from the training data).</td></tr>
+  <tr><td>8. Retraining</td><td>Trigger retraining on new data or when drift/accuracy alarms fire; re-validate and redeploy.</td></tr>
+</table>
+<h3>Cross-cutting concerns</h3>
+<ul>
+  <li><strong>CI/CD automation:</strong> every code or data change runs tests, retrains and redeploys automatically through a pipeline.</li>
+  <li><strong>Security &amp; compliance:</strong> access control, encrypted data, audit logs, privacy regulations (e.g. GDPR).</li>
+  <li><strong>Scalability &amp; cost:</strong> choose real-time vs batch inference, GPU vs CPU, autoscaling.</li>
+  <li><strong>Governance &amp; explainability:</strong> model registry with versions, documented lineage, explanations where decisions affect people.</li>
+</ul>
+<h3>Typical challenges</h3>
+<p>Data drift and model decay over time, training&ndash;serving skew (different pre-processing in training and production), latency limits, hardware cost, and reproducibility across teams.</p>
+<div class="source-note">Process-oriented question (no equations); not covered in the Khapra slides. Standard MLOps lifecycle.</div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script>
@@ -409,6 +655,22 @@ function showTab(i) {
     btn.classList.toggle('active', idx === i);
   });
 }
+function toggleDone(qid, tabIdx) {
+  const block = document.querySelector('.question-block[data-qid="' + qid + '"]');
+  const isDone = block.classList.toggle('q-done');
+  const btn = document.querySelectorAll('.tab-btn')[tabIdx];
+  btn.classList.toggle('done', isDone);
+  try { localStorage.setItem('done-' + qid, isDone ? '1' : ''); } catch (e) {}
+}
+document.querySelectorAll('.question-block').forEach((block, idx) => {
+  let saved = false;
+  try { saved = !!localStorage.getItem('done-' + block.dataset.qid); } catch (e) {}
+  if (saved) {
+    block.classList.add('q-done');
+    const btn = document.querySelectorAll('.tab-btn')[idx];
+    if (btn) btn.classList.add('done');
+  }
+});
 showTab(0);
 </script>
 </body>

@@ -22,38 +22,78 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
 
   <div class="tabs" role="tablist">
     <button class="tab-btn" onclick="showTab(0)">Q21</button>
-    <button class="tab-btn important" onclick="showTab(1)">Q22</button>
+    <button class="tab-btn" onclick="showTab(1)">Q22</button>
     <button class="tab-btn" onclick="showTab(2)">Q23</button>
-    <button class="tab-btn important" onclick="showTab(3)">Q24</button>
+    <button class="tab-btn" onclick="showTab(3)">Q24</button>
     <button class="tab-btn" onclick="showTab(4)">Q25</button>
-    <button class="tab-btn important" onclick="showTab(5)">Q26</button>
-    <button class="tab-btn important" onclick="showTab(6)">Q27</button>
+    <button class="tab-btn" onclick="showTab(5)">Q26</button>
+    <button class="tab-btn" onclick="showTab(6)">Q27</button>
+    <button class="tab-btn" onclick="showTab(7)">Q28</button>
+    <button class="tab-btn" onclick="showTab(8)">Q29</button>
+    <button class="tab-btn" onclick="showTab(9)">Q30</button>
   </div>
 
   <!-- Q21 -->
   <div class="tab-content" id="tab-0">
-    <div class="question-block">
-      <span class="q-tag skeleton">Skeleton</span>
-      <h2 class="q-title">21. What are autoencoders, and how do they relate to principal component analysis (PCA) in terms of dimensionality reduction?</h2>
+    <div class="question-block" data-qid="u3-q21">
+      <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u3-q21', 0)" aria-label="Mark as done"></button>
+        <h2 class="q-title">21. What are autoencoders, and how do they relate to principal component analysis (PCA) in terms of dimensionality reduction?</h2>
+      </div>
       <div class="answer-body">
-        <p><strong>Autoencoder:</strong> a feedforward network trained to reconstruct its own input. Encoder: h = g(Wx+b). Decoder: x̂ = f(W*h+c). Trained by minimizing reconstruction loss, e.g. Σ(x̂ᵢ−xᵢ)ᵀ(x̂ᵢ−xᵢ).</p>
-        <ul>
-          <li><strong>Undercomplete</strong> (dim(h) &lt; dim(x)): if x can still be reconstructed perfectly, h is a loss-free, compressed encoding capturing the important characteristics of x — directly analogous to PCA's goal.</li>
-          <li><strong>Overcomplete</strong> (dim(h) ≥ dim(x)): risk of learning a trivial identity mapping unless regularized (see Q23, sparse/denoising/contractive AEs).</li>
-        </ul>
-        <h3>Formal equivalence to PCA</h3>
-        <p>If the autoencoder uses a <strong>linear encoder</strong>, <strong>linear decoder</strong>, <strong>squared error loss</strong>, and the inputs are normalized (zero mean), then the optimal encoder weight matrix W is provably identical to the PCA projection matrix P (both equal the top-k eigenvectors of XᵀX). This is proven via SVD: the optimal solution to min‖X−HW*‖²_F is HW* = U.,≤kΣ_(k,k)V.,≤kᵀ, and matching terms shows H = XV.,≤k, i.e., W = V.,≤k — exactly the PCA basis.</p>
-        <p><strong>Key difference:</strong> a non-linear autoencoder (sigmoid/tanh activations) can learn more powerful, non-linear manifolds that PCA (strictly linear) cannot capture — e.g. denoising autoencoders learn edge-detector-like filters that PCA simply cannot produce.</p>
-        <div class="source-note">Source: CS7015 Lecture 7 (Khapra), Modules 7.1–7.2.</div>
+<p>An <strong>autoencoder</strong> is a feedforward network trained to <strong>reproduce its own input</strong>: the encoder maps \(x_i\) to a hidden representation \(h\), and the decoder reconstructs \(\hat x_i\) from \(h\). Training uses ordinary backpropagation to make \(\hat x_i\) close to \(x_i\).</p>
+<div class="formula">\[h=g(Wx_i+b),\qquad \hat x_i=f(W^{*}h+c)\]</div>
+<div class="svg-wrap">
+<svg viewBox="0 0 680 256" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a31" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--text-muted)"/></marker></defs><line x1="72" y1="50" x2="218" y2="110" stroke="var(--text-muted)" stroke-width="0.7" marker-end="url(#a31)"/><line x1="72" y1="50" x2="218" y2="150" stroke="var(--text-muted)" stroke-width="0.7" marker-end="url(#a31)"/><line x1="72" y1="90" x2="218" y2="110" stroke="var(--text-muted)" stroke-width="0.7" marker-end="url(#a31)"/><line x1="72" y1="90" x2="218" y2="150" stroke="var(--text-muted)" stroke-width="0.7" marker-end="url(#a31)"/><line x1="72" y1="130" x2="218" y2="110" stroke="var(--text-muted)" stroke-width="0.7" marker-end="url(#a31)"/><line x1="72" y1="130" x2="218" y2="150" stroke="var(--text-muted)" stroke-width="0.7" marker-end="url(#a31)"/><line x1="72" y1="170" x2="218" y2="110" stroke="var(--text-muted)" stroke-width="0.7" marker-end="url(#a31)"/><line x1="72" y1="170" x2="218" y2="150" stroke="var(--text-muted)" stroke-width="0.7" marker-end="url(#a31)"/><line x1="72" y1="210" x2="218" y2="110" stroke="var(--text-muted)" stroke-width="0.7" marker-end="url(#a31)"/><line x1="72" y1="210" x2="218" y2="150" stroke="var(--text-muted)" stroke-width="0.7" marker-end="url(#a31)"/><line x1="242" y1="110" x2="388" y2="50" stroke="var(--text-muted)" stroke-width="0.7" marker-end="url(#a31)"/><line x1="242" y1="110" x2="388" y2="90" stroke="var(--text-muted)" stroke-width="0.7" marker-end="url(#a31)"/><line x1="242" y1="110" x2="388" y2="130" stroke="var(--text-muted)" stroke-width="0.7" marker-end="url(#a31)"/><line x1="242" y1="110" x2="388" y2="170" stroke="var(--text-muted)" stroke-width="0.7" marker-end="url(#a31)"/><line x1="242" y1="110" x2="388" y2="210" stroke="var(--text-muted)" stroke-width="0.7" marker-end="url(#a31)"/><line x1="242" y1="150" x2="388" y2="50" stroke="var(--text-muted)" stroke-width="0.7" marker-end="url(#a31)"/><line x1="242" y1="150" x2="388" y2="90" stroke="var(--text-muted)" stroke-width="0.7" marker-end="url(#a31)"/><line x1="242" y1="150" x2="388" y2="130" stroke="var(--text-muted)" stroke-width="0.7" marker-end="url(#a31)"/><line x1="242" y1="150" x2="388" y2="170" stroke="var(--text-muted)" stroke-width="0.7" marker-end="url(#a31)"/><line x1="242" y1="150" x2="388" y2="210" stroke="var(--text-muted)" stroke-width="0.7" marker-end="url(#a31)"/><circle cx="60" cy="50" r="11" fill="var(--surface2)" stroke="var(--border)" stroke-width="1"/><circle cx="400" cy="50" r="11" fill="var(--surface2)" stroke="var(--border)" stroke-width="1"/><circle cx="60" cy="90" r="11" fill="var(--surface2)" stroke="var(--border)" stroke-width="1"/><circle cx="400" cy="90" r="11" fill="var(--surface2)" stroke="var(--border)" stroke-width="1"/><circle cx="60" cy="130" r="11" fill="var(--surface2)" stroke="var(--border)" stroke-width="1"/><circle cx="400" cy="130" r="11" fill="var(--surface2)" stroke="var(--border)" stroke-width="1"/><circle cx="60" cy="170" r="11" fill="var(--surface2)" stroke="var(--border)" stroke-width="1"/><circle cx="400" cy="170" r="11" fill="var(--surface2)" stroke="var(--border)" stroke-width="1"/><circle cx="60" cy="210" r="11" fill="var(--surface2)" stroke="var(--border)" stroke-width="1"/><circle cx="400" cy="210" r="11" fill="var(--surface2)" stroke="var(--border)" stroke-width="1"/><circle cx="230" cy="110" r="12" fill="var(--surface)" stroke="var(--accent)" stroke-width="1"/><circle cx="230" cy="150" r="12" fill="var(--surface)" stroke="var(--accent)" stroke-width="1"/><text x="60" y="246" text-anchor="middle" fill="var(--text)" font-size="13" font-weight="600">xᵢ</text><text x="230" y="246" text-anchor="middle" fill="var(--accent-hover)" font-size="13" font-weight="600">h</text><text x="400" y="246" text-anchor="middle" fill="var(--text)" font-size="13" font-weight="600">x̂ᵢ</text><text x="145.0" y="24" text-anchor="middle" fill="var(--accent-hover)" font-size="11.5">encoder:  h = g(Wxᵢ + b)</text><text x="315.0" y="24" text-anchor="middle" fill="var(--accent-hover)" font-size="11.5">decoder:  x̂ᵢ = f(W*h + c)</text><text x="520" y="100" text-anchor="start" fill="var(--text-muted)" font-size="11" font-weight="600">undercomplete:</text><text x="520" y="116" text-anchor="start" fill="var(--text-muted)" font-size="11">dim(h) < dim(x)</text><text x="520" y="132" text-anchor="start" fill="var(--text-muted)" font-size="11">→ forced to compress</text><text x="520" y="170" text-anchor="start" fill="var(--important)" font-size="11">train so that x̂ᵢ ≈ xᵢ</text></svg>
+</div>
+<h3>Choice of decoder \(f\) and loss</h3>
+<table>
+  <tr><th>Inputs</th><th>Decoder \(f\)</th><th>Loss</th></tr>
+  <tr><td>Binary, \(x_{ij}\in\{0,1\}\)</td><td>Logistic (outputs in (0,1))</td><td>\(L=-\sum_{j=1}^{n}\bigl[x_{ij}\log\hat x_{ij}+(1-x_{ij})\log(1-\hat x_{ij})\bigr]\)</td></tr>
+  <tr><td>Real-valued, \(x_{ij}\in\mathbb{R}\)</td><td>Linear: \(\hat x_i=W^{*}h+c\)</td><td>\(\min\ \frac{1}{m}\sum_{i=1}^{m}\sum_{j=1}^{n}(\hat x_{ij}-x_{ij})^2\)</td></tr>
+</table>
+<h3>Undercomplete vs overcomplete</h3>
+<ul>
+  <li><strong>Undercomplete</strong> (\(\dim(h)<\dim(x_i)\)): if \(x_i\) can still be reconstructed well, \(h\) is a loss-free compressed encoding that captures the important characteristics of \(x_i\) &mdash; the same goal as PCA.</li>
+  <li><strong>Overcomplete</strong> (\(\dim(h)\ge\dim(x_i)\)): the network can simply copy \(x_i\) into \(h\) and out again (identity mapping), learning nothing useful. It needs regularisation (Q22, Q24, Q25).</li>
+</ul>
+<h3>Relation to PCA</h3>
+<p>The encoder of an autoencoder <strong>is</strong> PCA when (i) encoder and decoder are linear, (ii) the loss is squared error, and (iii) the inputs are mean-centred and scaled, \(X=\tfrac{1}{\sqrt m}X'\), so that \(X^{T}X\) is the covariance matrix. Proof sketch, ignoring biases:</p>
+<div class="formula">\[\min_{H,W^{*}}\ \|X-HW^{*}\|_F^{2}\ \xrightarrow{\ \text{SVD}\ }\ HW^{*}=U_{:,\le k}\Sigma_{k,k}V_{:,\le k}^{T}\ \Rightarrow\ H=U_{:,\le k}\Sigma_{k,k}=XV_{:,\le k},\quad W^{*}=V_{:,\le k}^{T}\]</div>
+<p>Hence the encoder weights are \(W=V_{:,\le k}\). \(V\) holds the eigenvectors of \(X^{T}X\), which is the covariance matrix, so \(W=P\), the PCA projection matrix.</p>
+<table>
+  <tr><th></th><th>PCA</th><th>Autoencoder</th></tr>
+  <tr><td>Mapping</td><td>Linear only</td><td>Linear, or non-linear with sigmoid / tanh units</td></tr>
+  <tr><td>How found</td><td>Eigen-decomposition / SVD (closed form)</td><td>Gradient descent with backpropagation</td></tr>
+  <tr><td>Strength</td><td>Simple, unique orthonormal basis</td><td>Learns curved (non-linear) structure PCA cannot capture</td></tr>
+</table>
+<h3>Worked example &mdash; size of an autoencoder</h3>
+<p>For a 28&times;28 image, \(x\in\mathbb R^{784}\). Use a hidden layer of 32 units, so \(\dim(h)=32<784\) (undercomplete, a 24.5&times; compression):</p>
+<table>
+  <tr><th>Parameters</th><th>Shape</th><th>Count</th></tr>
+  <tr><td>Encoder \(W,\ b\)</td><td>\(32\times784,\ 32\)</td><td>25 088 + 32</td></tr>
+  <tr><td>Decoder \(W^{*},\ c\)</td><td>\(784\times32,\ 784\)</td><td>25 088 + 784</td></tr>
+  <tr><td colspan="2"><strong>Total</strong></td><td><strong>50 992</strong></td></tr>
+</table>
+<p>The 32 numbers in \(h\) must contain enough information to rebuild all 784 pixels, which forces the network to keep only the most important structure of the data.</p>
+<h3>What autoencoders are used for</h3>
+<ul>
+  <li><strong>Dimensionality reduction / feature learning:</strong> use \(h\) as a compact input for another model.</li>
+  <li><strong>Pre-training</strong> of deep networks layer by layer (Q31).</li>
+  <li><strong>Denoising</strong> and <strong>anomaly detection:</strong> a point unlike the training data has a large reconstruction error \(\|x-\hat x\|^2\).</li>
+</ul>
+<div class="source-note">Source: CS7015 Lecture 7 (Khapra), Modules 7.1&ndash;7.2.</div>
       </div>
     </div>
   </div>
 
-  <!-- Q22 IMPORTANT -->
+  <!-- Q22 -->
   <div class="tab-content" id="tab-1">
-    <div class="question-block">
-      <span class="q-tag important">Important — full answer</span>
-      <h2 class="q-title">22. How do sparse autoencoders differ from traditional autoencoders, and what are some applications of sparse autoencoders in deep learning?</h2>
+    <div class="question-block" data-qid="u3-q22">
+            <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u3-q22', 1)" aria-label="Mark as done"></button>
+        <h2 class="q-title">22. How do sparse autoencoders differ from traditional autoencoders, and what are some applications of sparse autoencoders in deep learning?</h2>
+      </div>
       <div class="answer-body">
         <h3>The core difference</h3>
         <ul>
@@ -74,7 +114,7 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
           <circle cx="85" cy="100" r="14" fill="var(--surface2)" stroke="var(--border)"/>
           <circle cx="125" cy="100" r="14" fill="var(--accent)" stroke="var(--accent-hover)"/>
           <circle cx="165" cy="100" r="14" fill="var(--accent)" stroke="var(--accent-hover)"/>
-          <text x="115" y="135" text-anchor="middle" fill="var(--text-dim)" font-size="10">most neurons fire — risk of trivial copying</text>
+          <text x="115" y="135" text-anchor="middle" fill="var(--text-dim)" font-size="10">most fire — risk of copying</text>
 
           <line x1="230" y1="10" x2="230" y2="150" stroke="var(--border)" stroke-dasharray="3,3"/>
 
@@ -87,7 +127,7 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
           <circle cx="315" cy="100" r="14" fill="var(--surface2)" stroke="var(--border)"/>
           <circle cx="355" cy="100" r="14" fill="var(--surface2)" stroke="var(--border)"/>
           <circle cx="395" cy="100" r="14" fill="var(--important)" stroke="var(--important)"/>
-          <text x="335" y="135" text-anchor="middle" fill="var(--text-dim)" font-size="10">most neurons off — forces genuinely useful features</text>
+          <text x="335" y="135" text-anchor="middle" fill="var(--text-dim)" font-size="10">most off — forces useful features</text>
         </svg>
         </div>
 
@@ -131,28 +171,66 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
 
   <!-- Q23 -->
   <div class="tab-content" id="tab-2">
-    <div class="question-block">
-      <span class="q-tag skeleton">Skeleton</span>
-      <h2 class="q-title">23. How does bias-variance trade-off can be managed using regularization techniques such as L2 regularization?</h2>
+    <div class="question-block" data-qid="u3-q23">
+      <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u3-q23', 2)" aria-label="Mark as done"></button>
+        <h2 class="q-title">23. How does bias-variance trade-off can be managed using regularization techniques such as L2 regularization?</h2>
+      </div>
       <div class="answer-body">
-        <ul>
-          <li><strong>Bias-variance tradeoff:</strong> high-bias models (too simple) underfit; high-variance models (too complex, too many free parameters relative to data) overfit — memorize training data, generalize poorly.</li>
-          <li><strong>L2 regularization (weight decay):</strong> add a penalty term λ‖θ‖² to the loss function: L̂(θ) = L(θ) + λ‖θ‖². Discourages weights from growing large, which keeps the function smoother/simpler.</li>
-          <li>Effect on gradient: adds a simple λW term to ∂L/∂W — easy to implement, effectively "shrinks" weights toward zero at every update.</li>
-          <li>By constraining model complexity (effectively reducing the hypothesis space), L2 <strong>reduces variance</strong> at the cost of slightly increased bias — moving the model toward the sweet spot of the tradeoff curve rather than overfitting.</li>
-          <li>Larger λ → stronger regularization → lower variance / higher bias; smaller λ → closer to unregularized (higher variance, lower bias). λ is tuned via validation performance.</li>
-          <li>Related techniques achieving the same goal: early stopping, dataset augmentation, dropout, parameter sharing/tying — all reduce effective model capacity or effective training-data variance to control overfitting.</li>
-        </ul>
-        <div class="source-note">General regularization theory + weight-decay formulation as used for autoencoders in CS7015 Lecture 7, Module 7.3.</div>
+<h3>Bias&ndash;variance trade-off</h3>
+<p>For an unseen point, with \(\hat f\) the learned model and \(f\) the true function,</p>
+<div class="formula">\[E\bigl[(y-\hat f(x))^2\bigr]=\underbrace{\bigl(E[\hat f(x)]-f(x)\bigr)^2}_{\text{Bias}^2}+\underbrace{E\bigl[(\hat f(x)-E[\hat f(x)])^2\bigr]}_{\text{Variance}}+\sigma^2\]</div>
+<p>A <strong>simple</strong> model has high bias and low variance (underfits). A <strong>complex</strong> model has low bias but high variance (overfits): training error keeps falling while test error rises. We want the sweet spot in between, so regularisation is used to restrain complexity: \(\ \min_\theta\ \tilde L(\theta)=L_{\text{train}}(\theta)+\Omega(\theta)\).</p>
+<div class="svg-wrap">
+<svg viewBox="0 0 460 275" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a33" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--text-muted)"/></marker></defs><text x="230" y="16" text-anchor="middle" fill="var(--text-muted)" font-size="12">error vs model complexity</text><line x1="50" y1="200" x2="410" y2="200" stroke="var(--text-dim)" stroke-width="1"/><line x1="50" y1="200" x2="50" y2="35" stroke="var(--text-dim)" stroke-width="1"/><path d="M50.0,67.4 L56.0,72.1 L62.0,76.7 L68.0,81.3 L74.0,85.7 L80.0,90.0 L86.0,94.2 L92.0,98.4 L98.0,102.4 L104.0,106.4 L110.0,110.2 L116.0,114.0 L122.0,117.7 L128.0,121.3 L134.0,124.8 L140.0,128.2 L146.0,131.5 L152.0,134.7 L158.0,137.9 L164.0,140.9 L170.0,143.9 L176.0,146.7 L182.0,149.5 L188.0,152.2 L194.0,154.9 L200.0,157.4 L206.0,159.8 L212.0,162.2 L218.0,164.5 L224.0,166.7 L230.0,168.8 L236.0,170.8 L242.0,172.7 L248.0,174.6 L254.0,176.4 L260.0,178.1 L266.0,179.7 L272.0,181.2 L278.0,182.7 L284.0,184.1 L290.0,185.4 L296.0,186.6 L302.0,187.8 L308.0,188.9 L314.0,189.9 L320.0,190.8 L326.0,191.7 L332.0,192.5 L338.0,193.2 L344.0,193.9 L350.0,194.4 L356.0,195.0 L362.0,195.4 L368.0,195.8 L374.0,196.1 L380.0,196.4 L386.0,196.6 L392.0,196.8 L398.0,196.9 L404.0,196.9 L410.0,197.0" fill="none" stroke="var(--accent)" stroke-width="2"/><path d="M50.0,195.4 L56.0,195.4 L62.0,195.4 L68.0,195.3 L74.0,195.2 L80.0,195.1 L86.0,194.9 L92.0,194.7 L98.0,194.4 L104.0,194.1 L110.0,193.7 L116.0,193.2 L122.0,192.7 L128.0,192.1 L134.0,191.5 L140.0,190.8 L146.0,190.0 L152.0,189.1 L158.0,188.2 L164.0,187.2 L170.0,186.2 L176.0,185.0 L182.0,183.8 L188.0,182.5 L194.0,181.1 L200.0,179.6 L206.0,178.0 L212.0,176.4 L218.0,174.6 L224.0,172.8 L230.0,170.9 L236.0,168.9 L242.0,166.8 L248.0,164.6 L254.0,162.3 L260.0,159.9 L266.0,157.4 L272.0,154.8 L278.0,152.2 L284.0,149.4 L290.0,146.5 L296.0,143.5 L302.0,140.4 L308.0,137.2 L314.0,133.9 L320.0,130.5 L326.0,127.0 L332.0,123.3 L338.0,119.6 L344.0,115.8 L350.0,111.8 L356.0,107.7 L362.0,103.6 L368.0,99.3 L374.0,94.8 L380.0,90.3 L386.0,85.7 L392.0,80.9 L398.0,76.0 L404.0,71.0 L410.0,65.9" fill="none" stroke="var(--warning)" stroke-width="2"/><path d="M50.0,53.7 L56.0,58.4 L62.0,63.0 L68.0,67.4 L74.0,71.8 L80.0,75.9 L86.0,80.0 L92.0,83.9 L98.0,87.7 L104.0,91.3 L110.0,94.8 L116.0,98.1 L122.0,101.2 L128.0,104.3 L134.0,107.1 L140.0,109.8 L146.0,112.3 L152.0,114.7 L158.0,116.9 L164.0,119.0 L170.0,120.9 L176.0,122.6 L182.0,124.2 L188.0,125.6 L194.0,126.8 L200.0,127.8 L206.0,128.7 L212.0,129.4 L218.0,130.0 L224.0,130.3 L230.0,130.5 L236.0,130.5 L242.0,130.4 L248.0,130.0 L254.0,129.5 L260.0,128.8 L266.0,128.0 L272.0,126.9 L278.0,125.7 L284.0,124.3 L290.0,122.7 L296.0,121.0 L302.0,119.0 L308.0,116.9 L314.0,114.6 L320.0,112.2 L326.0,109.5 L332.0,106.7 L338.0,103.7 L344.0,100.5 L350.0,97.1 L356.0,93.6 L362.0,89.8 L368.0,85.9 L374.0,81.8 L380.0,77.6 L386.0,73.1 L392.0,68.5 L398.0,63.8 L404.0,58.8 L410.0,53.7" fill="none" stroke="var(--important)" stroke-width="2.8"/><line x1="236.00000000000003" y1="200" x2="236.00000000000003" y2="122.52540155917995" stroke="var(--text-muted)" stroke-width="1" stroke-dasharray="4 3"/><text x="236.00000000000003" y="216" text-anchor="middle" fill="var(--text-muted)" font-size="11">sweet spot</text><text x="66" y="60" text-anchor="start" fill="var(--accent-hover)" font-size="11.5" font-weight="600">Bias²</text><text x="340" y="70" text-anchor="start" fill="var(--warning)" font-size="11.5" font-weight="600">Variance</text><text x="300" y="46" text-anchor="start" fill="var(--important)" font-size="11.5" font-weight="600">Test error (total)</text><text x="120" y="234" text-anchor="middle" fill="var(--text-muted)" font-size="11">underfit (high bias)</text><text x="340" y="234" text-anchor="middle" fill="var(--text-muted)" font-size="11">overfit (high variance)</text><line x1="380" y1="254" x2="290" y2="254" stroke="var(--accent)" stroke-width="2" marker-end="url(#a33)"/><text x="335" y="270" text-anchor="middle" fill="var(--accent-hover)" font-size="10.5">larger α (L2) moves this way</text></svg>
+</div>
+<h3>L2 regularisation (weight decay)</h3>
+<div class="formula">\[\tilde L(w)=L(w)+\frac{\alpha}{2}\|w\|^{2},\qquad \nabla\tilde L(w)=\nabla L(w)+\alpha w\]</div>
+<div class="formula">\[w_{t+1}=w_t-\eta\bigl(\nabla L(w_t)+\alpha w_t\bigr)=(1-\eta\alpha)\,w_t-\eta\,\nabla L(w_t)\]</div>
+<p>Every update first <strong>shrinks the weights</strong> by the factor \((1-\eta\alpha)\) (hence "weight decay") and then takes the usual gradient step.</p>
+<h3>Why it reduces variance</h3>
+<p>Expand \(L\) around its optimum \(w^{*}\) with Hessian \(H=Q\Lambda Q^{T}\). The regularised minimum is</p>
+<div class="formula">\[\tilde w=Q(\Lambda+\alpha I)^{-1}\Lambda\,Q^{T}w^{*},\qquad \text{component } i \text{ is scaled by } \frac{\lambda_i}{\lambda_i+\alpha}\]</div>
+<ul>
+  <li>\(\lambda_i\gg\alpha\): factor \(\approx1\) &mdash; directions that matter for the loss are kept.</li>
+  <li>\(\lambda_i\ll\alpha\): factor \(\approx0\) &mdash; unimportant directions are shrunk to zero.</li>
+  <li>Effective number of parameters \(=\sum_i\frac{\lambda_i}{\lambda_i+\alpha}&lt;n\), so the model behaves as a simpler one.</li>
+</ul>
+<table>
+  <tr><th>Strength of \(\alpha\)</th><th>Effect</th></tr>
+  <tr><td>Large \(\alpha\)</td><td>Strong shrinkage: lower variance, higher bias (risk of underfitting)</td></tr>
+  <tr><td>Small \(\alpha\)</td><td>Close to the unregularised model: higher variance, lower bias</td></tr>
+  <tr><td>\(\alpha\) chosen on validation error</td><td>Lands near the sweet spot</td></tr>
+</table>
+<p>Other ways of managing the same trade-off: early stopping (Q29), dataset augmentation (Q26), dropout, parameter sharing and tying. For autoencoders the same penalty is written \(\lambda\|\theta\|^{2}\) (Lecture 7).</p>
+<h3>Worked example &mdash; the shrinkage factor</h3>
+<p>Let the Hessian eigenvalues be \(\lambda=\{9,\,1,\,0.1\}\) and \(\alpha=1\). The factor \(\lambda_i/(\lambda_i+\alpha)\) for each direction is</p>
+<table>
+  <tr><th>\(\lambda_i\)</th><th>Factor</th><th>Meaning</th></tr>
+  <tr><td>9</td><td>\(9/10=0.90\)</td><td>important direction: almost unchanged</td></tr>
+  <tr><td>1</td><td>\(1/2=0.50\)</td><td>halved</td></tr>
+  <tr><td>0.1</td><td>\(0.1/1.1\approx0.09\)</td><td>unimportant direction: almost removed</td></tr>
+</table>
+<p>Effective number of parameters \(=0.90+0.50+0.09\approx1.49\), against 3 actual parameters.</p>
+<h3>L1 versus L2</h3>
+<table>
+  <tr><th></th><th>L2 (weight decay)</th><th>L1</th></tr>
+  <tr><td>Penalty \(\Omega\)</td><td>\(\frac{\alpha}{2}\|w\|_2^2\)</td><td>\(\alpha\|w\|_1=\alpha\sum_i|w_i|\)</td></tr>
+  <tr><td>Gradient of penalty</td><td>\(\alpha w\) (proportional to \(w\))</td><td>\(\alpha\,\mathrm{sign}(w)\) (constant)</td></tr>
+  <tr><td>Effect</td><td>small, spread-out weights</td><td>many weights become exactly 0 (sparse model)</td></tr>
+</table>
+<div class="source-note">Source: CS7015 Lecture 8 (Khapra) &mdash; bias&ndash;variance, L2 regularisation; Lecture 7, Module 7.3.</div>
       </div>
     </div>
   </div>
 
-  <!-- Q24 IMPORTANT -->
+  <!-- Q24 -->
   <div class="tab-content" id="tab-3">
-    <div class="question-block">
-      <span class="q-tag important">Important — full answer</span>
-      <h2 class="q-title">24. What is the role of denoising autoencoders in deep learning, and how do they enhance the robustness of a model?</h2>
+    <div class="question-block" data-qid="u3-q24">
+            <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u3-q24', 3)" aria-label="Mark as done"></button>
+        <h2 class="q-title">24. What is the role of denoising autoencoders in deep learning, and how do they enhance the robustness of a model?</h2>
+      </div>
       <div class="answer-body">
         <p><strong>Core idea:</strong> a denoising autoencoder (DAE) deliberately corrupts its input using a stochastic process \(P(\tilde{x}_{ij}\mid x_{ij})\) before feeding it into the encoder — but the training objective still asks the network to reconstruct the <strong>original, uncorrupted</strong> input, not the corrupted one it actually received.</p>
 
@@ -229,43 +307,142 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
 
   <!-- Q25 -->
   <div class="tab-content" id="tab-4">
-    <div class="question-block">
-      <span class="q-tag skeleton">Skeleton</span>
-      <h2 class="q-title">25. Explain the concept of contractive autoencoders and how they differ from traditional autoencoders.</h2>
+    <div class="question-block" data-qid="u3-q25">
+      <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u3-q25', 4)" aria-label="Mark as done"></button>
+        <h2 class="q-title">25. Explain the concept of contractive autoencoders and how they differ from traditional autoencoders.</h2>
+      </div>
       <div class="answer-body">
-        <p>A <strong>contractive autoencoder (CAE)</strong> also prevents an overcomplete autoencoder from learning the trivial identity function — but does so differently from sparse or denoising AEs: by penalizing the <strong>sensitivity</strong> of the hidden representation to small input changes.</p>
-
-        <h3>Regularization term</h3>
-        <div class="formula">
-          Ω(θ) = ‖J_x(h)‖²_F = Σⱼ Σₗ (∂hₗ/∂xⱼ)²
-        </div>
-        <p>where J_x(h) is the <strong>Jacobian</strong> of the encoder — the (l,j) entry captures how much hidden neuron l's output changes for a small change in input dimension j.</p>
-
-        <h3>Intuition</h3>
-        <ul>
-          <li>If ∂h₁/∂x₁ = 0, neuron 1 is completely insensitive to variations in x₁ — but this conflicts with the reconstruction objective L(θ), which needs h to capture variations in x in order to reconstruct it well.</li>
-          <li>This is deliberate: pitting L(θ) (capture important variations) against Ω(θ) (don't capture variations) creates a <strong>tradeoff</strong> — the network ends up sensitive <strong>only to the important variations</strong> observed in training data, and insensitive to unimportant/noisy directions.</li>
-          <li>Geometric picture: for data varying mainly along direction u1 (important, high signal) and only slightly along u2 (noise), a CAE learns to be sensitive to u1 while suppressing sensitivity to u2 — balancing good reconstruction against low sensitivity.</li>
-        </ul>
-
-        <h3>Difference from traditional / sparse / denoising AEs</h3>
-        <table>
-          <tr><th>Type</th><th>Mechanism to prevent identity mapping</th></tr>
-          <tr><td>Traditional (vanilla) AE</td><td>None — can trivially learn identity if overcomplete</td></tr>
-          <tr><td>Sparse AE</td><td>Penalizes average activation of hidden neurons (KL term)</td></tr>
-          <tr><td>Denoising AE</td><td>Corrupts input; forces reconstruction of the clean original</td></tr>
-          <tr><td>Contractive AE</td><td>Penalizes the Jacobian (sensitivity) of hidden layer w.r.t. input directly</td></tr>
-        </table>
-        <div class="source-note">Source: CS7015 Lecture 7 (Khapra), Module 7.6.</div>
+<p>A <strong>contractive autoencoder (CAE)</strong> is an overcomplete autoencoder regularised so that it cannot learn the identity function. It does this by penalising how <strong>sensitive the hidden representation is to small changes in the input</strong>.</p>
+<h3>Objective</h3>
+<div class="formula">\[\hat L(\theta)=L(\theta)+\Omega(\theta),\qquad \Omega(\theta)=\|J_x(h)\|_F^{2}=\sum_{j=1}^{n}\sum_{l=1}^{k}\Bigl(\frac{\partial h_l}{\partial x_j}\Bigr)^{2}\]</div>
+<p>\(L(\theta)\) is the usual reconstruction loss (squared error or cross-entropy). \(J_x(h)\) is the \(k\times n\) Jacobian of the encoder; its \((l,j)\) entry says how much hidden unit \(l\) changes for a small change in input \(j\). For a sigmoid encoder \(h_l=\sigma(W_l x+b_l)\) it has the closed form \(\partial h_l/\partial x_j=h_l(1-h_l)W_{lj}\).</p>
+<div class="svg-wrap">
+<svg viewBox="0 0 640 222" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a35" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--text-muted)"/></marker></defs><text x="130" y="16" text-anchor="middle" fill="var(--text-muted)" font-size="12">(a) Jacobian J_x(h) is k × n</text><rect x="30" y="30" width="60" height="32" rx="2" fill="var(--surface2)" stroke="var(--border)"/><text x="60.0" y="50.0" text-anchor="middle" fill="var(--text)" font-size="10.5">∂h₁/∂x₁</text><rect x="92" y="30" width="60" height="32" rx="2" fill="var(--surface2)" stroke="var(--border)"/><text x="122.0" y="50.0" text-anchor="middle" fill="var(--text)" font-size="10.5">∂h₁/∂x₂</text><rect x="154" y="30" width="60" height="32" rx="2" fill="var(--surface2)" stroke="var(--border)"/><text x="184.0" y="50.0" text-anchor="middle" fill="var(--text)" font-size="10.5">∂h₁/∂x₃</text><rect x="216" y="30" width="60" height="32" rx="2" fill="var(--surface2)" stroke="var(--border)"/><text x="246.0" y="50.0" text-anchor="middle" fill="var(--text)" font-size="10.5">∂h₁/∂xₙ</text><rect x="30" y="64" width="60" height="32" rx="2" fill="var(--surface2)" stroke="var(--border)"/><text x="60.0" y="84.0" text-anchor="middle" fill="var(--text)" font-size="10.5">∂h₂/∂x₁</text><rect x="92" y="64" width="60" height="32" rx="2" fill="var(--surface2)" stroke="var(--border)"/><text x="122.0" y="84.0" text-anchor="middle" fill="var(--text)" font-size="10.5">∂h₂/∂x₂</text><rect x="154" y="64" width="60" height="32" rx="2" fill="var(--surface2)" stroke="var(--border)"/><text x="184.0" y="84.0" text-anchor="middle" fill="var(--text)" font-size="10.5">∂h₂/∂x₃</text><rect x="216" y="64" width="60" height="32" rx="2" fill="var(--surface2)" stroke="var(--border)"/><text x="246.0" y="84.0" text-anchor="middle" fill="var(--text)" font-size="10.5">∂h₂/∂xₙ</text><rect x="30" y="98" width="60" height="32" rx="2" fill="var(--surface2)" stroke="var(--border)"/><text x="60.0" y="118.0" text-anchor="middle" fill="var(--text)" font-size="10.5">∂hₖ/∂x₁</text><rect x="92" y="98" width="60" height="32" rx="2" fill="var(--surface2)" stroke="var(--border)"/><text x="122.0" y="118.0" text-anchor="middle" fill="var(--text)" font-size="10.5">∂hₖ/∂x₂</text><rect x="154" y="98" width="60" height="32" rx="2" fill="var(--surface2)" stroke="var(--border)"/><text x="184.0" y="118.0" text-anchor="middle" fill="var(--text)" font-size="10.5">∂hₖ/∂x₃</text><rect x="216" y="98" width="60" height="32" rx="2" fill="var(--surface2)" stroke="var(--border)"/><text x="246.0" y="118.0" text-anchor="middle" fill="var(--text)" font-size="10.5">∂hₖ/∂xₙ</text><text x="154" y="150" text-anchor="middle" fill="var(--text-muted)" font-size="10.5">row l = hidden unit,  column j = input</text><text x="154" y="166" text-anchor="middle" fill="var(--text-muted)" font-size="10.5">entry (l, j): change of hₗ per small change of xⱼ</text><text x="154" y="190" text-anchor="middle" fill="var(--important)" font-size="11.5" font-weight="600">Ω(θ) = ‖J‖²_F = Σⱼ Σₗ (∂hₗ/∂xⱼ)²</text><text x="470" y="16" text-anchor="middle" fill="var(--text-muted)" font-size="12">(b) what the penalty achieves</text><ellipse cx="470" cy="110" rx="85" ry="26" transform="rotate(-28 470 110)" fill="none" stroke="var(--text-muted)" stroke-dasharray="4 3"/><line x1="381.7052407141073" y1="156.9471562785891" x2="561.8265496573284" y2="61.17495747026736" stroke="var(--accent)" stroke-width="2.5" marker-end="url(#a35)"/><line x1="451.22113748856435" y1="74.68209628564293" x2="490.6567487625792" y2="148.8496940857928" stroke="var(--important)" stroke-width="2.5" marker-end="url(#a35)"/><text x="557.8265496573284" y="51.17495747026736" text-anchor="middle" fill="var(--accent-hover)" font-size="13" font-weight="600">u₁</text><text x="500.6567487625792" y="162.8496940857928" text-anchor="middle" fill="var(--important)" font-size="13" font-weight="600">u₂</text><text x="470" y="190" text-anchor="middle" fill="var(--accent-hover)" font-size="10.5">u₁: important variation → h stays sensitive</text><text x="470" y="206" text-anchor="middle" fill="var(--important)" font-size="10.5">u₂: noise-like → h made insensitive</text></svg>
+</div>
+<h3>Intuition</h3>
+<ul>
+  <li>\(L(\theta)\) wants \(h\) to <em>capture</em> variations in \(x\), otherwise \(x\) cannot be reconstructed. \(\Omega(\theta)\) wants \(h\) to <em>ignore</em> variations (\(\partial h_l/\partial x_j\to0\)).</li>
+  <li>The two terms pull against each other, so \(h\) stays sensitive only to the strongest variations seen in the training data (direction \(u_1\)) and becomes insensitive to unimportant, noise-like directions (\(u_2\)). This is a PCA-like behaviour: keep high-variance directions, suppress low-variance ones.</li>
+</ul>
+<h3>Difference from traditional autoencoders</h3>
+<table>
+  <tr><th>Autoencoder</th><th>How it avoids learning the identity</th><th>Regulariser \(\Omega(\theta)\)</th></tr>
+  <tr><td>Traditional (vanilla), overcomplete</td><td>It does not &mdash; it can copy the input</td><td>none</td></tr>
+  <tr><td>With weight decay</td><td>Keeps the weights small</td><td>\(\lambda\|\theta\|^{2}\)</td></tr>
+  <tr><td>Sparse</td><td>Most hidden units forced to be inactive</td><td>KL divergence of average activation \(\hat\rho_l\) from \(\rho\)</td></tr>
+  <tr><td>Denoising</td><td>Input corrupted, clean input must be reconstructed</td><td>none added; corruption \(P(\tilde x_{ij}\mid x_{ij})\)</td></tr>
+  <tr><td><strong>Contractive</strong></td><td>Hidden layer made insensitive to input changes</td><td>\(\|J_x(h)\|_F^{2}\)</td></tr>
+</table>
+<h3>Worked example &mdash; the penalty for one hidden unit</h3>
+<p>Take a single sigmoid hidden unit with two inputs, \(h=\sigma(w_1x_1+w_2x_2+b)\). Its Jacobian entries are \(\partial h/\partial x_j=h(1-h)w_j\), so</p>
+<div class="formula">\[\Omega=\|J_x(h)\|_F^{2}=\bigl[h(1-h)\bigr]^{2}\,(w_1^{2}+w_2^{2})\]</div>
+<table>
+  <tr><th>Hidden value \(h\)</th><th>\(h(1-h)\)</th><th>\([h(1-h)]^2\)</th><th>Sensitivity</th></tr>
+  <tr><td>0.5</td><td>0.25</td><td>0.0625</td><td>highest &mdash; sigmoid is steepest here</td></tr>
+  <tr><td>0.95</td><td>0.0475</td><td>0.0023</td><td>~28&times; smaller &mdash; unit is saturated</td></tr>
+</table>
+<p>So the penalty is small if the weights are small <em>or</em> if the unit is saturated, in which case moving the input hardly changes \(h\). Minimising \(L+\Omega\) therefore keeps a unit sensitive only along directions that the reconstruction really needs.</p>
+<h3>Contractive versus denoising</h3>
+<p>Both make \(h\) robust to small input changes. The denoising autoencoder does it <em>stochastically</em>, by training on corrupted inputs; the contractive autoencoder does it <em>analytically</em>, by penalising the Jacobian directly (and only for infinitesimal changes).</p>
+<div class="source-note">Source: CS7015 Lecture 7 (Khapra), Modules 7.5&ndash;7.7 (contractive autoencoders and summary of regularisers).</div>
       </div>
     </div>
   </div>
 
-    <!-- ==================== Q26 ==================== -->
-    <div class="tab-content" id="tab-5">
-      <div class="question-block">
-        <span class="q-tag important">Important — full answer</span>
-        <h2 class="q-title">26. Describe the concepts of parameter sharing and tying in the context of autoencoders.</h2>
+  <!-- Q26 -->
+  <div class="tab-content" id="tab-5">
+    <div class="question-block" data-qid="u3-q26">
+      <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u3-q26', 5)" aria-label="Mark as done"></button>
+        <h2 class="q-title">26. Explain dataset augmentation and discuss any four commonly used augmentation techniques in deep learning.</h2>
+      </div>
+      <div class="answer-body">
+<p><strong>Dataset augmentation</strong> means <strong>creating new training examples from existing ones</strong> by applying transformations that use knowledge of the task and <strong>do not change the label</strong>. If \(\mathcal{T}\) is a set of such transformations,</p>
+<div class="formula">\[\mathcal{D}'=\mathcal{D}\ \cup\ \bigl\{\,(T(x_i),\,y_i)\ :\ (x_i,y_i)\in\mathcal{D},\ T\in\mathcal{T}\bigr\}\]</div>
+<p>The network is then trained on \(\mathcal{D}'\), which is much larger than the original data. It is most natural for <strong>images</strong> (classification, object recognition) and <strong>speech</strong>; for other tasks it is often unclear how to generate such data.</p>
+<div class="svg-wrap">
+<svg viewBox="0 0 640 190" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a41" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--text-muted)"/></marker></defs><defs><filter id="blurq26"><feGaussianBlur stdDeviation="1.6"/></filter></defs><rect x="20" y="28" width="104" height="104" rx="4" fill="var(--bg)" stroke="var(--border)"/><g transform="translate(47,44)"><path d="M8,18 C8,2 42,2 42,20 C42,38 8,52 6,66 L44,66" fill="none" stroke="var(--text)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g><text x="72" y="152" text-anchor="middle" fill="var(--text-muted)" font-size="11">original (label 2)</text><rect x="144" y="28" width="104" height="104" rx="4" fill="var(--bg)" stroke="var(--border)"/><g transform="translate(171,44) rotate(20 25 35)"><path d="M8,18 C8,2 42,2 42,20 C42,38 8,52 6,66 L44,66" fill="none" stroke="var(--text)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g><text x="196" y="152" text-anchor="middle" fill="var(--text-muted)" font-size="11">rotate 20°</text><rect x="268" y="28" width="104" height="104" rx="4" fill="var(--bg)" stroke="var(--border)"/><g transform="translate(315,54)"><path d="M8,18 C8,2 42,2 42,20 C42,38 8,52 6,66 L44,66" fill="none" stroke="var(--text)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g><text x="320" y="152" text-anchor="middle" fill="var(--text-muted)" font-size="11">shift right / down</text><rect x="392" y="28" width="104" height="104" rx="4" fill="var(--bg)" stroke="var(--border)"/><g transform="translate(469,44) scale(-1,1)"><path d="M8,18 C8,2 42,2 42,20 C42,38 8,52 6,66 L44,66" fill="none" stroke="var(--text)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g><text x="444" y="152" text-anchor="middle" fill="var(--text-muted)" font-size="11">flip horizontally</text><rect x="516" y="28" width="104" height="104" rx="4" fill="var(--bg)" stroke="var(--border)"/><g transform="translate(543,44)" filter="url(#blurq26)"><path d="M8,18 C8,2 42,2 42,20 C42,38 8,52 6,66 L44,66" fill="none" stroke="var(--text)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></g><circle cx="610.0" cy="121.2" r="1.3" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="527.2" cy="41.8" r="1.3" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="598.9" cy="101.7" r="1.3" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="583.6" cy="62.3" r="1.3" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="577.7" cy="89.8" r="1.3" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="575.5" cy="48.6" r="1.3" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="561.6" cy="70.2" r="1.3" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="588.5" cy="125.5" r="1.3" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="609.3" cy="84.1" r="1.3" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="562.9" cy="58.7" r="1.3" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="525.3" cy="36.5" r="1.3" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="564.8" cy="63.3" r="1.3" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="557.0" cy="116.0" r="1.3" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="570.4" cy="85.6" r="1.3" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="543.7" cy="36.2" r="1.3" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="551.9" cy="46.6" r="1.3" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="568.9" cy="125.9" r="1.3" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="584.1" cy="50.7" r="1.3" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="604.2" cy="107.3" r="1.3" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="589.6" cy="117.4" r="1.3" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="592.2" cy="106.7" r="1.3" fill="var(--text-muted)" stroke="none" stroke-width="1"/><circle cx="554.5" cy="124.2" r="1.3" fill="var(--text-muted)" stroke="none" stroke-width="1"/><text x="568" y="152" text-anchor="middle" fill="var(--text-muted)" font-size="11">blur + noise</text><text x="320" y="176" text-anchor="middle" fill="var(--accent-hover)" font-size="11.5">every transformed image keeps the same label y = 2</text></svg>
+</div>
+<h3>Four commonly used techniques</h3>
+<table>
+  <tr><th>Technique</th><th>Transformation</th><th>Note</th></tr>
+  <tr><td><strong>Rotation</strong></td><td>\(x'=R(\varphi)\,x,\ \ R(\varphi)=\begin{bmatrix}\cos\varphi&-\sin\varphi\\ \sin\varphi&\cos\varphi\end{bmatrix}\) applied to pixel coordinates</td><td>Use small angles; large ones can change the class (6 vs 9)</td></tr>
+  <tr><td><strong>Shifting (translation)</strong></td><td>\(x'(u,v)=x(u-t_u,\ v-t_v)\), shifted horizontally / vertically</td><td>Makes the model tolerant to object position</td></tr>
+  <tr><td><strong>Flipping</strong></td><td>\(x'(u,v)=x(W-1-u,\ v)\)</td><td>Fine for natural objects (a flipped cat is still a cat), wrong for digits and text</td></tr>
+  <tr><td><strong>Blurring / noise</strong></td><td>Blur: convolve with a Gaussian kernel. Noise: \(\tilde x=x+\varepsilon,\ \varepsilon\sim\mathcal{N}(0,\sigma^2)\)</td><td>Robust to sensor noise and low resolution</td></tr>
+</table>
+<p>Other common ones: scaling / zooming, random cropping, colour jitter. The lecture illustrates augmentation on a digit "2" (rotated by 20&deg; and 65&deg;, shifted vertically and horizontally, blurred, some pixels changed) &mdash; all still labelled "2".</p>
+<h3>Practical points</h3>
+<ul>
+  <li>Transformations must be <strong>label-preserving</strong> and realistic for the task.</li>
+  <li>Applied on the fly, with fresh random parameters every epoch; only the training set is augmented, not the test set.</li>
+</ul>
+<h3>Worked examples</h3>
+<ul>
+  <li><strong>Rotation by 90&deg;:</strong> \(R(90^\circ)=\begin{bmatrix}0&-1\\1&0\end{bmatrix}\), so the point \((2,1)\) goes to \((-1,2)\). For a small angle such as \(20^\circ\), \(R=\begin{bmatrix}0.94&-0.34\\0.34&0.94\end{bmatrix}\).</li>
+  <li><strong>Shift by one pixel to the right:</strong> \(x'(u,v)=x(u-1,v)\), i.e. every pixel moves from column \(u-1\) to column \(u\).</li>
+  <li><strong>Size of the new data set:</strong> 60 000 images &times; (5 rotations &times; 4 shifts) = 1 200 000 labelled variants, without collecting a single new image.</li>
+</ul>
+<h3>Choosing transformations</h3>
+<p>Ask: <em>would a human still give the same label?</em> A rotated, shifted or slightly blurred "2" is still a 2, so these are safe. A vertically flipped "6" looks like a "9" and a mirrored "2" is no longer a valid digit, so these are unsafe for digit recognition. The augmentation set is therefore chosen using knowledge of the task, not blindly.</p>
+<div class="source-note">Source: CS7015 Lecture 8 (Khapra) &mdash; dataset augmentation. Flipping, scaling and cropping are standard additions not shown on the slide.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q27 -->
+  <div class="tab-content" id="tab-6">
+    <div class="question-block" data-qid="u3-q27">
+      <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u3-q27', 6)" aria-label="Mark as done"></button>
+        <h2 class="q-title">27. How does dataset augmentation improve the performance of deep learning models?</h2>
+      </div>
+      <div class="answer-body">
+<p>Augmentation improves a model mainly by <strong>reducing overfitting (variance)</strong> and by teaching it the invariances we want.</p>
+<h3>1. More (effective) training data</h3>
+<p>Overfitting happens when a flexible model has too little data. Augmentation supplies many label-preserving variants of every example, so the training loss averages over the transformations instead of memorising single images:</p>
+<div class="formula">\[\min_{\theta}\ \frac{1}{N}\sum_{i=1}^{N}\ \mathbb{E}_{T\sim\mathcal{T}}\ \ell\bigl(f(T(x_i);\theta),\,y_i\bigr)\]</div>
+<h3>2. Learns invariance</h3>
+<p>Seeing a digit rotated, shifted or blurred, all with the same label, forces \(f(T(x))\approx f(x)\). The model stops depending on position, small rotations or noise that do not matter for the label, so it generalises to unseen test images.</p>
+<h3>3. Acts as a regulariser</h3>
+<p>Adding noise \(\tilde x_i=x_i+\varepsilon_i,\ \varepsilon\sim\mathcal{N}(0,\sigma^2)\) to the inputs of a linear model \(\tilde y=\sum_i w_i\tilde x_i\) gives</p>
+<div class="formula">\[E\bigl[(\tilde y-y)^2\bigr]=E\bigl[(\hat y-y)^2\bigr]+\sigma^{2}\sum_{i=1}^{n}w_i^{2}\]</div>
+<p>which is exactly an L2 (weight-decay) penalty. So augmentation with noise is regularisation in disguise (Q23).</p>
+<div class="svg-wrap">
+<svg viewBox="0 0 560 205" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a43" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--text-muted)"/></marker></defs><text x="140" y="16" text-anchor="middle" fill="var(--text-muted)" font-size="12">without augmentation</text><line x1="30" y1="170" x2="250" y2="170" stroke="var(--text-dim)" stroke-width="1"/><line x1="30" y1="170" x2="30" y2="28" stroke="var(--text-dim)" stroke-width="1"/><path d="M30.0,59.5 L33.6,69.8 L37.2,78.9 L40.8,87.1 L44.4,94.5 L48.0,101.1 L51.6,106.9 L55.2,112.2 L58.8,116.9 L62.4,121.1 L66.0,124.9 L69.6,128.3 L73.2,131.3 L76.8,134.0 L80.4,136.4 L84.0,138.6 L87.6,140.5 L91.2,142.3 L94.8,143.8 L98.4,145.2 L102.0,146.4 L105.6,147.5 L109.2,148.5 L112.8,149.4 L116.4,150.2 L120.0,150.9 L123.6,151.6 L127.2,152.1 L130.8,152.7 L134.4,153.1 L138.0,153.5 L141.6,153.9 L145.2,154.2 L148.8,154.5 L152.4,154.8 L156.0,155.0 L159.6,155.2 L163.2,155.4 L166.8,155.6 L170.4,155.7 L174.0,155.9 L177.6,156.0 L181.2,156.1 L184.8,156.2 L188.4,156.3 L192.0,156.3 L195.6,156.4 L199.2,156.5 L202.8,156.5 L206.4,156.6 L210.0,156.6 L213.6,156.7 L217.2,156.7 L220.8,156.7 L224.4,156.8 L228.0,156.8 L231.6,156.8 L235.2,156.8 L238.8,156.8 L242.4,156.9 L246.0,156.9" fill="none" stroke="var(--accent)" stroke-width="2.3"/><path d="M30.0,60.8 L33.6,69.4 L37.2,77.0 L40.8,83.7 L44.4,89.6 L48.0,94.9 L51.6,99.5 L55.2,103.6 L58.8,107.2 L62.4,110.4 L66.0,113.1 L69.6,115.6 L73.2,117.7 L76.8,119.6 L80.4,121.2 L84.0,122.6 L87.6,123.8 L91.2,124.9 L94.8,125.8 L98.4,126.5 L102.0,127.2 L105.6,127.7 L109.2,128.2 L112.8,128.6 L116.4,128.9 L120.0,129.2 L123.6,129.4 L127.2,129.5 L130.8,129.6 L134.4,129.7 L138.0,129.8 L141.6,129.8 L145.2,129.8 L148.8,129.8 L152.4,129.8 L156.0,129.7 L159.6,129.7 L163.2,129.6 L166.8,129.5 L170.4,129.4 L174.0,129.3 L177.6,129.3 L181.2,129.2 L184.8,129.1 L188.4,129.0 L192.0,128.9 L195.6,128.8 L199.2,128.7 L202.8,128.6 L206.4,128.5 L210.0,128.4 L213.6,128.3 L217.2,128.2 L220.8,128.1 L224.4,128.0 L228.0,127.9 L231.6,127.9 L235.2,127.8 L238.8,127.7 L242.4,127.6 L246.0,127.6" fill="none" stroke="var(--important)" stroke-width="2.3"/><text x="140" y="188" text-anchor="middle" fill="var(--text-muted)" font-size="10.5">epochs</text><text x="410" y="16" text-anchor="middle" fill="var(--text-muted)" font-size="12">with augmentation</text><line x1="300" y1="170" x2="520" y2="170" stroke="var(--text-dim)" stroke-width="1"/><line x1="300" y1="170" x2="300" y2="28" stroke="var(--text-dim)" stroke-width="1"/><path d="M300.0,59.5 L303.6,69.8 L307.2,78.9 L310.8,87.1 L314.4,94.5 L318.0,101.1 L321.6,106.9 L325.2,112.2 L328.8,116.9 L332.4,121.1 L336.0,124.9 L339.6,128.3 L343.2,131.3 L346.8,134.0 L350.4,136.4 L354.0,138.6 L357.6,140.5 L361.2,142.3 L364.8,143.8 L368.4,145.2 L372.0,146.4 L375.6,147.5 L379.2,148.5 L382.8,149.4 L386.4,150.2 L390.0,150.9 L393.6,151.6 L397.2,152.1 L400.8,152.7 L404.4,153.1 L408.0,153.5 L411.6,153.9 L415.2,154.2 L418.8,154.5 L422.4,154.8 L426.0,155.0 L429.6,155.2 L433.2,155.4 L436.8,155.6 L440.4,155.7 L444.0,155.9 L447.6,156.0 L451.2,156.1 L454.8,156.2 L458.4,156.3 L462.0,156.3 L465.6,156.4 L469.2,156.5 L472.8,156.5 L476.4,156.6 L480.0,156.6 L483.6,156.7 L487.2,156.7 L490.8,156.7 L494.4,156.8 L498.0,156.8 L501.6,156.8 L505.2,156.8 L508.8,156.8 L512.4,156.9 L516.0,156.9" fill="none" stroke="var(--accent)" stroke-width="2.3"/><path d="M300.0,60.8 L303.6,70.4 L307.2,79.0 L310.8,86.7 L314.4,93.5 L318.0,99.6 L321.6,105.1 L325.2,110.0 L328.8,114.3 L332.4,118.2 L336.0,121.7 L339.6,124.8 L343.2,127.5 L346.8,130.0 L350.4,132.2 L354.0,134.2 L357.6,135.9 L361.2,137.4 L364.8,138.8 L368.4,140.1 L372.0,141.2 L375.6,142.1 L379.2,143.0 L382.8,143.8 L386.4,144.4 L390.0,145.0 L393.6,145.6 L397.2,146.1 L400.8,146.5 L404.4,146.9 L408.0,147.2 L411.6,147.5 L415.2,147.7 L418.8,148.0 L422.4,148.2 L426.0,148.3 L429.6,148.5 L433.2,148.6 L436.8,148.8 L440.4,148.9 L444.0,148.9 L447.6,149.0 L451.2,149.1 L454.8,149.1 L458.4,149.2 L462.0,149.2 L465.6,149.3 L469.2,149.3 L472.8,149.3 L476.4,149.4 L480.0,149.4 L483.6,149.4 L487.2,149.4 L490.8,149.4 L494.4,149.4 L498.0,149.4 L501.6,149.4 L505.2,149.4 L508.8,149.4 L512.4,149.4 L516.0,149.4" fill="none" stroke="var(--important)" stroke-width="2.3"/><text x="410" y="188" text-anchor="middle" fill="var(--text-muted)" font-size="10.5">epochs</text><text x="150" y="44" text-anchor="start" fill="var(--accent-hover)" font-size="10.5" font-weight="600">training error</text><text x="150" y="58" text-anchor="start" fill="var(--important)" font-size="10.5" font-weight="600">validation error</text><text x="260" y="120" text-anchor="middle" fill="var(--text-muted)" font-size="10.5">large gap = overfitting</text><text x="500" y="120" text-anchor="middle" fill="var(--text-muted)" font-size="10.5">gap shrinks</text></svg>
+</div>
+<h3>Effect and cautions</h3>
+<table>
+  <tr><th>Aspect</th><th>Effect of augmentation</th></tr>
+  <tr><td>Variance</td><td>Lower &mdash; smaller gap between training and validation error</td></tr>
+  <tr><td>Bias</td><td>Unchanged if the transformations are realistic; can increase if they are not</td></tr>
+  <tr><td>Robustness</td><td>Better on shifted, rotated, blurred or noisy inputs</td></tr>
+  <tr><td>Cost</td><td>More computation per epoch; transformations must keep the label (do not flip digits, do not over-rotate 6/9)</td></tr>
+</table>
+<h3>Derivation &mdash; input noise equals L2 penalty</h3>
+<p>Let \(\hat y=\sum_iw_ix_i\) and the noisy output \(\tilde y=\sum_iw_i(x_i+\varepsilon_i)=\hat y+\sum_iw_i\varepsilon_i\), where the \(\varepsilon_i\) are independent with \(E[\varepsilon_i]=0\), \(\mathrm{Var}(\varepsilon_i)=\sigma^2\). Then</p>
+<div class="formula">\[E\bigl[(\tilde y-y)^2\bigr]=E\bigl[(\hat y-y)^2\bigr]+2\,E\Bigl[(\hat y-y)\sum_iw_i\varepsilon_i\Bigr]+E\Bigl[\Bigl(\sum_iw_i\varepsilon_i\Bigr)^{2}\Bigr]\]</div>
+<p>The middle term is 0 because \(E[\varepsilon_i]=0\) and the noise is independent of \(\hat y-y\). In the last term the cross products vanish, leaving \(\sum_iw_i^2\,E[\varepsilon_i^2]=\sigma^2\sum_iw_i^2\). This gives the L2 form shown above: noisy training is the same as minimising the original loss plus \(\sigma^2\|w\|^2\), so the noise level \(\sigma^2\) plays the role of \(\alpha\).</p>
+<h3>Augmentation compared with other regularisers</h3>
+<table>
+  <tr><th></th><th>Acts on</th><th>Needs</th></tr>
+  <tr><td>L2 / weight decay (Q23)</td><td>the weights</td><td>one hyper-parameter \(\alpha\)</td></tr>
+  <tr><td>Early stopping (Q29)</td><td>training time</td><td>a validation set</td></tr>
+  <tr><td>Augmentation</td><td>the data</td><td>task knowledge about valid transformations</td></tr>
+</table>
+<div class="source-note">Source: CS7015 Lecture 8 (Khapra) &mdash; dataset augmentation and adding noise to the inputs. Curves are illustrative.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q28 -->
+  <div class="tab-content" id="tab-7">
+      <div class="question-block" data-qid="u3-q28">
+              <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u3-q28', 7)" aria-label="Mark as done"></button>
+        <h2 class="q-title">28. Describe the concepts of parameter sharing and tying in the context of autoencoders.</h2>
+      </div>
         <div class="answer-body">
 
           <h3>Autoencoders — Overview</h3>
@@ -341,11 +518,68 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
       </div>
     </div>
 
-    <!-- ==================== Q27 ==================== -->
-    <div class="tab-content" id="tab-6">
-      <div class="question-block">
-        <span class="q-tag important">Important — full answer</span>
-        <h2 class="q-title">27. Explain the concept of loss functions. Discuss the different types of loss functions used in deep learning.</h2>
+  <!-- Q29 -->
+  <div class="tab-content" id="tab-8">
+    <div class="question-block" data-qid="u3-q29">
+      <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u3-q29', 8)" aria-label="Mark as done"></button>
+        <h2 class="q-title">29. Discuss the concept of early stopping as a regularization technique in deep learning.</h2>
+      </div>
+      <div class="answer-body">
+<p>As training proceeds, <strong>training error keeps falling</strong>, but beyond some point <strong>validation error starts to rise</strong> because the model begins to overfit. <strong>Early stopping</strong> stops training near the minimum of the validation error instead of running until the training error reaches 0.</p>
+<div class="svg-wrap">
+<svg viewBox="0 0 480 225" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a45" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--text-muted)"/></marker></defs><text x="240" y="16" text-anchor="middle" fill="var(--text-muted)" font-size="12">training vs validation error</text><line x1="50" y1="190" x2="430" y2="190" stroke="var(--text-dim)" stroke-width="1"/><line x1="50" y1="190" x2="50" y2="35" stroke="var(--text-dim)" stroke-width="1"/><path d="M50.0,55.0 L56.3,66.1 L62.7,76.2 L69.0,85.4 L75.3,93.9 L81.7,101.6 L88.0,108.6 L94.3,115.0 L100.7,120.9 L107.0,126.2 L113.3,131.1 L119.7,135.6 L126.0,139.7 L132.3,143.4 L138.7,146.8 L145.0,149.9 L151.3,152.7 L157.7,155.3 L164.0,157.7 L170.3,159.8 L176.7,161.8 L183.0,163.6 L189.3,165.2 L195.7,166.7 L202.0,168.1 L208.3,169.4 L214.7,170.5 L221.0,171.5 L227.3,172.5 L233.7,173.4 L240.0,174.2 L246.3,174.9 L252.7,175.5 L259.0,176.2 L265.3,176.7 L271.7,177.2 L278.0,177.7 L284.3,178.1 L290.7,178.5 L297.0,178.8 L303.3,179.1 L309.7,179.4 L316.0,179.7 L322.3,179.9 L328.7,180.2 L335.0,180.4 L341.3,180.6 L347.7,180.7 L354.0,180.9 L360.3,181.0 L366.7,181.1 L373.0,181.3 L379.3,181.4 L385.7,181.5 L392.0,181.6 L398.3,181.6 L404.7,181.7 L411.0,181.8 L417.3,181.8 L423.7,181.9 L430.0,182.0" fill="none" stroke="var(--accent)" stroke-width="2.3"/><path d="M50.0,61.0 L56.3,72.0 L62.7,81.9 L69.0,90.8 L75.3,98.7 L81.7,105.8 L88.0,112.1 L94.3,117.8 L100.7,122.8 L107.0,127.4 L113.3,131.4 L119.7,135.1 L126.0,138.3 L132.3,141.2 L138.7,143.8 L145.0,146.2 L151.3,148.3 L157.7,150.1 L164.0,151.8 L170.3,153.3 L176.7,154.6 L183.0,155.8 L189.3,156.9 L195.7,157.8 L202.0,158.7 L208.3,159.5 L214.7,160.2 L221.0,160.1 L227.3,159.8 L233.7,159.4 L240.0,158.9 L246.3,158.4 L252.7,157.7 L259.0,157.0 L265.3,156.2 L271.7,155.4 L278.0,154.5 L284.3,153.6 L290.7,152.7 L297.0,151.7 L303.3,150.7 L309.7,149.7 L316.0,148.6 L322.3,147.6 L328.7,146.5 L335.0,145.3 L341.3,144.2 L347.7,143.1 L354.0,141.9 L360.3,140.7 L366.7,139.5 L373.0,138.3 L379.3,137.1 L385.7,135.8 L392.0,134.6 L398.3,133.3 L404.7,132.1 L411.0,130.8 L417.3,129.5 L423.7,128.2 L430.0,126.9" fill="none" stroke="var(--important)" stroke-width="2.3"/><line x1="214.66666666666666" y1="190" x2="214.66666666666666" y2="154.1580101808265" stroke="var(--success)" stroke-width="1" stroke-dasharray="4 3"/><line x1="278.0" y1="190" x2="278.0" y2="148.54222949047931" stroke="var(--warning)" stroke-width="1" stroke-dasharray="4 3"/><circle cx="214.66666666666666" cy="160.1580101808265" r="5" fill="var(--success)" stroke="var(--success)" stroke-width="1"/><text x="208.66666666666666" y="206" text-anchor="end" fill="var(--success)" font-size="11" font-weight="600">k − p</text><text x="284.0" y="206" text-anchor="start" fill="var(--warning)" font-size="11" font-weight="600">k</text><text x="206.66666666666666" y="50" text-anchor="end" fill="var(--success)" font-size="10.5">best validation error:</text><text x="206.66666666666666" y="64" text-anchor="end" fill="var(--success)" font-size="10.5">return this model</text><text x="426" y="167.95470540547586" text-anchor="end" fill="var(--accent-hover)" font-size="10.5" font-weight="600">training error</text><text x="426" y="118.91663663970762" text-anchor="end" fill="var(--important)" font-size="10.5" font-weight="600">validation error</text><text x="240.0" y="222" text-anchor="middle" fill="var(--text-muted)" font-size="10.5">epochs</text></svg>
+</div>
+<h3>Algorithm (with patience \(p\))</h3>
+<pre><code>best_error = ∞ ;  best_model = None ;  wait = 0
+for step k = 1, 2, ...:
+    train for one epoch
+    val_error = validation error of the current model
+    if val_error < best_error:
+        best_error = val_error ;  best_model = copy of model ;  wait = 0
+    else:
+        wait = wait + 1
+        if wait == p:                  # no improvement for p steps
+            stop training
+return best_model                      # model from step k − p</code></pre>
+<p>Patience \(p\) avoids stopping on a single noisy rise. Early stopping can be combined with other regularisers such as L2.</p>
+<h3>Why it is a regulariser</h3>
+<p>Start from \(w_0=0\) and let \(H=Q\Lambda Q^{T}\) be the Hessian at the optimum \(w^{*}\). After \(t\) gradient-descent steps,</p>
+<div class="formula">\[w_t=Q\bigl[I-(I-\eta\Lambda)^{t}\bigr]Q^{T}w^{*}\]</div>
+<p>This equals the L2 solution \(\tilde w=Q(\Lambda+\alpha I)^{-1}\Lambda Q^{T}w^{*}\) when \((I-\eta\Lambda)^{t}=(\Lambda+\alpha I)^{-1}\alpha\). So <strong>the number of steps \(t\) plays the role of \(1/\alpha\)</strong>: stopping early (small \(t\)) behaves like strong weight decay. Also \(|w_{t+1}-w_0|\le\eta t|\tau|\) (\(\tau\) bounds the gradient), so weights along unimportant, small-gradient directions cannot grow far within \(t\) steps.</p>
+<table>
+  <tr><th>Advantages</th><th>Drawbacks</th></tr>
+  <tr><td>Simple, no change to the model or loss; saves training time</td><td>Needs a held-out validation set</td></tr>
+  <tr><td>Works with any model; combines with L2 and dropout</td><td>Stops before the training loss is fully minimised</td></tr>
+</table>
+<h3>Worked example &mdash; patience \(p=3\)</h3>
+<table>
+  <tr><th>Epoch</th><th>Val. error</th><th>Best so far</th><th>wait</th><th>Action</th></tr>
+  <tr><td>1</td><td>0.50</td><td>0.50</td><td>0</td><td>save model</td></tr>
+  <tr><td>2</td><td>0.40</td><td>0.40</td><td>0</td><td>save model</td></tr>
+  <tr><td>3</td><td>0.35</td><td>0.35</td><td>0</td><td>save model</td></tr>
+  <tr><td>4</td><td>0.36</td><td>0.35</td><td>1</td><td>no improvement</td></tr>
+  <tr><td>5</td><td>0.37</td><td>0.35</td><td>2</td><td>no improvement</td></tr>
+  <tr><td>6</td><td>0.38</td><td>0.35</td><td>3</td><td>wait = p: <strong>stop</strong></td></tr>
+</table>
+<p>The model returned is the one saved at epoch 3, not the last one trained. If epoch 4 had gone back down below 0.35, <code>wait</code> would reset to 0 and training would continue.</p>
+<h3>Reading the curves</h3>
+<ul>
+  <li>Training error decreases at every epoch, so it cannot tell us when to stop; only the held-out validation error can.</li>
+  <li>The gap between the curves is the generalisation gap &mdash; early stopping stops training before this gap becomes large.</li>
+</ul>
+<div class="source-note">Source: CS7015 Lecture 8 (Khapra) &mdash; early stopping. Curves are illustrative.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q30 -->
+  <div class="tab-content" id="tab-9">
+      <div class="question-block" data-qid="u3-q30">
+              <div class="q-header">
+        <button class="q-check" onclick="toggleDone('u3-q30', 9)" aria-label="Mark as done"></button>
+        <h2 class="q-title">30. Explain the concept of loss functions. Discuss the different types of loss functions used in deep learning.</h2>
+      </div>
         <div class="answer-body">
 
           <h3>What is a Loss Function?</h3>
@@ -413,6 +647,22 @@ function showTab(i) {
     btn.classList.toggle('active', idx === i);
   });
 }
+function toggleDone(qid, tabIdx) {
+  const block = document.querySelector('.question-block[data-qid="' + qid + '"]');
+  const isDone = block.classList.toggle('q-done');
+  const btn = document.querySelectorAll('.tab-btn')[tabIdx];
+  btn.classList.toggle('done', isDone);
+  try { localStorage.setItem('done-' + qid, isDone ? '1' : ''); } catch (e) {}
+}
+document.querySelectorAll('.question-block').forEach((block, idx) => {
+  let saved = false;
+  try { saved = !!localStorage.getItem('done-' + block.dataset.qid); } catch (e) {}
+  if (saved) {
+    block.classList.add('q-done');
+    const btn = document.querySelectorAll('.tab-btn')[idx];
+    if (btn) btn.classList.add('done');
+  }
+});
 showTab(0);
 </script>
 </body>
