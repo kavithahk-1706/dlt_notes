@@ -38,6 +38,7 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
               <div class="q-header">
         <button class="q-check" onclick="toggleDone('u5-q41', 0)" aria-label="Mark as done"></button>
         <h2 class="q-title">41. Explain the general architecture of a Convolutional Neural Network (CNN). Describe the function of each layer with a neat diagram.</h2>
+        <button class="q-skip" onclick="toggleSkip('u5-q41', 0)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
         <div class="answer-body">
 
@@ -115,6 +116,7 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
       <div class="q-header">
         <button class="q-check" onclick="toggleDone('u5-q42', 1)" aria-label="Mark as done"></button>
         <h2 class="q-title">42. Explain the different types of pooling operations in CNNs. Discuss their roles in feature extraction and dimensionality reduction.</h2>
+        <button class="q-skip" onclick="toggleSkip('u5-q42', 1)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
 <p>A <strong>pooling layer</strong> slides a small window (filter) over each feature map and replaces every window by a single summary value. It has <strong>no learnable weights</strong>; it only down-samples. It is usually placed after a convolution + ReLU block (Q41).</p>
@@ -151,6 +153,7 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
               <div class="q-header">
         <button class="q-check" onclick="toggleDone('u5-q43', 2)" aria-label="Mark as done"></button>
         <h2 class="q-title">43. Explain the concept of Guided Backpropagation. Discuss its role in visualizing Convolutional Neural Networks.</h2>
+        <button class="q-skip" onclick="toggleSkip('u5-q43', 2)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
         <div class="answer-body">
 
@@ -223,6 +226,7 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
       <div class="q-header">
         <button class="q-check" onclick="toggleDone('u5-q44', 3)" aria-label="Mark as done"></button>
         <h2 class="q-title">44. Explain Long Short-Term Memory (LSTM) and Gated Recurrent Unit (GRU). How do they overcome the limitations of traditional RNNs?</h2>
+        <button class="q-skip" onclick="toggleSkip('u5-q44', 3)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
 <h3>Limitation of a plain RNN</h3>
@@ -265,6 +269,7 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
       <div class="q-header">
         <button class="q-check" onclick="toggleDone('u5-q45', 4)" aria-label="Mark as done"></button>
         <h2 class="q-title">45. How can you perform image classification using Keras? Describe the basic steps involved.</h2>
+        <button class="q-skip" onclick="toggleSkip('u5-q45', 4)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
 <p>Image classification means assigning an image one label out of \(K\) classes. With Keras (TensorFlow) a CNN classifier is built in six steps. Example: MNIST digits (28&times;28 grey-scale, \(K=10\)).</p>
@@ -338,6 +343,7 @@ pred = model.predict(x_test[:1]).argmax(axis=1)</code></pre>
               <div class="q-header">
         <button class="q-check" onclick="toggleDone('u5-q46', 5)" aria-label="Mark as done"></button>
         <h2 class="q-title">46. Explain the concept of Recurrent Neural Networks (RNNs). Discuss the role of Backpropagation Through Time (BPTT) in training RNNs.</h2>
+        <button class="q-skip" onclick="toggleSkip('u5-q46', 5)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
         <div class="answer-body">
 
@@ -428,6 +434,7 @@ pred = model.predict(x_test[:1]).argmax(axis=1)</code></pre>
       <div class="q-header">
         <button class="q-check" onclick="toggleDone('u5-q47', 6)" aria-label="Mark as done"></button>
         <h2 class="q-title">47. Describe the attention mechanism in deep learning. How does it enhance the performance of sequence-to-sequence models on long sequences?</h2>
+        <button class="q-skip" onclick="toggleSkip('u5-q47', 6)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
 <h3>Plain sequence-to-sequence (encoder&ndash;decoder)</h3>
@@ -462,6 +469,7 @@ pred = model.predict(x_test[:1]).argmax(axis=1)</code></pre>
               <div class="q-header">
         <button class="q-check" onclick="toggleDone('u5-q48', 7)" aria-label="Mark as done"></button>
         <h2 class="q-title">48. Explore the GoogLeNet architecture and elucidate some of its significant contributions to the field of deep learning.</h2>
+        <button class="q-skip" onclick="toggleSkip('u5-q48', 7)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
         <div class="answer-body">
 
@@ -550,6 +558,7 @@ pred = model.predict(x_test[:1]).argmax(axis=1)</code></pre>
               <div class="q-header">
         <button class="q-check" onclick="toggleDone('u5-q49', 8)" aria-label="Mark as done"></button>
         <h2 class="q-title">49. Explain the Transformer architecture and Large Language Models (LLMs). Discuss their applications in deep learning.</h2>
+        <button class="q-skip" onclick="toggleSkip('u5-q49', 8)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
         <div class="answer-body">
 
@@ -612,6 +621,7 @@ pred = model.predict(x_test[:1]).argmax(axis=1)</code></pre>
       <div class="q-header">
         <button class="q-check" onclick="toggleDone('u5-q50', 9)" aria-label="Mark as done"></button>
         <h2 class="q-title">50. Discuss how deep learning pipelines can be deployed in an enterprise setting. What are the key steps involved?</h2>
+        <button class="q-skip" onclick="toggleSkip('u5-q50', 9)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
 <p>Deploying a deep-learning model in an enterprise is not just "train and ship": the model is one component of a <strong>pipeline</strong> that must be reproducible, scalable, secure and monitored. The practice of automating this is called <strong>MLOps</strong>.</p>
@@ -671,6 +681,31 @@ document.querySelectorAll('.question-block').forEach((block, idx) => {
     if (btn) btn.classList.add('done');
   }
 });
+function toggleSkip(qid, tabIdx) {
+  const blocks = document.querySelectorAll('.question-block');
+  const btns = document.querySelectorAll('.tab-btn');
+  const target = document.querySelector('.question-block[data-qid="' + qid + '"]');
+  const wasSkipped = target.classList.contains('q-skipped');
+  blocks.forEach((b, i) => { b.classList.remove('q-skipped'); if (btns[i]) btns[i].classList.remove('skipped'); });
+  try { localStorage.removeItem('skip:' + location.pathname); } catch (e) {}
+  if (!wasSkipped) {
+    target.classList.add('q-skipped');
+    btns[tabIdx].classList.add('skipped');
+    try { localStorage.setItem('skip:' + location.pathname, qid); } catch (e) {}
+  }
+}
+(function () {
+  let saved = null;
+  try { saved = localStorage.getItem('skip:' + location.pathname); } catch (e) {}
+  if (!saved) return;
+  document.querySelectorAll('.question-block').forEach((b, i) => {
+    if (b.dataset.qid === saved) {
+      b.classList.add('q-skipped');
+      const btn = document.querySelectorAll('.tab-btn')[i];
+      if (btn) btn.classList.add('skipped');
+    }
+  });
+})();
 showTab(0);
 </script>
 </body>

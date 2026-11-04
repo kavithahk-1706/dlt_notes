@@ -38,6 +38,7 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
       <div class="q-header">
         <button class="q-check" onclick="toggleDone('u1-q1', 0)" aria-label="Mark as done"></button>
         <h2 class="q-title">1. Define Deep Learning. Explain its uses and applications.</h2>
+        <button class="q-skip" onclick="toggleSkip('u1-q1', 0)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
 <p><strong>Deep Learning (DL)</strong> is the branch of machine learning that uses <strong>neural networks with many layers</strong> to learn a function \(\hat{y}=f(x)\) directly from data. Each layer transforms the output of the layer below, so the network discovers useful features itself instead of relying on hand-crafted ones.</p>
@@ -99,6 +100,7 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
             <div class="q-header">
         <button class="q-check" onclick="toggleDone('u1-q2', 1)" aria-label="Mark as done"></button>
         <h2 class="q-title">2. What is a perceptron, and how does the perceptron learning algorithm work? Explain with an example.</h2>
+        <button class="q-skip" onclick="toggleSkip('u1-q2', 1)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
         <p>The <strong>perceptron</strong> was proposed by Frank Rosenblatt (1958) as a more general computational model than the McCulloch–Pitts neuron. Unlike the MP neuron, a perceptron assigns <strong>numerical weights</strong> to each input, and these weights can be <strong>learned</strong> from data rather than hand-coded. Inputs are also no longer restricted to boolean values — real-valued inputs are allowed.</p>
@@ -216,6 +218,7 @@ while not converged:
       <div class="q-header">
         <button class="q-check" onclick="toggleDone('u1-q3', 2)" aria-label="Mark as done"></button>
         <h2 class="q-title">3. Discuss single layer perceptrons in detail.</h2>
+        <button class="q-skip" onclick="toggleSkip('u1-q3', 2)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
 <p>A <strong>single layer perceptron (SLP)</strong> has an input layer connected directly to one output perceptron &mdash; there is <em>no hidden layer</em>. Inputs are real-valued, the weights and the threshold are learnable. Writing the bias as \(x_0=1\) and \(w_0=-\theta\):</p>
@@ -262,6 +265,7 @@ if x ∈ N and w·x ≥ 0 :  w = w − x</code></pre>
       <div class="q-header">
         <button class="q-check" onclick="toggleDone('u1-q4', 3)" aria-label="Mark as done"></button>
         <h2 class="q-title">4. What are multilayer perceptrons (MLPs), and how do they differ from single-layer perceptrons?</h2>
+        <button class="q-skip" onclick="toggleSkip('u1-q4', 3)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
 <p>A <strong>multilayer perceptron (MLP)</strong> is a feedforward network of perceptrons with an <strong>input layer, one or more hidden layers and an output layer</strong>. Every unit in a layer feeds the units of the next layer; there are no connections inside a layer or backwards.</p>
@@ -304,6 +308,7 @@ if x ∈ N and w·x ≥ 0 :  w = w − x</code></pre>
       <div class="q-header">
         <button class="q-check" onclick="toggleDone('u1-q5', 4)" aria-label="Mark as done"></button>
         <h2 class="q-title">5. Explain the role of sigmoid neurons in feed forward neural networks.</h2>
+        <button class="q-skip" onclick="toggleSkip('u1-q5', 4)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
 <h3>Why the perceptron is not enough</h3>
@@ -351,6 +356,7 @@ if x ∈ N and w·x ≥ 0 :  w = w − x</code></pre>
             <div class="q-header">
         <button class="q-check" onclick="toggleDone('u1-q6', 5)" aria-label="Mark as done"></button>
         <h2 class="q-title">6. What is back propagation, and how is it used to train feed forward neural networks?</h2>
+        <button class="q-skip" onclick="toggleSkip('u1-q6', 5)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
         <p><strong>Backpropagation</strong> is the algorithm used to compute the gradient of the loss function \(L(\theta)\) with respect to every weight and bias in a feedforward network, so that gradient descent can update the parameters.</p>
@@ -418,6 +424,7 @@ while t < max_iterations:
             <div class="q-header">
         <button class="q-check" onclick="toggleDone('u1-q7', 6)" aria-label="Mark as done"></button>
         <h2 class="q-title">7. Apply back propagation algorithm for a Multi-layer perceptron, assuming actual output y = 0.5 and learning rate α = 1.</h2>
+        <button class="q-skip" onclick="toggleSkip('u1-q7', 6)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
         <p><strong>Given:</strong> \(x_1=0.35,\ x_2=0.9\); weights \(W_{13}=0.1,\ W_{14}=0.4,\ W_{23}=0.8,\ W_{24}=0.6,\ W_{35}=0.3,\ W_{45}=0.9\); sigmoid activation; target \(y=0.5\); learning rate \(\alpha=1\).</p>
@@ -454,6 +461,7 @@ while t < max_iterations:
       <div class="q-header">
         <button class="q-check" onclick="toggleDone('u1-q8', 7)" aria-label="Mark as done"></button>
         <h2 class="q-title">8. Consider a multilayer feed-forward neural network (2 inputs, hidden units 3 and 4, output unit 5), learning rate 0.5, with the initial weights and biases below. Train the network for the training tuples (1, 1, 0) and (0, 1, 1), where the last number is the target output. Show weight and bias updates using the back-propagation algorithm. Assume sigmoid activation throughout.</h2>
+        <button class="q-skip" onclick="toggleSkip('u1-q8', 7)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
 <p><strong>Given:</strong> sigmoid units everywhere, learning rate \(\alpha=0.5\), training tuples \((x_1,x_2,T)=(1,1,0)\) and \((0,1,1)\). Initial values:</p>
@@ -483,6 +491,7 @@ while t < max_iterations:
       <div class="q-header">
         <button class="q-check" onclick="toggleDone('u1-q9', 8)" aria-label="Mark as done"></button>
         <h2 class="q-title">9. Write the differences between Feed Forward and Feed Backward Neural networks.</h2>
+        <button class="q-skip" onclick="toggleSkip('u1-q9', 8)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
 <p><em>Note:</em> "feed backward" here means <strong>feedback (recurrent)</strong> networks. Backpropagation is a <em>training procedure</em> that runs on a feedforward network; it is not a separate network type.</p>
@@ -524,6 +533,7 @@ while t < max_iterations:
             <div class="q-header">
         <button class="q-check" onclick="toggleDone('u1-q10', 9)" aria-label="Mark as done"></button>
         <h2 class="q-title">10. Write a python code for backward propagation in a neural network.</h2>
+        <button class="q-skip" onclick="toggleSkip('u1-q10', 9)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
         <pre><code>import numpy as np
@@ -606,6 +616,31 @@ document.querySelectorAll('.question-block').forEach((block, idx) => {
     if (btn) btn.classList.add('done');
   }
 });
+function toggleSkip(qid, tabIdx) {
+  const blocks = document.querySelectorAll('.question-block');
+  const btns = document.querySelectorAll('.tab-btn');
+  const target = document.querySelector('.question-block[data-qid="' + qid + '"]');
+  const wasSkipped = target.classList.contains('q-skipped');
+  blocks.forEach((b, i) => { b.classList.remove('q-skipped'); if (btns[i]) btns[i].classList.remove('skipped'); });
+  try { localStorage.removeItem('skip:' + location.pathname); } catch (e) {}
+  if (!wasSkipped) {
+    target.classList.add('q-skipped');
+    btns[tabIdx].classList.add('skipped');
+    try { localStorage.setItem('skip:' + location.pathname, qid); } catch (e) {}
+  }
+}
+(function () {
+  let saved = null;
+  try { saved = localStorage.getItem('skip:' + location.pathname); } catch (e) {}
+  if (!saved) return;
+  document.querySelectorAll('.question-block').forEach((b, i) => {
+    if (b.dataset.qid === saved) {
+      b.classList.add('q-skipped');
+      const btn = document.querySelectorAll('.tab-btn')[i];
+      if (btn) btn.classList.add('skipped');
+    }
+  });
+})();
 showTab(0);
 </script>
 </body>

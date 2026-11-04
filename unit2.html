@@ -38,6 +38,7 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
       <div class="q-header">
         <button class="q-check" onclick="toggleDone('u2-q11', 0)" aria-label="Mark as done"></button>
         <h2 class="q-title">11. Explain in detail about the concept of gradient based learning.</h2>
+        <button class="q-skip" onclick="toggleSkip('u2-q11', 0)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
 <p>Training a network means finding \(\theta=[w,b]\) that minimises a loss \(L(\theta)\). Trying values by guesswork does not scale beyond a couple of parameters, so we need a <strong>systematic way of moving through the error surface</strong>. <strong>Gradient-based learning</strong> does this: at every step, use the derivative of \(L\) to decide in which direction to move \(\theta\).</p>
@@ -89,6 +90,7 @@ while t < max_iterations:
             <div class="q-header">
         <button class="q-check" onclick="toggleDone('u2-q12', 1)" aria-label="Mark as done"></button>
         <h2 class="q-title">12. How does Momentum Based Gradient Descent work and how is it different from other optimization algorithms?</h2>
+        <button class="q-skip" onclick="toggleSkip('u2-q12', 1)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
         <p><strong>Motivation:</strong> vanilla gradient descent is slow in regions of gentle slope, since its update size is directly proportional to the (small) local gradient. Momentum-based gradient descent addresses this by accumulating a running history of past gradients: if the algorithm has been repeatedly instructed to move in a similar direction, it should take progressively larger steps in that direction, analogous to a ball gathering speed as it rolls downhill.</p>
@@ -150,6 +152,7 @@ while t < max_iterations:
       <div class="q-header">
         <button class="q-check" onclick="toggleDone('u2-q13', 2)" aria-label="Mark as done"></button>
         <h2 class="q-title">13. Write a python code for Batch Gradient Descent and Mini Batch Gradient Descent.</h2>
+        <button class="q-skip" onclick="toggleSkip('u2-q13', 2)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
 <p>Both methods use the same update \(\theta\leftarrow\theta-\eta\,\nabla L\); they differ only in <strong>how many points are used to estimate the gradient</strong>. For a sigmoid neuron with squared error, the gradient on one point is \((f(x)-y)\,f(x)(1-f(x))\,x\).</p>
@@ -220,6 +223,7 @@ mini-batch loss = 0.0001 predictions = [0 1 1 1]</code></pre>
             <div class="q-header">
         <button class="q-check" onclick="toggleDone('u2-q14', 3)" aria-label="Mark as done"></button>
         <h2 class="q-title">14. How does basis transformation using principal component analysis (PCA) help in reducing the dimensionality of data in deep learning?</h2>
+        <button class="q-skip" onclick="toggleSkip('u2-q14', 3)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
         <h3>What a basis is, and why it matters here</h3>
@@ -293,6 +297,7 @@ mini-batch loss = 0.0001 predictions = [0 1 1 1]</code></pre>
             <div class="q-header">
         <button class="q-check" onclick="toggleDone('u2-q15', 4)" aria-label="Mark as done"></button>
         <h2 class="q-title">15. Explain the Adam optimisation algorithm in detail.</h2>
+        <button class="q-skip" onclick="toggleSkip('u2-q15', 4)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
         <h3>Lineage — the problem Adam solves</h3>
@@ -363,6 +368,7 @@ for t in range(1, max_iterations + 1):
             <div class="q-header">
         <button class="q-check" onclick="toggleDone('u2-q16', 5)" aria-label="Mark as done"></button>
         <h2 class="q-title">16. How do the various optimization algorithms (GD, momentum-based GD, NAG, AdaGrad, RMSProp, Adam) impact the convergence rate?</h2>
+        <button class="q-skip" onclick="toggleSkip('u2-q16', 5)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
         <p><strong>Vanilla Gradient Descent:</strong> \(w_{t+1} = w_t - \eta\nabla w_t\). Convergence is slowest among all the methods here, since the update size is directly proportional to the local gradient — on gentle slopes and in narrow ravines, updates become very small and progress stalls badly.</p>
@@ -399,6 +405,7 @@ for t in range(1, max_iterations + 1):
       <div class="q-header">
         <button class="q-check" onclick="toggleDone('u2-q17', 6)" aria-label="Mark as done"></button>
         <h2 class="q-title">17. Write about RMSprop optimization algorithm in detail.</h2>
+        <button class="q-skip" onclick="toggleSkip('u2-q17', 6)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
 <h3>Motivation</h3>
@@ -442,6 +449,7 @@ for t = 1, 2, ...:
             <div class="q-header">
         <button class="q-check" onclick="toggleDone('u2-q18', 7)" aria-label="Mark as done"></button>
         <h2 class="q-title">18. Explain the concept of singular value decomposition (SVD) and how it is used in deep learning, with example.</h2>
+        <button class="q-skip" onclick="toggleSkip('u2-q18', 7)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
         <p><strong>Problem SVD solves:</strong> eigenvectors are only defined for square matrices, but most real data matrices \(A \in \mathbb{R}^{m\times n}\) are rectangular. SVD generalizes the eigen-decomposition idea to any matrix, regardless of shape.</p>
@@ -523,6 +531,7 @@ for t = 1, 2, ...:
       <div class="q-header">
         <button class="q-check" onclick="toggleDone('u2-q19', 8)" aria-label="Mark as done"></button>
         <h2 class="q-title">19. What is the difference between Stochastic Gradient Descent, Batch Gradient Descent and Mini Batch Gradient Descent?</h2>
+        <button class="q-skip" onclick="toggleSkip('u2-q19', 8)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
 <p>All three minimise the same loss with \(\theta\leftarrow\theta-\eta\,g\); they differ in <strong>how much data is used to compute the gradient \(g\)</strong>. One <em>epoch</em> is one pass over all \(N\) training points.</p>
@@ -562,6 +571,7 @@ for t = 1, 2, ...:
       <div class="q-header">
         <button class="q-check" onclick="toggleDone('u2-q20', 9)" aria-label="Mark as done"></button>
         <h2 class="q-title">20. Discuss how Principal Component Analysis (PCA) and Singular Value Decomposition (SVD) contribute to feature extraction and computational efficiency in deep learning. Compare their advantages with suitable examples.</h2>
+        <button class="q-skip" onclick="toggleSkip('u2-q20', 9)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
 <p>Both PCA and SVD find a new orthonormal basis in which most of the data's variance sits in a few directions. Keeping only those directions gives a smaller, less redundant representation of the data.</p>
@@ -623,6 +633,31 @@ document.querySelectorAll('.question-block').forEach((block, idx) => {
     if (btn) btn.classList.add('done');
   }
 });
+function toggleSkip(qid, tabIdx) {
+  const blocks = document.querySelectorAll('.question-block');
+  const btns = document.querySelectorAll('.tab-btn');
+  const target = document.querySelector('.question-block[data-qid="' + qid + '"]');
+  const wasSkipped = target.classList.contains('q-skipped');
+  blocks.forEach((b, i) => { b.classList.remove('q-skipped'); if (btns[i]) btns[i].classList.remove('skipped'); });
+  try { localStorage.removeItem('skip:' + location.pathname); } catch (e) {}
+  if (!wasSkipped) {
+    target.classList.add('q-skipped');
+    btns[tabIdx].classList.add('skipped');
+    try { localStorage.setItem('skip:' + location.pathname, qid); } catch (e) {}
+  }
+}
+(function () {
+  let saved = null;
+  try { saved = localStorage.getItem('skip:' + location.pathname); } catch (e) {}
+  if (!saved) return;
+  document.querySelectorAll('.question-block').forEach((b, i) => {
+    if (b.dataset.qid === saved) {
+      b.classList.add('q-skipped');
+      const btn = document.querySelectorAll('.tab-btn')[i];
+      if (btn) btn.classList.add('skipped');
+    }
+  });
+})();
 showTab(0);
 </script>
 </body>

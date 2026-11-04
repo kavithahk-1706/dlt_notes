@@ -39,6 +39,7 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
       <div class="q-header">
         <button class="q-check" onclick="toggleDone('u4-q31', 0)" aria-label="Mark as done"></button>
         <h2 class="q-title">31. Explain the concept of Greedy Layer-wise Pre-training. Discuss its role in training deep neural networks.</h2>
+        <button class="q-skip" onclick="toggleSkip('u4-q31', 0)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
 <p><strong>Greedy layer-wise pre-training</strong> trains a deep network <strong>one layer at a time with an unsupervised objective</strong>, and only then fine-tunes the whole network with labels. It is "greedy" because each layer is optimised on its own instead of jointly.</p>
@@ -83,6 +84,7 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
               <div class="q-header">
         <button class="q-check" onclick="toggleDone('u4-q32', 1)" aria-label="Mark as done"></button>
         <h2 class="q-title">32. Explain the concept of activation functions. Discuss the commonly used activation functions and their advantages.</h2>
+        <button class="q-skip" onclick="toggleSkip('u4-q32', 1)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
         <div class="answer-body">
 
@@ -178,6 +180,7 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
       <div class="q-header">
         <button class="q-check" onclick="toggleDone('u4-q33', 2)" aria-label="Mark as done"></button>
         <h2 class="q-title">33. Differentiate between linear and non-linear activation functions. Why are non-linear activation functions preferred in deep learning?</h2>
+        <button class="q-skip" onclick="toggleSkip('u4-q33', 2)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
 <p>An <strong>activation function</strong> \(g\) turns the pre-activation \(a_i=b_i+W_ih_{i-1}\) into the layer output \(h_i=g(a_i)\). It is either linear or non-linear.</p>
@@ -234,6 +237,7 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
               <div class="q-header">
         <button class="q-check" onclick="toggleDone('u4-q34', 3)" aria-label="Mark as done"></button>
         <h2 class="q-title">34. What is weight initialization? Discuss the commonly used weight initialization methods in deep learning.</h2>
+        <button class="q-skip" onclick="toggleSkip('u4-q34', 3)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
         <div class="answer-body">
 
@@ -285,6 +289,7 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
       <div class="q-header">
         <button class="q-check" onclick="toggleDone('u4-q35', 4)" aria-label="Mark as done"></button>
         <h2 class="q-title">35. Why is weight initialization important in deep learning? Explain the problems caused by poor weight initialization.</h2>
+        <button class="q-skip" onclick="toggleSkip('u4-q35', 4)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
 <p>Training a deep network is a game of gradients: the gradient of a weight is proportional to the <strong>input</strong> that weight sees. If the initial weights are badly chosen, the signal and the gradients either die or blow up as they pass through the layers, and learning stalls.</p>
@@ -331,6 +336,7 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
       <div class="q-header">
         <button class="q-check" onclick="toggleDone('u4-q36', 5)" aria-label="Mark as done"></button>
         <h2 class="q-title">36. Explain Batch Normalization. What are its advantages in training deep neural networks?</h2>
+        <button class="q-skip" onclick="toggleSkip('u4-q36', 5)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
 <p><strong>Batch Normalisation (BN)</strong> keeps the pre-activations of every layer well-behaved during training by standardising them, so that a layer's input does not keep shifting as the weights below it change. It was introduced to make very deep networks easier to train.</p>
@@ -372,6 +378,7 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
               <div class="q-header">
         <button class="q-check" onclick="toggleDone('u4-q37', 6)" aria-label="Mark as done"></button>
         <h2 class="q-title">37. What is Word2Vec? Describe how Word2Vec generates word embeddings.</h2>
+        <button class="q-skip" onclick="toggleSkip('u4-q37', 6)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
         <div class="answer-body">
 
@@ -453,6 +460,7 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
       <div class="q-header">
         <button class="q-check" onclick="toggleDone('u4-q38', 7)" aria-label="Mark as done"></button>
         <h2 class="q-title">38. What is object detection in computer vision? Discuss its applications.</h2>
+        <button class="q-skip" onclick="toggleSkip('u4-q38', 7)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
 <p><strong>Object detection</strong> is the task of finding <em>what</em> objects are in an image <em>and where</em> they are. For every object of interest, the model outputs a <strong>class label</strong> together with a <strong>bounding box</strong>, and an image can contain any number of objects of different classes.</p>
@@ -499,6 +507,7 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
               <div class="q-header">
         <button class="q-check" onclick="toggleDone('u4-q39', 8)" aria-label="Mark as done"></button>
         <h2 class="q-title">39. Describe the process of object detection in images and videos using deep learning.</h2>
+        <button class="q-skip" onclick="toggleSkip('u4-q39', 8)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
         <div class="answer-body">
 
@@ -566,6 +575,7 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
               <div class="q-header">
         <button class="q-check" onclick="toggleDone('u4-q40', 9)" aria-label="Mark as done"></button>
         <h2 class="q-title">40. How is user history used to generate product or content recommendations? Discuss its applications.</h2>
+        <button class="q-skip" onclick="toggleSkip('u4-q40', 9)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
         <div class="answer-body">
 
@@ -664,6 +674,31 @@ document.querySelectorAll('.question-block').forEach((block, idx) => {
     if (btn) btn.classList.add('done');
   }
 });
+function toggleSkip(qid, tabIdx) {
+  const blocks = document.querySelectorAll('.question-block');
+  const btns = document.querySelectorAll('.tab-btn');
+  const target = document.querySelector('.question-block[data-qid="' + qid + '"]');
+  const wasSkipped = target.classList.contains('q-skipped');
+  blocks.forEach((b, i) => { b.classList.remove('q-skipped'); if (btns[i]) btns[i].classList.remove('skipped'); });
+  try { localStorage.removeItem('skip:' + location.pathname); } catch (e) {}
+  if (!wasSkipped) {
+    target.classList.add('q-skipped');
+    btns[tabIdx].classList.add('skipped');
+    try { localStorage.setItem('skip:' + location.pathname, qid); } catch (e) {}
+  }
+}
+(function () {
+  let saved = null;
+  try { saved = localStorage.getItem('skip:' + location.pathname); } catch (e) {}
+  if (!saved) return;
+  document.querySelectorAll('.question-block').forEach((b, i) => {
+    if (b.dataset.qid === saved) {
+      b.classList.add('q-skipped');
+      const btn = document.querySelectorAll('.tab-btn')[i];
+      if (btn) btn.classList.add('skipped');
+    }
+  });
+})();
 showTab(0);
 </script>
 </body>

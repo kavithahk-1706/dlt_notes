@@ -39,6 +39,7 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
       <div class="q-header">
         <button class="q-check" onclick="toggleDone('u3-q21', 0)" aria-label="Mark as done"></button>
         <h2 class="q-title">21. What are autoencoders, and how do they relate to principal component analysis (PCA) in terms of dimensionality reduction?</h2>
+        <button class="q-skip" onclick="toggleSkip('u3-q21', 0)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
 <p>An <strong>autoencoder</strong> is a feedforward network trained to <strong>reproduce its own input</strong>: the encoder maps \(x_i\) to a hidden representation \(h\), and the decoder reconstructs \(\hat x_i\) from \(h\). Training uses ordinary backpropagation to make \(\hat x_i\) close to \(x_i\).</p>
@@ -93,6 +94,7 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
             <div class="q-header">
         <button class="q-check" onclick="toggleDone('u3-q22', 1)" aria-label="Mark as done"></button>
         <h2 class="q-title">22. How do sparse autoencoders differ from traditional autoencoders, and what are some applications of sparse autoencoders in deep learning?</h2>
+        <button class="q-skip" onclick="toggleSkip('u3-q22', 1)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
         <h3>The core difference</h3>
@@ -175,6 +177,7 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
       <div class="q-header">
         <button class="q-check" onclick="toggleDone('u3-q23', 2)" aria-label="Mark as done"></button>
         <h2 class="q-title">23. How does bias-variance trade-off can be managed using regularization techniques such as L2 regularization?</h2>
+        <button class="q-skip" onclick="toggleSkip('u3-q23', 2)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
 <h3>Bias&ndash;variance trade-off</h3>
@@ -230,6 +233,7 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
             <div class="q-header">
         <button class="q-check" onclick="toggleDone('u3-q24', 3)" aria-label="Mark as done"></button>
         <h2 class="q-title">24. What is the role of denoising autoencoders in deep learning, and how do they enhance the robustness of a model?</h2>
+        <button class="q-skip" onclick="toggleSkip('u3-q24', 3)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
         <p><strong>Core idea:</strong> a denoising autoencoder (DAE) deliberately corrupts its input using a stochastic process \(P(\tilde{x}_{ij}\mid x_{ij})\) before feeding it into the encoder — but the training objective still asks the network to reconstruct the <strong>original, uncorrupted</strong> input, not the corrupted one it actually received.</p>
@@ -311,6 +315,7 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
       <div class="q-header">
         <button class="q-check" onclick="toggleDone('u3-q25', 4)" aria-label="Mark as done"></button>
         <h2 class="q-title">25. Explain the concept of contractive autoencoders and how they differ from traditional autoencoders.</h2>
+        <button class="q-skip" onclick="toggleSkip('u3-q25', 4)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
 <p>A <strong>contractive autoencoder (CAE)</strong> is an overcomplete autoencoder regularised so that it cannot learn the identity function. It does this by penalising how <strong>sensitive the hidden representation is to small changes in the input</strong>.</p>
@@ -356,6 +361,7 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
       <div class="q-header">
         <button class="q-check" onclick="toggleDone('u3-q26', 5)" aria-label="Mark as done"></button>
         <h2 class="q-title">26. Explain dataset augmentation and discuss any four commonly used augmentation techniques in deep learning.</h2>
+        <button class="q-skip" onclick="toggleSkip('u3-q26', 5)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
 <p><strong>Dataset augmentation</strong> means <strong>creating new training examples from existing ones</strong> by applying transformations that use knowledge of the task and <strong>do not change the label</strong>. If \(\mathcal{T}\) is a set of such transformations,</p>
@@ -397,6 +403,7 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
       <div class="q-header">
         <button class="q-check" onclick="toggleDone('u3-q27', 6)" aria-label="Mark as done"></button>
         <h2 class="q-title">27. How does dataset augmentation improve the performance of deep learning models?</h2>
+        <button class="q-skip" onclick="toggleSkip('u3-q27', 6)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
 <p>Augmentation improves a model mainly by <strong>reducing overfitting (variance)</strong> and by teaching it the invariances we want.</p>
@@ -442,6 +449,7 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
               <div class="q-header">
         <button class="q-check" onclick="toggleDone('u3-q28', 7)" aria-label="Mark as done"></button>
         <h2 class="q-title">28. Describe the concepts of parameter sharing and tying in the context of autoencoders.</h2>
+        <button class="q-skip" onclick="toggleSkip('u3-q28', 7)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
         <div class="answer-body">
 
@@ -524,6 +532,7 @@ MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] } }
       <div class="q-header">
         <button class="q-check" onclick="toggleDone('u3-q29', 8)" aria-label="Mark as done"></button>
         <h2 class="q-title">29. Discuss the concept of early stopping as a regularization technique in deep learning.</h2>
+        <button class="q-skip" onclick="toggleSkip('u3-q29', 8)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
       <div class="answer-body">
 <p>As training proceeds, <strong>training error keeps falling</strong>, but beyond some point <strong>validation error starts to rise</strong> because the model begins to overfit. <strong>Early stopping</strong> stops training near the minimum of the validation error instead of running until the training error reaches 0.</p>
@@ -579,6 +588,7 @@ return best_model                      # model from step k − p</code></pre>
               <div class="q-header">
         <button class="q-check" onclick="toggleDone('u3-q30', 9)" aria-label="Mark as done"></button>
         <h2 class="q-title">30. Explain the concept of loss functions. Discuss the different types of loss functions used in deep learning.</h2>
+        <button class="q-skip" onclick="toggleSkip('u3-q30', 9)" aria-label="Mark as the question I will skip" title="Mark as the question I will skip (only one per unit)">Skip</button>
       </div>
         <div class="answer-body">
 
@@ -663,6 +673,31 @@ document.querySelectorAll('.question-block').forEach((block, idx) => {
     if (btn) btn.classList.add('done');
   }
 });
+function toggleSkip(qid, tabIdx) {
+  const blocks = document.querySelectorAll('.question-block');
+  const btns = document.querySelectorAll('.tab-btn');
+  const target = document.querySelector('.question-block[data-qid="' + qid + '"]');
+  const wasSkipped = target.classList.contains('q-skipped');
+  blocks.forEach((b, i) => { b.classList.remove('q-skipped'); if (btns[i]) btns[i].classList.remove('skipped'); });
+  try { localStorage.removeItem('skip:' + location.pathname); } catch (e) {}
+  if (!wasSkipped) {
+    target.classList.add('q-skipped');
+    btns[tabIdx].classList.add('skipped');
+    try { localStorage.setItem('skip:' + location.pathname, qid); } catch (e) {}
+  }
+}
+(function () {
+  let saved = null;
+  try { saved = localStorage.getItem('skip:' + location.pathname); } catch (e) {}
+  if (!saved) return;
+  document.querySelectorAll('.question-block').forEach((b, i) => {
+    if (b.dataset.qid === saved) {
+      b.classList.add('q-skipped');
+      const btn = document.querySelectorAll('.tab-btn')[i];
+      if (btn) btn.classList.add('skipped');
+    }
+  });
+})();
 showTab(0);
 </script>
 </body>
